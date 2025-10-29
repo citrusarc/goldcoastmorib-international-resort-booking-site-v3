@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { Bed, BirthdayCake, Cutlery } from "iconoir-react";
 
-import { cormorantGaramond } from "@/config/fonts";
+import { cormorantGaramond, merriweather } from "@/config/fonts";
 import { slides } from "@/data/slideBanner";
 import { accomodations } from "@/data/accomodation";
 
@@ -54,6 +55,76 @@ export default function Home() {
                 International Resort
               </span>
             </p>
+          </div>
+        </div>
+
+        <div>
+          <h2
+            className={`${merriweather.className} text-3xl sm:text-4xl text-amber-500`}
+          >
+            Seaside Gem on Selangor&apos;s Tranquil Coast
+          </h2>
+          <p className="flex text-base sm:text-lg text-slate-800">
+            Wake up to the rhythm of the waves, unwind in your private jacuzzi,
+            and make a splash with the kids at the onsite water theme park, all
+            just steps from your suite.
+          </p>
+          <div className="flex flex-row w-full mt-8 sm:mt-0 justify-between sm:justify-start gap-4">
+            <div
+              className="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start 
+                w-24 h-24 sm:w-fit sm:h-auto 
+                sm:px-4 sm:py-2 
+                gap-2
+                rounded-full
+                border border-blue-500 bg-blue-50 text-blue-500"
+            >
+              <Bed className="w-6 h-6" />
+              <span className="text-base sm:text-lg">Stay</span>
+            </div>
+            <div
+              className="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start 
+                w-24 h-24 sm:w-fit sm:h-auto 
+                sm:px-4 sm:py-2 
+                gap-2
+                rounded-full
+                border border-blue-50 bg-linear-to-r from-blue-800 to-blue-500 text-amber-500"
+            >
+              <Cutlery className="w-6 h-6" />
+              <span className="text-base sm:text-lg">Dine</span>
+            </div>
+            <div
+              className="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start 
+            w-24 h-24 sm:w-fit sm:h-auto 
+            sm:px-4 sm:py-2 
+            gap-2
+            rounded-full
+            border border-blue-500 bg-blue-50 text-blue-500"
+            >
+              <BirthdayCake className="w-6 h-6" />
+              <span className="text-base sm:text-lg">Party</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden">
+          <div
+            className="flex transition-transform duration-500 ease-in-out select-none"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {slides.map((item, index) => (
+              <div
+                key={index}
+                className="relative w-full h-[180px] sm:h-[360px] shrink-0"
+              >
+                <Image
+                  fill
+                  src={item.src}
+                  alt={item.alt || `Hero Banner ${index + 1}`}
+                  priority={index === 0}
+                  className="object-cover"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -154,27 +225,6 @@ export default function Home() {
             >
               &#8594;
             </button>
-          </div>
-        </div>
-        <div className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 ease-in-out select-none"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {slides.map((item, index) => (
-              <div
-                key={index}
-                className="relative w-full h-[180px] sm:h-[360px] shrink-0"
-              >
-                <Image
-                  fill
-                  src={item.src}
-                  alt={item.alt || `Hero Banner ${index + 1}`}
-                  priority={index === 0}
-                  className="object-cover"
-                />
-              </div>
-            ))}
           </div>
         </div>
       </div>
