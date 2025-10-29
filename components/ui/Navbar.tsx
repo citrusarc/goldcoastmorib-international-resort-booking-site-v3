@@ -10,7 +10,7 @@ export default function Navbar() {
   const pathname = usePathname();
   return (
     <nav className="sticky top-0 z-50 flex p-4 sm:p-8 items-center justify-center">
-      <div className="flex p-4 items-center justify-between w-full max-w-4xl rounded-full border text-neutral-400 border-black/5 backdrop-blur-sm transition-all duration-200">
+      <div className="flex p-4 items-center justify-between w-full max-w-6xl rounded-full backdrop-blur-sm transition-all duration-200 border border-black/5 text-white bg-white/30">
         <Link href="/">
           <Image
             src="/Images/brand-logo.png"

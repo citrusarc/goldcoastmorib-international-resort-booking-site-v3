@@ -7,7 +7,11 @@ export default function PromoModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setIsOpen(true);
+    const isViewed = sessionStorage.getItem("promoViewed");
+    if (!isViewed) {
+      setIsOpen(true);
+      sessionStorage.setItem("promoViewed", "true");
+    }
   }, []);
 
   const handleClose = () => {

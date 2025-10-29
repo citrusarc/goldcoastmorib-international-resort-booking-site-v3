@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
+import { cormorantGaramond } from "@/config/fonts";
 import { slides } from "@/data/slideBanner";
 import { accomodations } from "@/data/accomodation";
 
@@ -33,29 +34,29 @@ export default function Home() {
   }, [accomodations.length]);
 
   return (
-    <section className="flex p-4 sm:pb-8 items-center justify-center text-neutral-600">
-      <div className="flex flex-col gap-8 w-full max-w-4xl">
-        <div className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 ease-in-out select-none"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {slides.map((item, index) => (
-              <div
-                key={index}
-                className="relative w-full h-[180px] sm:h-[360px] shrink-0"
-              >
-                <Image
-                  fill
-                  src={item.src}
-                  alt={item.alt || `Hero Banner ${index + 1}`}
-                  priority={index === 0}
-                  className="object-cover"
-                />
-              </div>
-            ))}
+    <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
+      <div className="flex flex-col gap-8 w-full max-w-6xl">
+        <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
+          <Image
+            fill
+            src="/Images/hero-banner-1.png"
+            alt="Gold Coast Morib International Resort Booking Hero Banner"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/15" />
+          <div className="absolute inset-0 flex flex-col gap-4 pb-24 items-center justify-end text-white">
+            <h1 className="text-lg sm:text-xl">Welcome To</h1>
+            <p className={`text-center ${cormorantGaramond.className}`}>
+              <span className="block text-[48px] sm:text-[96px] leading-none">
+                Gold Coast Morib
+              </span>
+              <span className="block text-[32px] sm:text-[48px] leading-none">
+                International Resort
+              </span>
+            </p>
           </div>
         </div>
+
         <div className="space-y-8">
           <div className="flex items-center justify-between">
             <div className="space-y-2">
@@ -153,6 +154,27 @@ export default function Home() {
             >
               &#8594;
             </button>
+          </div>
+        </div>
+        <div className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden">
+          <div
+            className="flex transition-transform duration-500 ease-in-out select-none"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {slides.map((item, index) => (
+              <div
+                key={index}
+                className="relative w-full h-[180px] sm:h-[360px] shrink-0"
+              >
+                <Image
+                  fill
+                  src={item.src}
+                  alt={item.alt || `Hero Banner ${index + 1}`}
+                  priority={index === 0}
+                  className="object-cover"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
