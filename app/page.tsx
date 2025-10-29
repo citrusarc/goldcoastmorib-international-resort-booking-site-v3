@@ -37,7 +37,7 @@ export default function Home() {
       <div className="flex flex-col gap-8 w-full max-w-4xl">
         <div className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden">
           <div
-            className="flex transition-transform duration-500 ease-in-out"
+            className="flex transition-transform duration-500 ease-in-out select-none"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {slides.map((item, index) => (
@@ -79,7 +79,6 @@ export default function Home() {
               &#8592;
             </button>
 
-            {/* Fix this area - START */}
             <div className="w-full overflow-hidden">
               <div
                 className="flex transition-transform duration-500 ease-in-out gap-4"
@@ -143,8 +142,6 @@ export default function Home() {
                 })}
               </div>
             </div>
-
-            {/* END */}
 
             <button
               onClick={() =>
