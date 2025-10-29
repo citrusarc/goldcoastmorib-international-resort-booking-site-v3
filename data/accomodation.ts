@@ -11,18 +11,8 @@ export const accomodations: AccomodationsItem[] = [
   {
     id: "studio-suite",
     name: "Studio Suite",
-    src: "/Images/dummy-image.png",
+    src: "/Images/studio-overview-banner.jpg",
     alt: "Accommodations Image 1",
-    description: "Lorem ipsum",
-    label: "Recommended",
-    price: { currency: "RM", current: 120, original: 120 },
-    status: { ...defaultStatus },
-  },
-  {
-    id: "apartment-balcony",
-    name: "Apartment With Balcony",
-    src: "/Images/dummy-image.png",
-    alt: "Accommodations Image 2",
     description: "Lorem ipsum",
     label: "Recommended",
     price: { currency: "RM", current: 120, original: 120 },
@@ -31,7 +21,7 @@ export const accomodations: AccomodationsItem[] = [
   {
     id: "two-rooms-apartment",
     name: "2 Rooms Apartment",
-    src: "/Images/dummy-image.png",
+    src: "/Images/apartment-2-rooms-overview-banner.jpg",
     alt: "Accommodations Image 3",
     description: "Lorem ipsum",
     label: "Recommended",
@@ -41,7 +31,7 @@ export const accomodations: AccomodationsItem[] = [
   {
     id: "three-rooms-apartment",
     name: "3 Rooms Apartment",
-    src: "/Images/dummy-image.png",
+    src: "/Images/apartment-3-rooms-overview-banner.jpg",
     alt: "Accommodations Image 4",
     description: "Lorem ipsum",
     label: "Recommended",

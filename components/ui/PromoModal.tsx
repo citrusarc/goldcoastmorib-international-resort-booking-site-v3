@@ -25,17 +25,17 @@ export default function PromoModal() {
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-64 aspect-square shrink-0"
+        className="relative w-64 sm:w-96 aspect-square shrink-0"
       >
         <button
           onClick={handleClose}
-          className="absolute top-2 right-2 z-10 text-white bg-black/50 rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/70 cursor-pointer transition"
+          className="absolute top-2 right-2 z-10 text-white bg-black/50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 cursor-pointer transition"
         >
           ✕
         </button>
         <Image
           fill
-          src="/Images/dummy-image.png"
+          src="/Images/promo-image.jpg"
           alt="Promo Banner"
           className="object-cover rounded-lg shadow-lg"
         />
