@@ -1,65 +1,164 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useEffect } from "react";
+
+import { slides } from "@/data/slideBanner";
+import { accomodations } from "@/data/accomodation";
 
 export default function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentAccomodations, setCurrentAccomodations] = useState(0);
+  const [itemsToShow, setItemsToShow] = useState(2);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  useEffect(() => {
+    const updateItemsToShow = () => {
+      const width = window.innerWidth;
+      const accomodationsNewItem = width < 640 ? 1 : width < 1024 ? 1 : 2;
+      setItemsToShow(accomodationsNewItem);
+      setCurrentAccomodations((prev) =>
+        Math.min(prev, accomodations.length - accomodationsNewItem)
+      );
+    };
+    updateItemsToShow();
+    window.addEventListener("resize", updateItemsToShow);
+    return () => window.removeEventListener("resize", updateItemsToShow);
+  }, [accomodations.length]);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <section className="flex p-4 sm:pb-8 items-center justify-center text-neutral-600">
+      <div className="flex flex-col gap-8 w-full max-w-4xl">
+        <div className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden">
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/8 px-5 transition-colors hover:border-transparent hover:bg-black/4 dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            {slides.map((item, index) => (
+              <div
+                key={index}
+                className="relative w-full h-[180px] sm:h-[360px] shrink-0"
+              >
+                <Image
+                  fill
+                  src={item.src}
+                  alt={item.alt || `Hero Banner ${index + 1}`}
+                  priority={index === 0}
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+        <div className="space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
+                Explore our accomodations
+              </h2>
+              <p className="text-neutral-400">Descriptions here</p>
+            </div>
+            <p>View More</p>
+          </div>
+
+          <div className="relative flex items-center">
+            <button
+              onClick={() =>
+                setCurrentAccomodations((prev) =>
+                  prev <= 0 ? accomodations.length - itemsToShow : prev - 1
+                )
+              }
+              className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+            >
+              &#8592;
+            </button>
+
+            {/* Fix this area - START */}
+            <div className="w-full overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-in-out gap-4"
+                style={{
+                  transform: `translateX(calc(-${currentAccomodations} * ((100% - ${
+                    (itemsToShow - 1) * 16
+                  }px) / ${itemsToShow} + 16px)))`,
+                }}
+              >
+                {accomodations.map((item, index) => {
+                  const getLabelColor = (label?: string) => {
+                    switch (label?.toLowerCase()) {
+                      case "recommended":
+                        return "text-green-600 bg-green-500/20";
+                      case "good":
+                        return "text-amber-600 bg-amber-500/20";
+                      case "not recommended":
+                        return "text-red-600 bg-red-500/20";
+                      default:
+                        return "text-neutral-600 bg-neutral-200";
+                    }
+                  };
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+                      style={{
+                        flex: `0 0 calc((100% - ${
+                          (itemsToShow - 1) * 16
+                        }px) / ${itemsToShow})`,
+                      }}
+                    >
+                      <div className="relative w-36 aspect-square rounded-2xl sm:rounded-4xl overflow-hidden">
+                        <Image
+                          fill
+                          src={item.src}
+                          alt={item.alt ? item.alt : `Hero Banner ${index + 1}`}
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <h2 className="text-xl font-semibold">{item.name}</h2>
+                        <p
+                          className={`px-2 py-1 w-fit rounded-full ${getLabelColor(
+                            item.label
+                          )}`}
+                        >
+                          {item.label}
+                        </p>
+                        <p className="text-xl font-semibold text-blue-600">
+                          <span className="text-base font-normal text-neutral-400">
+                            from <br />
+                          </span>
+                          {item.price.currency}
+                          {item.price.current}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* END */}
+
+            <button
+              onClick={() =>
+                setCurrentAccomodations((prev) =>
+                  prev >= accomodations.length - itemsToShow ? 0 : prev + 1
+                )
+              }
+              className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+            >
+              &#8594;
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
