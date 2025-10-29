@@ -33,3 +33,8 @@ export type AccomodationsItem = {
 };
 
 export type SlideItem = { src: string; alt: string };
+
+export type PromoModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};

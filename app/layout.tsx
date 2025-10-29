@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "@/app/globals.css";
 import Navbar from "@/components/ui/Navbar";
+import PromoModal from "@/components/ui/PromoModal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="relative antialiased overflow-x-hidden overflow-y-auto max-w-full">
+        <PromoModal />
         <Navbar />
         <main>{children}</main>
       </body>
