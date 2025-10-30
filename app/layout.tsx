@@ -20,6 +20,9 @@ export default function RootLayout({
         <PromoModal />
         <Navbar />
         <main>{children}</main>
+        <footer className="flex p-16 items-center justify-center text-center text-neutral-400">
+          © {new Date().getFullYear()} GOLD COAST MORIB INTERNATIONAL RESORT
+        </footer>
       </body>
     </html>
   );

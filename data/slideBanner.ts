@@ -12,5 +12,5 @@ export const slides: SlideItem[] = [
   {
     src: "/Images/hero-banner-3.jpg",
     alt: "Hero Banner 3",
-  },
+  } satisfies SlideItem,
 ];

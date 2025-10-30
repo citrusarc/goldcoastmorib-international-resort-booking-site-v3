@@ -1,16 +1,26 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Bed, BirthdayCake, Cutlery } from "iconoir-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Bed,
+  BirthdayCake,
+  Cutlery,
+} from "iconoir-react";
 
 import { cormorantGaramond, merriweather } from "@/config/fonts";
 import { slides } from "@/data/slideBanner";
 import { accomodations } from "@/data/accomodation";
+import { activities } from "@/data/activities";
+import { benefits } from "@/data/benefits";
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentAccomodations, setCurrentAccomodations] = useState(0);
+  const [currentActivities, setCurrentActivities] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(2);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -48,18 +58,21 @@ export default function Home() {
   }, [slides.length]);
 
   useEffect(() => {
-    const updateItemsToShow = () => {
+    const itemsToShow = () => {
       const width = window.innerWidth;
-      const accomodationsNewItem = width < 640 ? 1 : width < 1024 ? 1 : 2;
-      setItemsToShow(accomodationsNewItem);
+      const newItem = width < 640 ? 1 : width < 1024 ? 1 : 2;
+      setItemsToShow(newItem);
       setCurrentAccomodations((prev) =>
-        Math.min(prev, accomodations.length - accomodationsNewItem)
+        Math.min(prev, Math.max(0, accomodations.length - newItem))
+      );
+      setCurrentActivities((prev) =>
+        Math.min(prev, Math.max(0, activities.length - newItem))
       );
     };
-    updateItemsToShow();
-    window.addEventListener("resize", updateItemsToShow);
-    return () => window.removeEventListener("resize", updateItemsToShow);
-  }, [accomodations.length]);
+    itemsToShow();
+    window.addEventListener("resize", itemsToShow);
+    return () => window.removeEventListener("resize", itemsToShow);
+  }, [accomodations.length, , activities.length]);
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
@@ -84,14 +97,13 @@ export default function Home() {
             </p>
           </div>
         </div>
-
         <div className="space-y-4">
           <h2
             className={`${merriweather.className} text-3xl sm:text-4xl text-amber-500`}
           >
             Seaside Gem on Selangor&apos;s Tranquil Coast
           </h2>
-          <p className="flex text-base sm:text-lg text-slate-800">
+          <p className="flex text-base sm:text-lg text-neutral-600">
             Wake up to the rhythm of the waves, unwind in your private jacuzzi,
             and make a splash with the kids at the onsite water theme park, all
             just steps from your suite.
@@ -132,8 +144,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* I meand touch slide here - START */}
         <div
           onTouchStart={(e) => handleTouchStart(e)}
           onTouchMove={(e) => handleTouchMove(e)}
@@ -160,29 +170,37 @@ export default function Home() {
             ))}
           </div>
         </div>
-        {/* END */}
-
         <div className="space-y-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between text-neutral-400">
             <div className="space-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
                 Explore our accomodations
               </h2>
-              <p className="text-neutral-400">Descriptions here</p>
+              <p className="text-neutral-600">Find the perfect place to stay</p>
             </div>
-            <p>View More</p>
+            <Link
+              href="/accomodations"
+              className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
+            >
+              <span className="hidden sm:inline">See All Accommodations</span>
+              <div className="flex sm:hidden w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
+                <ArrowRight className="w-4 h-4" />
+              </div>
+            </Link>
           </div>
 
           <div className="relative flex items-center">
             <button
               onClick={() =>
                 setCurrentAccomodations((prev) =>
-                  prev <= 0 ? accomodations.length - itemsToShow : prev - 1
+                  prev <= 0
+                    ? accomodations.slice(0, 5).length - itemsToShow
+                    : prev - 1
                 )
               }
               className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
             >
-              &#8592;
+              <ArrowLeft className="w-4 h-4" />
             </button>
 
             <div className="w-full overflow-hidden">
@@ -194,7 +212,7 @@ export default function Home() {
                   }px) / ${itemsToShow} + 16px)))`,
                 }}
               >
-                {accomodations.map((item, index) => {
+                {accomodations.slice(0, 5).map((item, index) => {
                   const getLabelColor = (label?: string) => {
                     switch (label?.toLowerCase()) {
                       case "recommended":
@@ -218,7 +236,7 @@ export default function Home() {
                         }px) / ${itemsToShow})`,
                       }}
                     >
-                      <div className="relative w-36 aspect-square rounded-2xl sm:rounded-4xl overflow-hidden">
+                      <div className="relative w-36 aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
                         <Image
                           fill
                           src={item.src}
@@ -252,14 +270,140 @@ export default function Home() {
             <button
               onClick={() =>
                 setCurrentAccomodations((prev) =>
-                  prev >= accomodations.length - itemsToShow ? 0 : prev + 1
+                  prev >= accomodations.slice(0, 5).length - itemsToShow
+                    ? 0
+                    : prev + 1
                 )
               }
               className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
             >
-              &#8594;
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
+        </div>
+        <div className="space-y-8">
+          <div className="flex items-center justify-between text-neutral-400">
+            <div className="space-y-2">
+              <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
+                Nearby activities
+              </h2>
+            </div>
+            <Link
+              href="/activities"
+              className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
+            >
+              <span className="hidden sm:inline">See What&apos;s Around</span>
+              <div className="flex sm:hidden w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
+                <ArrowRight className="w-4 h-4" />
+              </div>
+            </Link>
+          </div>
+          <div className="relative flex items-center">
+            <button
+              onClick={() =>
+                setCurrentActivities((prev) =>
+                  prev <= 0
+                    ? activities.slice(0, 5).length - itemsToShow
+                    : prev - 1
+                )
+              }
+              className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+
+            <div className="w-full overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-in-out gap-4"
+                style={{
+                  transform: `translateX(calc(-${currentActivities} * ((100% - ${
+                    (itemsToShow - 1) * 16
+                  }px) / ${itemsToShow} + 16px)))`,
+                }}
+              >
+                {activities.slice(0, 5).map((item, index) => {
+                  const getLabelColor = (label?: string) => {
+                    switch (label?.toLowerCase()) {
+                      case "recommended":
+                        return "text-green-600 bg-green-500/20";
+                      case "good":
+                        return "text-amber-600 bg-amber-500/20";
+                      case "not recommended":
+                        return "text-red-600 bg-red-500/20";
+                      default:
+                        return "text-neutral-600 bg-neutral-200";
+                    }
+                  };
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+                      style={{
+                        flex: `0 0 calc((100% - ${
+                          (itemsToShow - 1) * 16
+                        }px) / ${itemsToShow})`,
+                      }}
+                    >
+                      <div className="relative w-36 aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
+                        <Image
+                          fill
+                          src={item.src}
+                          alt={item.alt ? item.alt : `Hero Banner ${index + 1}`}
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <h2 className="text-xl font-semibold">{item.name}</h2>
+                        <p
+                          className={`px-2 py-1 w-fit rounded-full ${getLabelColor(
+                            item.label
+                          )}`}
+                        >
+                          {item.label}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <button
+              onClick={() =>
+                setCurrentActivities((prev) =>
+                  prev >= activities.slice(0, 5).length - itemsToShow
+                    ? 0
+                    : prev + 1
+                )
+              }
+              className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-center">
+          {benefits.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center text-center space-y-4"
+            >
+              <div className="relative w-40 h-40">
+                <Image
+                  fill
+                  src={item.src}
+                  alt={item.alt || `Benefit Image ${index + 1}`}
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-amber-500">
+                {item.name}
+              </h3>
+              <p className="text-neutral-600 max-w-xs">{item.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

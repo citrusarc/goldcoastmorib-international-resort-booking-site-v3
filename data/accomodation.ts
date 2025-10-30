@@ -37,5 +37,5 @@ export const accomodations: AccomodationsItem[] = [
     label: "Recommended",
     price: { currency: "RM", current: 120, original: 120 },
     status: { ...defaultStatus },
-  },
+  } satisfies AccomodationsItem,
 ];

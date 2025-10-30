@@ -15,6 +15,15 @@ export type NavItem = {
   status?: ItemStatus;
 };
 
+export type SlideItem = { src: string; alt: string };
+
+export type BenefitsItem = {
+  name: string;
+  description?: string;
+  src: string;
+  alt: string;
+};
+
 export type PriceItem = {
   currency: string;
   original: number;
@@ -32,4 +41,12 @@ export type AccomodationsItem = {
   status?: ItemStatus;
 };
 
-export type SlideItem = { src: string; alt: string };
+export type ActivitiesItem = {
+  id: string;
+  name: string;
+  src: string;
+  alt: string;
+  description?: string;
+  label?: string;
+  status?: ItemStatus;
+};

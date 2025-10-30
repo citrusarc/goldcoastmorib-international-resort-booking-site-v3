@@ -14,6 +14,18 @@ export default function PromoModal() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const handleClose = () => {
     setIsOpen(false);
   };
@@ -21,10 +33,7 @@ export default function PromoModal() {
   if (!isOpen) return null;
 
   return (
-    <div
-      onClick={handleClose}
-      className="fixed inset-0 z-9999 flex items-center justify-center p-4"
-    >
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
       <div
