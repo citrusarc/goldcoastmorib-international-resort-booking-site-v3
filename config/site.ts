@@ -21,9 +21,9 @@ const defaultStatus: ItemStatus = {
 export const siteConfig = {
   navItems: [
     {
-      id: "accomodations",
-      name: "Accomodations",
-      href: "/accomodations",
+      id: "accommodations",
+      name: "Accommodations",
+      href: "/accommodations",
       icon: BedIcon,
       status: { ...defaultStatus },
     },

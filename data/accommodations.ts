@@ -9,7 +9,7 @@ const defaultStatus: ItemStatus = {
   isRecommended: false,
 };
 
-export const accomodations: AccommodationsItem[] = [
+export const accommodations: AccommodationsItem[] = [
   {
     id: "studio-suite",
     name: "Studio Suite",

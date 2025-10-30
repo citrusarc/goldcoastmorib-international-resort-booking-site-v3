@@ -20,12 +20,12 @@ import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentAccomodations, setCurrentAccomodations] = useState(0);
+  const [currentAccommodations, setCurrentAccommodations] = useState(0);
   const [currentActivities, setCurrentActivities] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(2);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [accomodations, setAccomodations] = useState<any[]>([]);
+  const [accommodations, setAccommodations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const minSwipeDistance = 50;
 
@@ -71,7 +71,7 @@ export default function Home() {
         if (error) throw error;
 
         const mapped = data.map((item) => mapAccommodationsData(item));
-        setAccomodations(mapped);
+        setAccommodations(mapped);
       } catch (err) {
         console.error("Error loading accommodations:", err);
       } finally {
@@ -87,8 +87,8 @@ export default function Home() {
       const width = window.innerWidth;
       const newItem = width < 640 ? 1 : width < 1024 ? 1 : 2;
       setItemsToShow(newItem);
-      setCurrentAccomodations((prev) =>
-        Math.min(prev, Math.max(0, accomodations.length - newItem))
+      setCurrentAccommodations((prev) =>
+        Math.min(prev, Math.max(0, accommodations.length - newItem))
       );
       setCurrentActivities((prev) =>
         Math.min(prev, Math.max(0, activities.length - newItem))
@@ -97,7 +97,7 @@ export default function Home() {
     itemsToShow();
     window.addEventListener("resize", itemsToShow);
     return () => window.removeEventListener("resize", itemsToShow);
-  }, [accomodations.length, , activities.length]);
+  }, [accommodations.length, , activities.length]);
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
@@ -199,12 +199,12 @@ export default function Home() {
           <div className="flex items-center justify-between text-neutral-400">
             <div className="space-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
-                Explore our accomodations
+                Explore our accommodations
               </h2>
               <p className="text-neutral-600">Find the perfect place to stay</p>
             </div>
             <Link
-              href="/accomodations"
+              href="/accommodations"
               className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
             >
               <span className="hidden sm:inline">See All Accommodations</span>
@@ -217,9 +217,9 @@ export default function Home() {
           <div className="relative flex items-center">
             <button
               onClick={() =>
-                setCurrentAccomodations((prev) =>
+                setCurrentAccommodations((prev) =>
                   prev <= 0
-                    ? accomodations.slice(0, 5).length - itemsToShow
+                    ? accommodations.slice(0, 5).length - itemsToShow
                     : prev - 1
                 )
               }
@@ -232,12 +232,12 @@ export default function Home() {
               <div
                 className="flex transition-transform duration-500 ease-in-out gap-4"
                 style={{
-                  transform: `translateX(calc(-${currentAccomodations} * ((100% - ${
+                  transform: `translateX(calc(-${currentAccommodations} * ((100% - ${
                     (itemsToShow - 1) * 16
                   }px) / ${itemsToShow} + 16px)))`,
                 }}
               >
-                {accomodations.slice(0, 5).map((item, index) => {
+                {accommodations.slice(0, 5).map((item, index) => {
                   const getLabelColor = (label?: string) => {
                     switch (label?.toLowerCase()) {
                       case "recommended":
@@ -254,7 +254,7 @@ export default function Home() {
                   return (
                     <Link
                       key={index}
-                      href={`/accomodations/${item.id}`}
+                      href={`/accommodations/${item.id}`}
                       className="flex gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
                       style={{
                         flex: `0 0 calc((100% - ${
@@ -295,8 +295,8 @@ export default function Home() {
 
             <button
               onClick={() =>
-                setCurrentAccomodations((prev) =>
-                  prev >= accomodations.slice(0, 5).length - itemsToShow
+                setCurrentAccommodations((prev) =>
+                  prev >= accommodations.slice(0, 5).length - itemsToShow
                     ? 0
                     : prev + 1
                 )
