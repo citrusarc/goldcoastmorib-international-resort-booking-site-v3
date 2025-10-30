@@ -4,7 +4,7 @@ export const benefits: BenefitsItem[] = [
   {
     name: "Best Rate",
     description:
-      "Get the lowest price guaranteed when you book direct, no hiddend fees.",
+      "Get the lowest price guaranteed when you book direct, no hidden fees.",
     src: "/Images/dummy-image.png",
     alt: "Benefits Image 1",
   },

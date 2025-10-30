@@ -1,8 +1,15 @@
+import { SVGProps } from "react";
+
+export type IconSvgProps = SVGProps<SVGSVGElement> & {
+  size?: number;
+};
+
 export type ItemStatus = {
   isDisabled?: boolean;
   isHidden?: boolean;
   isComingSoon?: boolean;
   isPromo?: boolean;
+  isRecommended: boolean;
 };
 
 export type NavItem = {
@@ -30,14 +37,23 @@ export type PriceItem = {
   current: number;
 };
 
-export type AccomodationsItem = {
+export type IconProps = {
+  icon?: React.FC<IconSvgProps>;
+  label?: string;
+};
+
+export type AccommodationsItem = {
   id: string;
   name: string;
   src: string;
   alt: string;
   description?: string;
   label?: string;
+  facilities?: IconProps[];
   price: PriceItem;
+  maxGuests: number;
+  totalUnits?: number;
+  availableUnits?: number;
   status?: ItemStatus;
 };
 
@@ -49,4 +65,19 @@ export type ActivitiesItem = {
   description?: string;
   label?: string;
   status?: ItemStatus;
+};
+
+export type BookingEmailTemplateProps = {
+  bookingNumber: string;
+  firstName: string;
+  accommodationsName: string;
+  checkInDate: string;
+  checkOutDate: string;
+  adults: number;
+  children: number;
+  earlyCheckIn?: string | null;
+  remarks?: string | null;
+  currency: string;
+  totalPrice: number;
+  createdAt: string;
 };

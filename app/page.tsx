@@ -13,9 +13,10 @@ import {
 
 import { cormorantGaramond, merriweather } from "@/config/fonts";
 import { slides } from "@/data/slideBanner";
-import { accomodations } from "@/data/accomodation";
 import { activities } from "@/data/activities";
 import { benefits } from "@/data/benefits";
+import { supabase } from "@/utils/supabase/client";
+import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -24,6 +25,8 @@ export default function Home() {
   const [itemsToShow, setItemsToShow] = useState(2);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [accomodations, setAccomodations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const minSwipeDistance = 50;
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -56,6 +59,28 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(interval);
   }, [slides.length]);
+
+  useEffect(() => {
+    async function fetchAccommodations() {
+      try {
+        const { data, error } = await supabase
+          .from("accommodations")
+          .select("*")
+          .eq("status->>isHidden", "false");
+
+        if (error) throw error;
+
+        const mapped = data.map((item) => mapAccommodationsData(item));
+        setAccomodations(mapped);
+      } catch (err) {
+        console.error("Error loading accommodations:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAccommodations();
+  }, []);
 
   useEffect(() => {
     const itemsToShow = () => {
@@ -227,8 +252,9 @@ export default function Home() {
                   };
 
                   return (
-                    <div
+                    <Link
                       key={index}
+                      href={`/accomodations/${item.id}`}
                       className="flex gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
                       style={{
                         flex: `0 0 calc((100% - ${
@@ -261,7 +287,7 @@ export default function Home() {
                           {item.price.current}
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </div>
@@ -336,8 +362,9 @@ export default function Home() {
                   };
 
                   return (
-                    <div
+                    <Link
                       key={index}
+                      href={`/activities/${item.id}`}
                       className="flex gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
                       style={{
                         flex: `0 0 calc((100% - ${
@@ -363,7 +390,7 @@ export default function Home() {
                           {item.label}
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </div>

@@ -15,6 +15,7 @@ const defaultStatus: ItemStatus = {
   isHidden: false,
   isComingSoon: false,
   isPromo: false,
+  isRecommended: false,
 };
 
 export const siteConfig = {

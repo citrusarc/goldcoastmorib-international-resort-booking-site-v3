@@ -1,4 +1,4 @@
-export default function AccomodationsPage() {
+export default function AccommodationsPage() {
   return (
     <section>
       <div>Accomodations Page</div>
