@@ -1,7 +1,7 @@
 export default function ActivitiesPage() {
   return (
     <section>
-      <div>Activities Page</div>
+      <div>Activities Page ya</div>
     </section>
   );
 }
