@@ -12,6 +12,33 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentAccomodations, setCurrentAccomodations] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(2);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    } else if (isRightSwipe) {
+      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,7 +63,7 @@ export default function Home() {
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
-      <div className="flex flex-col gap-8 w-full max-w-6xl">
+      <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
@@ -58,7 +85,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div>
+        <div className="space-y-4">
           <h2
             className={`${merriweather.className} text-3xl sm:text-4xl text-amber-500`}
           >
@@ -106,7 +133,13 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden">
+        {/* I meand touch slide here - START */}
+        <div
+          onTouchStart={(e) => handleTouchStart(e)}
+          onTouchMove={(e) => handleTouchMove(e)}
+          onTouchEnd={() => handleTouchEnd()}
+          className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden"
+        >
           <div
             className="flex transition-transform duration-500 ease-in-out select-none"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -127,6 +160,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        {/* END */}
 
         <div className="space-y-8">
           <div className="flex items-center justify-between">
