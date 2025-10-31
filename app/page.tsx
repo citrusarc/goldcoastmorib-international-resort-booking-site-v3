@@ -29,26 +29,19 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const minSwipeDistance = 50;
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) =>
     setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) =>
     setTouchEnd(e.targetTouches[0].clientX);
-  };
 
   const handleTouchEnd = () => {
     if (touchStart === null || touchEnd === null) return;
     const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
+    if (distance > minSwipeDistance) {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    } else if (isRightSwipe) {
+    } else if (distance < -minSwipeDistance) {
       setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
     }
-
     setTouchStart(null);
     setTouchEnd(null);
   };
@@ -58,10 +51,10 @@ export default function Home() {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, []);
 
   useEffect(() => {
-    async function fetchAccommodations() {
+    const fetchAccommodations = async () => {
       try {
         const { data, error } = await supabase
           .from("accommodations")
@@ -69,35 +62,47 @@ export default function Home() {
           .eq("status->>isHidden", "false");
 
         if (error) throw error;
-
-        const mapped = data.map((item) => mapAccommodationsData(item));
-        setAccommodations(mapped);
+        setAccommodations(data.map(mapAccommodationsData));
       } catch (err) {
         console.error("Error loading accommodations:", err);
       } finally {
         setLoading(false);
       }
-    }
-
+    };
     fetchAccommodations();
   }, []);
 
   useEffect(() => {
-    const itemsToShow = () => {
+    const handleResize = () => {
       const width = window.innerWidth;
-      const newItem = width < 640 ? 1 : width < 1024 ? 1 : 2;
-      setItemsToShow(newItem);
+      const newItems = width < 640 ? 1 : width < 1024 ? 1 : 2;
+      setItemsToShow(newItems);
+
       setCurrentAccommodations((prev) =>
-        Math.min(prev, Math.max(0, accommodations.length - newItem))
+        Math.min(prev, Math.max(0, accommodations.length - newItems))
       );
       setCurrentActivities((prev) =>
-        Math.min(prev, Math.max(0, activities.length - newItem))
+        Math.min(prev, Math.max(0, activities.length - newItems))
       );
     };
-    itemsToShow();
-    window.addEventListener("resize", itemsToShow);
-    return () => window.removeEventListener("resize", itemsToShow);
-  }, [accommodations.length, , activities.length]);
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [accommodations.length, activities.length]);
+
+  const labelColor = (label?: string) => {
+    switch (label?.toLowerCase()) {
+      case "recommended":
+        return "text-green-600 bg-green-500/20";
+      case "good":
+        return "text-amber-600 bg-amber-500/20";
+      case "not recommended":
+        return "text-red-600 bg-red-500/20";
+      default:
+        return "text-neutral-600 bg-neutral-200";
+    }
+  };
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
@@ -195,74 +200,71 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="space-y-8">
-          <div className="flex items-center justify-between text-neutral-400">
-            <div className="space-y-2">
-              <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
-                Explore our accommodations
-              </h2>
-              <p className="text-neutral-600">Find the perfect place to stay</p>
-            </div>
-            <Link
-              href="/accommodations"
-              className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
-            >
-              <span className="hidden sm:inline">See All Accommodations</span>
-              <div className="flex sm:hidden w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </Link>
+        {loading ? (
+          <div className="flex justify-center items-center h-[400px]">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-amber-500 border-solid" />
           </div>
-
-          <div className="relative flex items-center">
-            <button
-              onClick={() =>
-                setCurrentAccommodations((prev) =>
-                  prev <= 0
-                    ? accommodations.slice(0, 5).length - itemsToShow
-                    : prev - 1
-                )
-              }
-              className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-
-            <div className="w-full overflow-hidden">
-              <div
-                className="flex transition-transform duration-500 ease-in-out gap-4"
-                style={{
-                  transform: `translateX(calc(-${currentAccommodations} * ((100% - ${
-                    (itemsToShow - 1) * 16
-                  }px) / ${itemsToShow} + 16px)))`,
-                }}
+        ) : accommodations.length === 0 ? (
+          <p className="text-center text-zinc-500 py-8">
+            No accommodations available.
+          </p>
+        ) : (
+          <div className="space-y-8">
+            <div className="flex items-center justify-between text-neutral-400">
+              <div className="space-y-2">
+                <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
+                  Explore our accommodations
+                </h2>
+                <p className="text-neutral-600">
+                  Find the perfect place to stay
+                </p>
+              </div>
+              <Link
+                href="/accommodations"
+                className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
               >
-                {accommodations.slice(0, 5).map((item, index) => {
-                  const getLabelColor = (label?: string) => {
-                    switch (label?.toLowerCase()) {
-                      case "recommended":
-                        return "text-green-600 bg-green-500/20";
-                      case "good":
-                        return "text-amber-600 bg-amber-500/20";
-                      case "not recommended":
-                        return "text-red-600 bg-red-500/20";
-                      default:
-                        return "text-neutral-600 bg-neutral-200";
-                    }
-                  };
+                <span className="hidden sm:inline">See All Accommodations</span>
+                <div className="flex sm:hidden w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </Link>
+            </div>
 
-                  return (
+            <div className="relative flex items-center">
+              <button
+                onClick={() =>
+                  setCurrentAccommodations((prev) =>
+                    prev <= 0
+                      ? accommodations.slice(0, 5).length - itemsToShow
+                      : prev - 1
+                  )
+                }
+                className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+
+              <div className="w-full overflow-hidden">
+                <div
+                  className="flex transition-transform duration-500 ease-in-out gap-4"
+                  style={{
+                    transform: `translateX(calc(-${currentAccommodations} * ((100% - ${
+                      (itemsToShow - 1) * 16
+                    }px) / ${itemsToShow} + 16px)))`,
+                  }}
+                >
+                  {accommodations.slice(0, 5).map((item, index) => (
                     <Link
                       key={index}
                       href={`/accommodations/${item.id}`}
-                      className="flex gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+                      className="flex flex-col sm:flex-row gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
                       style={{
                         flex: `0 0 calc((100% - ${
                           (itemsToShow - 1) * 16
                         }px) / ${itemsToShow})`,
                       }}
                     >
-                      <div className="relative w-36 aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
+                      <div className="relative w-full sm:w-40 aspect-4/3 sm:aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
                         <Image
                           fill
                           src={item.src}
@@ -270,43 +272,46 @@ export default function Home() {
                           className="object-cover"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <h2 className="text-xl font-semibold">{item.name}</h2>
+                      <div className="p-2 space-y-2">
+                        <h2 className="text-2xl font-semibold">{item.name}</h2>
                         <p
-                          className={`px-2 py-1 w-fit rounded-full ${getLabelColor(
+                          className={`px-2 py-1 w-fit rounded-full ${labelColor(
                             item.label
                           )}`}
                         >
                           {item.label}
                         </p>
-                        <p className="text-xl font-semibold text-blue-600">
+                        <p className="text-2xl font-semibold text-blue-600">
                           <span className="text-base font-normal text-neutral-400">
                             from <br />
                           </span>
                           {item.price.currency}
                           {item.price.current}
+                          <span className="text-xl font-normal text-neutral-400">
+                            /night
+                          </span>
                         </p>
                       </div>
                     </Link>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <button
-              onClick={() =>
-                setCurrentAccommodations((prev) =>
-                  prev >= accommodations.slice(0, 5).length - itemsToShow
-                    ? 0
-                    : prev + 1
-                )
-              }
-              className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
-            >
-              <ArrowRight className="w-4 h-4" />
-            </button>
+              <button
+                onClick={() =>
+                  setCurrentAccommodations((prev) =>
+                    prev >= accommodations.slice(0, 5).length - itemsToShow
+                      ? 0
+                      : prev + 1
+                  )
+                }
+                className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
         <div className="space-y-8">
           <div className="flex items-center justify-between text-neutral-400">
             <div className="space-y-2">
@@ -348,7 +353,7 @@ export default function Home() {
                 }}
               >
                 {activities.slice(0, 5).map((item, index) => {
-                  const getLabelColor = (label?: string) => {
+                  const labelColor = (label?: string) => {
                     switch (label?.toLowerCase()) {
                       case "recommended":
                         return "text-green-600 bg-green-500/20";
@@ -365,14 +370,14 @@ export default function Home() {
                     <Link
                       key={index}
                       href={`/activities/${item.id}`}
-                      className="flex gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+                      className="flex gap-4 h-45 sm:h-48 shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden"
                       style={{
                         flex: `0 0 calc((100% - ${
                           (itemsToShow - 1) * 16
                         }px) / ${itemsToShow})`,
                       }}
                     >
-                      <div className="relative w-36 aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
+                      <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
                         <Image
                           fill
                           src={item.src}
@@ -380,15 +385,8 @@ export default function Home() {
                           className="object-cover"
                         />
                       </div>
-                      <div className="space-y-2">
+                      <div className="absolute bottom-0 p-5 sm:p-6 w-full space-y-2">
                         <h2 className="text-xl font-semibold">{item.name}</h2>
-                        <p
-                          className={`px-2 py-1 w-fit rounded-full ${getLabelColor(
-                            item.label
-                          )}`}
-                        >
-                          {item.label}
-                        </p>
                       </div>
                     </Link>
                   );

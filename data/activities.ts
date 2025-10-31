@@ -12,7 +12,7 @@ export const activities: ActivitiesItem[] = [
   {
     id: "beach-walk",
     name: "Beach Walks & Sunset Viewing",
-    src: "/Images/activities/beach-walk.jpg",
+    src: "/Images/dummy-image.png",
     alt: "People walking on Morib Beach during sunset",
     description:
       "Take a relaxing stroll along Morib Beach and enjoy breathtaking golden-hour sunsets over the Straits of Malacca.",
@@ -22,7 +22,7 @@ export const activities: ActivitiesItem[] = [
   {
     id: "atv-beach-ride",
     name: "ATV Beach Ride",
-    src: "/Images/activities/atv-ride.jpg",
+    src: "/Images/dummy-image.png",
     alt: "ATV riders driving along the beach",
     description:
       "Ride an ATV across the sandy coastline for a thrilling experience perfect for families and groups of friends.",
