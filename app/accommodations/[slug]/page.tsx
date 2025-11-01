@@ -305,33 +305,64 @@ export default function AccommodationsDetailsPage() {
                       <FormField
                         control={form.control}
                         name="checkIn"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>Check-In</FormLabel>
-                            <FormControl>
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="checkOut"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>Check-Out</FormLabel>
-                            <FormControl>
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                              />
-                            </FormControl>
+                        render={() => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Date Range</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant="outline"
+                                    className={`
+                w-full justify-start text-left font-normal
+                ${
+                  !form.watch("checkIn") || !form.watch("checkOut")
+                    ? "text-muted-foreground"
+                    : ""
+                }
+              `}
+                                  >
+                                    {form.watch("checkIn") &&
+                                    form.watch("checkOut") ? (
+                                      <>
+                                        {form
+                                          .watch("checkIn")
+                                          .toLocaleDateString("en-GB")}
+                                        —{" "}
+                                        {form
+                                          .watch("checkOut")
+                                          .toLocaleDateString("en-GB")}
+                                      </>
+                                    ) : (
+                                      <span>Select dates</span>
+                                    )}
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="range"
+                                  selected={{
+                                    from: form.watch("checkIn"),
+                                    to: form.watch("checkOut"),
+                                  }}
+                                  defaultMonth={form.watch("checkIn")}
+                                  onSelect={(range) => {
+                                    if (range?.from && range?.to) {
+                                      form.setValue("checkIn", range.from); // //
+                                      form.setValue("checkOut", range.to); // //
+                                    } else if (range?.from) {
+                                      form.setValue("checkIn", range.from); // //
+                                      form.setValue("checkOut", range.from); // //
+                                    }
+                                  }}
+                                  numberOfMonths={1}
+                                />
+                              </PopoverContent>
+                            </Popover>
                             <FormMessage />
                           </FormItem>
                         )}
