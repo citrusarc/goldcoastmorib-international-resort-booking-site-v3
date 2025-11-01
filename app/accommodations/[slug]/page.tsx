@@ -39,8 +39,8 @@ import { AccommodationsItem } from "@/types";
 import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
 import { SuccessModal, ErrorModal } from "@/components/ui/Modal";
 
-const earlyCheckInSlots = Array.from({ length: 19 }, (_, i) => {
-  const hour = 15 + Math.floor(i / 2);
+const earlyCheckInSlots = Array.from({ length: 13 }, (_, i) => {
+  const hour = 9 + Math.floor(i / 2);
   const min = i % 2 === 0 ? "00" : "30";
   return `${hour}:${min}`;
 });
@@ -85,6 +85,38 @@ const formSchema = z
       });
     }
   });
+
+function Stepper({
+  value,
+  onChange,
+  min = 0,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  min?: number;
+}) {
+  return (
+    <div className="flex items-center border rounded-md overflow-hidden w-28">
+      <Button
+        type="button"
+        variant="ghost"
+        className="h-8 w-8 p-0 border border-neutral-200 rounded-full"
+        onClick={() => onChange(Math.max(min, value - 1))}
+      >
+        –
+      </Button>
+      <div className="flex-1 text-center select-none">{value}</div>
+      <Button
+        type="button"
+        variant="ghost"
+        className="h-8 w-8 p-0"
+        onClick={() => onChange(value + 1)}
+      >
+        +
+      </Button>
+    </div>
+  );
+}
 
 export default function AccommodationsDetailsPage() {
   const { slug } = useParams();
@@ -133,8 +165,8 @@ export default function AccommodationsDetailsPage() {
         lastName: values.lastName,
         email: values.email,
         phone: `${values.countryCode}${values.phone}`,
-        checkin: values.checkIn.toISOString(),
-        checkout: values.checkOut.toISOString(),
+        checkIn: values.checkIn.toISOString(),
+        checkOut: values.checkOut.toISOString(),
         adults: values.adults,
         children: values.children,
         earlyCheckIn: values.earlyCheckIn || null,
@@ -315,7 +347,11 @@ export default function AccommodationsDetailsPage() {
                           <FormItem className="flex-1">
                             <FormLabel>Adults</FormLabel>
                             <FormControl>
-                              <Input type="number" min={1} {...field} />
+                              <Stepper
+                                value={field.value}
+                                onChange={field.onChange}
+                                min={1} // //
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -328,7 +364,11 @@ export default function AccommodationsDetailsPage() {
                           <FormItem className="flex-1">
                             <FormLabel>Children</FormLabel>
                             <FormControl>
-                              <Input type="number" min={0} {...field} />
+                              <Stepper
+                                value={field.value}
+                                onChange={field.onChange}
+                                min={0} // //
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

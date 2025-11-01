@@ -43,8 +43,8 @@ export async function POST(req: NextRequest) {
       lastName,
       email,
       phone,
-      checkin,
-      checkout,
+      checkIn,
+      checkOut,
       adults,
       children,
       earlyCheckIn,
@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
       lastName,
       email,
       phone,
-      checkin,
-      checkout,
+      checkIn,
+      checkOut,
     };
     const missingFields = Object.entries(requiredFields)
       .filter(
@@ -93,8 +93,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate dates
-    const checkinDate = new Date(checkin);
-    const checkoutDate = new Date(checkout);
+    const checkinDate = new Date(checkIn);
+    const checkoutDate = new Date(checkOut);
     if (isNaN(checkinDate.getTime()) || isNaN(checkoutDate.getTime())) {
       return NextResponse.json(
         { error: "Invalid date format" },
@@ -111,9 +111,9 @@ export async function POST(req: NextRequest) {
     // Validate earlyCheckIn
     if (earlyCheckIn) {
       const [hours, minutes] = earlyCheckIn.split(":").map(Number);
-      const earlyCheckInDate = new Date(checkin);
+      const earlyCheckInDate = new Date(checkIn);
       earlyCheckInDate.setHours(hours || 0, minutes || 0, 0, 0);
-      const standardCheckIn = new Date(checkin);
+      const standardCheckIn = new Date(checkIn);
       standardCheckIn.setHours(15, 0, 0, 0);
       if (earlyCheckInDate > standardCheckIn) {
         return NextResponse.json(
@@ -150,8 +150,8 @@ export async function POST(req: NextRequest) {
       .select("id, accommodationsId")
       .eq("accommodationsId", accommodationsId)
       .eq("status", "confirmed")
-      .lte("checkInDate", checkout)
-      .gte("checkOutDate", checkin);
+      .lte("checkInDate", checkOut)
+      .gte("checkOutDate", checkIn);
 
     if (checkError) {
       throw new Error(`Supabase booking check error: ${checkError.message}`);
@@ -203,8 +203,8 @@ export async function POST(req: NextRequest) {
           lastName: lastName.trim(),
           email: email.trim(),
           phone: phone.trim(),
-          checkInDate: checkin,
-          checkOutDate: checkout,
+          checkInDate: checkIn,
+          checkOutDate: checkOut,
           nights,
           adults: Number(adults),
           children: Number(children),
