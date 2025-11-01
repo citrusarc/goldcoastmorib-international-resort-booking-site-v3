@@ -67,6 +67,15 @@ export type ActivitiesItem = {
   status?: ItemStatus;
 };
 
+// export type BookingForms = {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   phone: string;
+//   earlyCheckIn?: string;
+//   remarks?: string;
+// };
+
 export type BookingEmailTemplateProps = {
   bookingNumber: string;
   firstName: string;
@@ -80,4 +89,13 @@ export type BookingEmailTemplateProps = {
   currency: string;
   totalPrice: number;
   createdAt: string;
+};
+
+export type ModalProps = {
+  title?: string;
+  message?: string;
+  href?: string;
+  CTA?: string;
+  isOpen: boolean;
+  onClose: () => void;
 };

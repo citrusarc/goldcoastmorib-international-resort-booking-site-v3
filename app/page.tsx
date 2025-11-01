@@ -415,7 +415,7 @@ export default function Home() {
               key={index}
               className="flex flex-col items-center text-center space-y-4"
             >
-              <div className="relative w-40 h-40">
+              <div className="relative w-48 h-48">
                 <Image
                   fill
                   src={item.src}
