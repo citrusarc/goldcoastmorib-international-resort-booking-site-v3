@@ -94,6 +94,17 @@ export type FacilitiesItem = {
   status?: ItemStatus;
 };
 
+export type EventsItem = {
+  id: string;
+  name: string;
+  src: string | string[];
+  alt: string;
+  description?: string;
+  tag?: string;
+  details?: IconProps[];
+  status?: ItemStatus;
+};
+
 export type BookingEmailTemplateProps = {
   bookingNumber: string;
   firstName: string;

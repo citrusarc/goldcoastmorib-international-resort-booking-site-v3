@@ -16,7 +16,7 @@ export const facilities: FacilitiesItem[] = [
     name: "Beach Walks & Sunset Viewing",
     src: [
       "/Images/dummy-image-1.jpg",
-      "Images/dummy-image-2.jpg",
+      "/Images/dummy-image-2.jpg",
       "/Images/dummy-image-3.jpg",
     ],
     alt: "People walking on Morib Beach during sunset",
@@ -35,7 +35,7 @@ export const facilities: FacilitiesItem[] = [
     name: "ATV Beach Ride",
     src: [
       "/Images/dummy-image-1.jpg",
-      "Images/dummy-image-2.jpg",
+      "/Images/dummy-image-2.jpg",
       "/Images/dummy-image-3.jpg",
     ],
     alt: "ATV riders driving along the beach",

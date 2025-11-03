@@ -1,39 +1,32 @@
-"use client";
-
 import Image from "next/image";
-import { useState, useEffect } from "react";
 
 import { cormorantGaramond, merriweather } from "@/config/fonts";
 import { events } from "@/data/events";
 
-export default function MeetingsAndEventsPage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const minSwipeDistance = 50;
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) =>
-    setTouchStart(e.targetTouches[0].clientX);
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) =>
-    setTouchEnd(e.targetTouches[0].clientX);
-  const handleTouchEnd = () => {
-    if (touchStart === null || touchEnd === null) return;
-    const distance = touchStart - touchEnd;
-    if (distance > minSwipeDistance) {
-      setCurrentSlide((prev) => (prev + 1) % events.length);
-    } else if (distance < -minSwipeDistance) {
-      setCurrentSlide((prev) => (prev === 0 ? events.length - 1 : prev - 1));
-    }
-    setTouchStart(null);
-    setTouchEnd(null);
+export default function EventsPage() {
+  const formatDateForCalendar = (date: Date) => {
+    // // removed | string
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    return (
+      date.getUTCFullYear().toString() +
+      pad(date.getUTCMonth() + 1) +
+      pad(date.getUTCDate()) +
+      "T" +
+      pad(date.getUTCHours()) +
+      pad(date.getUTCMinutes()) +
+      pad(date.getUTCSeconds()) +
+      "Z"
+    );
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % events.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const getGoogleCalendarLink = (event: (typeof events)[number]) => {
+    const now = new Date(); // // use current date since no date in event
+    const start = formatDateForCalendar(now); // //
+    const end = formatDateForCalendar(new Date(now.getTime() + 60 * 60 * 1000)); // // default 1 hour later
+    const title = encodeURIComponent(event.name);
+    const details = encodeURIComponent(event.description || "");
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}`;
+  };
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
@@ -68,31 +61,52 @@ export default function MeetingsAndEventsPage() {
             just steps from your suite.
           </p>
         </div>
-        <div
-          onTouchStart={(e) => handleTouchStart(e)}
-          onTouchMove={(e) => handleTouchMove(e)}
-          onTouchEnd={() => handleTouchEnd()}
-          className="relative w-full rounded-2xl sm:rounded-4xl overflow-hidden"
-        >
-          <div
-            className="flex transition-transform duration-500 ease-in-out select-none"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {events.map((item, index) => (
-              <div
-                key={index}
-                className="relative w-full h-[180px] sm:h-[360px] shrink-0"
-              >
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {events.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+            >
+              <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
                 <Image
                   fill
-                  src={item.src}
-                  alt={item.alt || `Overview Image ${index + 1}`}
-                  priority={index === 0}
+                  src={item.src[0]}
+                  alt={item.alt}
                   className="object-cover"
                 />
               </div>
-            ))}
-          </div>
+              <div className="p-2 space-y-6">
+                <div className="space-y-2">
+                  <h2 className="text-2xl sm:text-3xl font-semibold truncate">
+                    {item.name}
+                  </h2>
+                  <ul className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
+                    {item.details?.map((detail) => {
+                      if (!detail?.icon) return null;
+                      const Icon = detail.icon;
+                      const itemClassName =
+                        "flex flex-row gap-4 items-center text-zinc-500";
+                      return (
+                        <li key={detail.label} className={itemClassName}>
+                          <Icon className="w-6 h-6" />
+                          {detail.label}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+                <a
+                  href={getGoogleCalendarLink(item)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 w-full block text-center rounded-full cursor-pointer text-white bg-amber-500 hover:bg-amber-600"
+                >
+                  Add To Calendar
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

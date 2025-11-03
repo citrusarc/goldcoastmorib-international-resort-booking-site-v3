@@ -807,7 +807,7 @@ export default function AccommodationsDetailsPage() {
                     <Button
                       type="submit"
                       disabled={submitting}
-                      className="p-6 w-full rounded-full text-white bg-amber-500 hover:bg-amber-600"
+                      className="p-6 w-full rounded-full cursor-pointer text-white bg-amber-500 hover:bg-amber-600"
                     >
                       {submitting ? "Booking..." : "Book Now"}
                     </Button>
