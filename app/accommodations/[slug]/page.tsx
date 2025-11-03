@@ -32,7 +32,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import ReactCountryFlag from "react-country-flag";
+import { Minus, Plus } from "iconoir-react";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
 import { AccommodationsItem } from "@/types";
@@ -96,11 +98,11 @@ function Stepper({
   min?: number;
 }) {
   return (
-    <div className="flex items-center border rounded-md overflow-hidden w-28">
+    <div className="flex w-full items-center overflow-hidden">
       <Button
         type="button"
         variant="ghost"
-        className="h-8 w-8 p-0 border border-neutral-200 rounded-full"
+        className="w-10 h-10 p-0 rounded-full border border-neutral-200 "
         onClick={() => onChange(Math.max(min, value - 1))}
       >
         –
@@ -109,7 +111,7 @@ function Stepper({
       <Button
         type="button"
         variant="ghost"
-        className="h-8 w-8 p-0"
+        className="w-10 h-10 p-0 rounded-full border border-neutral-200 "
         onClick={() => onChange(value + 1)}
       >
         +
@@ -292,35 +294,41 @@ export default function AccommodationsDetailsPage() {
               </p>
             </div>
 
-            {/* FORM HERE */}
-            <div className="relative z-10 flex flex-col w-full max-w-md sm:max-w-lg">
-              <div className="relative p-4 sm:p-8 w-full rounded-2xl overflow-hidden text-neutral-600 bg-white shadow-md">
+            <div className="relative z-10 flex flex-col w-full">
+              <div className="relative p-4 sm:p-8 w-full rounded-2xl sm:rounded-4xl overflow-hidden shadow-md border border-neutral-200 text-neutral-600 bg-white">
                 <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 sm:space-y-6"
+                    className="space-y-4 sm:space-y-8"
                   >
                     {/* Dates */}
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 w-full">
                       <FormField
                         control={form.control}
                         name="checkIn"
                         render={() => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel>Date Range</FormLabel>
+                          <FormItem className="flex-1">
+                            <FormLabel
+                              className={`${
+                                errors.checkIn || errors.checkOut
+                                  ? "text-red-600"
+                                  : "text-neutral-400"
+                              }`}
+                            >
+                              Stay Duration
+                            </FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>
                                   <Button
                                     variant="outline"
-                                    className={`
-                w-full justify-start text-left font-normal
-                ${
-                  !form.watch("checkIn") || !form.watch("checkOut")
-                    ? "text-muted-foreground"
-                    : ""
-                }
-              `}
+                                    className={cn(
+                                      "w-full h-12 items-center justify-start text-left rounded-xl sm:rounded-2xl",
+                                      !form.watch("checkIn") ||
+                                        !form.watch("checkOut")
+                                        ? "text-neutral-400"
+                                        : "text-neutral-600"
+                                    )}
                                   >
                                     {form.watch("checkIn") &&
                                     form.watch("checkOut") ? (
@@ -340,8 +348,8 @@ export default function AccommodationsDetailsPage() {
                                 </FormControl>
                               </PopoverTrigger>
                               <PopoverContent
-                                className="w-auto p-0"
                                 align="start"
+                                className="p-2 w-[var(--radix-popover-trigger-width)] rounded-xl sm:rounded-2xl"
                               >
                                 <Calendar
                                   mode="range"
@@ -352,14 +360,15 @@ export default function AccommodationsDetailsPage() {
                                   defaultMonth={form.watch("checkIn")}
                                   onSelect={(range) => {
                                     if (range?.from && range?.to) {
-                                      form.setValue("checkIn", range.from); // //
-                                      form.setValue("checkOut", range.to); // //
+                                      form.setValue("checkIn", range.from);
+                                      form.setValue("checkOut", range.to);
                                     } else if (range?.from) {
-                                      form.setValue("checkIn", range.from); // //
-                                      form.setValue("checkOut", range.from); // //
+                                      form.setValue("checkIn", range.from);
+                                      form.setValue("checkOut", range.from);
                                     }
                                   }}
                                   numberOfMonths={1}
+                                  className="w-full"
                                 />
                               </PopoverContent>
                             </Popover>
@@ -370,18 +379,26 @@ export default function AccommodationsDetailsPage() {
                     </div>
 
                     {/* Guests */}
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 w-full">
                       <FormField
                         control={form.control}
                         name="adults"
                         render={({ field }) => (
                           <FormItem className="flex-1">
-                            <FormLabel>Adults</FormLabel>
+                            <FormLabel
+                              className={`${
+                                errors.adults
+                                  ? "text-red-600"
+                                  : "text-neutral-400"
+                              }`}
+                            >
+                              Adults
+                            </FormLabel>
                             <FormControl>
                               <Stepper
                                 value={field.value}
                                 onChange={field.onChange}
-                                min={1} // //
+                                min={1}
                               />
                             </FormControl>
                             <FormMessage />
@@ -393,12 +410,20 @@ export default function AccommodationsDetailsPage() {
                         name="children"
                         render={({ field }) => (
                           <FormItem className="flex-1">
-                            <FormLabel>Children</FormLabel>
+                            <FormLabel
+                              className={`${
+                                errors.children
+                                  ? "text-red-600"
+                                  : "text-neutral-400"
+                              }`}
+                            >
+                              Children
+                            </FormLabel>
                             <FormControl>
                               <Stepper
                                 value={field.value}
                                 onChange={field.onChange}
-                                min={0} // //
+                                min={0}
                               />
                             </FormControl>
                             <FormMessage />
@@ -414,9 +439,20 @@ export default function AccommodationsDetailsPage() {
                         name="firstName"
                         render={({ field }) => (
                           <FormItem className="flex-1">
-                            <FormLabel>First Name</FormLabel>
+                            <FormLabel
+                              className={`${
+                                errors.firstName
+                                  ? "text-red-600"
+                                  : "text-neutral-400"
+                              }`}
+                            >
+                              First Name
+                            </FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input
+                                {...field}
+                                className="w-full h-12 items-center justify-start text-left rounded-xl sm:rounded-2xl"
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -427,9 +463,20 @@ export default function AccommodationsDetailsPage() {
                         name="lastName"
                         render={({ field }) => (
                           <FormItem className="flex-1">
-                            <FormLabel>Last Name</FormLabel>
+                            <FormLabel
+                              className={`${
+                                errors.lastName
+                                  ? "text-red-600"
+                                  : "text-neutral-400"
+                              }`}
+                            >
+                              Last Name
+                            </FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input
+                                {...field}
+                                className="w-full h-12 items-center justify-start text-left rounded-xl sm:rounded-2xl"
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -443,9 +490,19 @@ export default function AccommodationsDetailsPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel
+                            className={`${
+                              errors.email ? "text-red-600" : "text-neutral-400"
+                            }`}
+                          >
+                            Email
+                          </FormLabel>
                           <FormControl>
-                            <Input type="email" {...field} />
+                            <Input
+                              type="email"
+                              {...field}
+                              className="w-full h-12 items-center justify-start text-left rounded-xl sm:rounded-2xl"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -453,51 +510,104 @@ export default function AccommodationsDetailsPage() {
                     />
 
                     {/* Phone */}
-                    <div className="flex flex-row gap-4">
-                      <FormField
-                        control={form.control}
-                        name="countryCode"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>Country Code</FormLabel>
-                            <FormControl>
-                              <Select
-                                onValueChange={field.onChange}
-                                value={field.value}
-                              >
-                                <SelectTrigger className="h-10">
-                                  <SelectValue placeholder="+60" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="+60">
-                                    Malaysia (+60)
-                                  </SelectItem>
-                                  <SelectItem value="+62">
-                                    Indonesia (+62)
-                                  </SelectItem>
-                                  <SelectItem value="+65">
-                                    Singapore (+65)
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>Phone</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <div className="space-y-1 flex-1">
+                      <h2
+                        className={`text-sm font-medium ${
+                          errors.countryCode || errors.phone
+                            ? "text-red-600"
+                            : "text-neutral-400"
+                        }`}
+                      >
+                        Phone Number
+                      </h2>
+                      <div className="flex w-full gap-2">
+                        <FormField
+                          control={form.control}
+                          name="countryCode"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                >
+                                  <SelectTrigger className="!h-12 rounded-xl sm:rounded-2xl">
+                                    <SelectValue placeholder="+60">
+                                      {field.value}
+                                    </SelectValue>
+                                  </SelectTrigger>
+                                  <SelectContent
+                                    align="start"
+                                    className="rounded-xl sm:rounded-2xl"
+                                  >
+                                    <SelectItem
+                                      value="+60"
+                                      className="h-12 rounded-xl sm:rounded-2xl"
+                                    >
+                                      <ReactCountryFlag
+                                        countryCode="MY"
+                                        svg
+                                        style={{
+                                          width: "20px",
+                                          height: "20px",
+                                        }}
+                                      />
+                                      <span>Malaysia (+60)</span>
+                                    </SelectItem>
+                                    <SelectItem
+                                      value="+62"
+                                      className="h-12 rounded-xl sm:rounded-2xl"
+                                    >
+                                      <ReactCountryFlag
+                                        countryCode="ID"
+                                        svg
+                                        style={{
+                                          width: "20px",
+                                          height: "20px",
+                                        }}
+                                      />
+                                      <span>Indonesia (+62)</span>
+                                    </SelectItem>
+                                    <SelectItem
+                                      value="+65"
+                                      className="h-12 rounded-xl sm:rounded-2xl"
+                                    >
+                                      <ReactCountryFlag
+                                        countryCode="SG"
+                                        svg
+                                        style={{
+                                          width: "20px",
+                                          height: "20px",
+                                        }}
+                                      />
+                                      <span>Singapore (+65)</span>
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem className="flex-1">
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  className="w-full h-12 items-center justify-start text-left rounded-xl sm:rounded-2xl"
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      {(errors.countryCode || errors.phone) && (
+                        <p className="mt-2 text-sm text-red-600">
+                          {errors.countryCode?.message || errors.phone?.message}
+                        </p>
+                      )}
                     </div>
 
                     {/* Early Check-In */}
@@ -505,19 +615,34 @@ export default function AccommodationsDetailsPage() {
                       control={form.control}
                       name="earlyCheckIn"
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Early Check-In (Optional)</FormLabel>
+                        <FormItem className="flex-1">
+                          <FormLabel
+                            className={`${
+                              errors.earlyCheckIn
+                                ? "text-red-600"
+                                : "text-neutral-400"
+                            }`}
+                          >
+                            Early Check-In (Optional)
+                          </FormLabel>
                           <FormControl>
                             <Select
                               onValueChange={field.onChange}
                               value={field.value || ""}
                             >
-                              <SelectTrigger className="h-10">
-                                <SelectValue placeholder="Select a slot" />
+                              <SelectTrigger className="w-full !h-12 rounded-xl sm:rounded-2xl">
+                                <SelectValue placeholder="Select a time" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent
+                                align="start"
+                                className="rounded-xl sm:rounded-2xl"
+                              >
                                 {earlyCheckInSlots.map((slot) => (
-                                  <SelectItem key={slot} value={slot}>
+                                  <SelectItem
+                                    key={slot}
+                                    value={slot}
+                                    className="h-12 rounded-xl sm:rounded-2xl"
+                                  >
                                     {slot}
                                   </SelectItem>
                                 ))}
@@ -535,11 +660,30 @@ export default function AccommodationsDetailsPage() {
                       name="remarks"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Remarks (Optional)</FormLabel>
+                          <FormLabel
+                            className={`${
+                              errors.remarks
+                                ? "text-red-600"
+                                : "text-neutral-400"
+                            }`}
+                          >
+                            Remarks (Optional)
+                          </FormLabel>
                           <FormControl>
-                            <Textarea {...field} maxLength={300} />
+                            <Textarea
+                              {...field}
+                              maxLength={300}
+                              className="h-36 rounded-xl sm:rounded-2xl"
+                            />
                           </FormControl>
-                          <FormMessage />
+                          <div className="flex items-center justify-between">
+                            <div className="text-start">
+                              <FormMessage />
+                            </div>
+                            <FormDescription className="text-end">
+                              Remaining: {300 - (field.value?.length ?? 0)}
+                            </FormDescription>
+                          </div>
                         </FormItem>
                       )}
                     />
@@ -547,7 +691,7 @@ export default function AccommodationsDetailsPage() {
                     <Button
                       type="submit"
                       disabled={submitting}
-                      className="w-full sm:w-auto"
+                      className="p-6 w-full rounded-full text-white bg-amber-500 hover:bg-amber-600"
                     >
                       {submitting ? "Booking..." : "Book Now"}
                     </Button>
@@ -558,6 +702,7 @@ export default function AccommodationsDetailsPage() {
           </div>
         )}
       </div>
+
       <SuccessModal
         title="Your message has been sent!"
         message="We’ve received your inquiry and our team will be in touch soon. You may check your inbox for confirmation."
