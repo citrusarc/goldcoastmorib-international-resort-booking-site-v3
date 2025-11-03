@@ -774,16 +774,19 @@ export default function AccommodationsDetailsPage() {
       </div>
 
       <SuccessModal
-        title="Your message has been sent!"
-        message="We’ve received your inquiry and our team will be in touch soon. You may check your inbox for confirmation."
-        CTA="Sounds Good"
+        title="Booking Successful!"
+        message="Your booking has been confirmed successfully. Thank you for choosing us."
+        CTA="Done"
         isOpen={!!successMessage}
-        onClose={() => setSuccessMessage(null)}
+        onClose={() => {
+          setSuccessMessage(null);
+          router.push("/accommodations");
+        }}
       />
       <ErrorModal
-        title="We couldn’t send your message!"
-        message="Something went wrong while submitting your inquiry. Please try again in a moment."
-        CTA="Got It"
+        title="Booking Unsuccessful!"
+        message="Something went wrong while processing your booking. Please try again later."
+        CTA="Try Again"
         isOpen={!!errorMessage}
         onClose={() => setErrorMessage(null)}
       />
