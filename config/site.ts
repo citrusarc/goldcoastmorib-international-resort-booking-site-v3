@@ -28,13 +28,6 @@ export const siteConfig = {
       status: { ...defaultStatus },
     },
     {
-      id: "restaurant",
-      name: "Restaurant",
-      href: "/restaurant",
-      icon: ForkKnifeIcon,
-      status: { ...defaultStatus },
-    },
-    {
       id: "facilities",
       name: "Facilities",
       href: "/facilities",
