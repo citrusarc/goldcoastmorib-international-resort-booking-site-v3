@@ -14,8 +14,8 @@ export async function GET(
       .eq("id", id)
       .single();
 
-    if (error) throw error;
-    if (!data) {
+    if (error || !data) {
+      console.error("Supabase accommodation fetch error:", error);
       return NextResponse.json(
         { error: "Accommodations not found" },
         { status: 404 }
@@ -25,7 +25,12 @@ export async function GET(
     let price = data.price;
     if (typeof price === "string") {
       try {
-        price = JSON.parse(price);
+        const parsed = JSON.parse(price);
+        price = {
+          currency: parsed.currency || "RM",
+          current: Number(parsed.current ?? 0),
+          original: Number(parsed.original ?? parsed.current ?? 0),
+        };
       } catch {
         price = {
           currency: "RM",
@@ -35,6 +40,12 @@ export async function GET(
       }
     } else if (typeof price === "number") {
       price = { currency: "RM", current: price, original: price };
+    } else {
+      price = {
+        currency: price?.currency || "RM",
+        current: price?.current ?? 0,
+        original: price?.original ?? price?.current ?? 0,
+      };
     }
 
     return NextResponse.json({ ...data, price }, { status: 200 });

@@ -23,15 +23,16 @@ function normalizePrice(price: unknown): PriceItem {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
     const checkin = searchParams.get("checkin");
     const checkout = searchParams.get("checkout");
 
-    const adult = parseInt(searchParams.get("adult") || "0", 10);
-    const children = parseInt(searchParams.get("children") || "0", 10);
-    const guestsParam = parseInt(searchParams.get("guests") || "0", 10);
-
-    const totalGuests =
-      adult + children > 0 ? adult + children : Math.max(1, guestsParam);
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing accommodation ID" },
+        { status: 400 }
+      );
+    }
 
     if (!checkin || !checkout) {
       return NextResponse.json(
@@ -40,52 +41,26 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (totalGuests < 1) {
-      return NextResponse.json(
-        { error: "At least 1 guest required" },
-        { status: 400 }
-      );
-    }
-
-    // fetch rooms that can host required guests
-    const { data: accommodations, error: accommodationError } = await supabase
-      .from("accommodations")
-      .select("*")
-      .gte("maxGuests", totalGuests);
-
-    if (accommodationError) throw accommodationError;
-    if (!accommodations?.length) return NextResponse.json([]);
-
-    // fetch overlapping bookings
-    const { data: booked, error: bookingError } = await supabase
+    const { data: bookings, error } = await supabase
       .from("bookings")
-      .select("accommodationsId")
+      .select("checkInDate, checkOutDate")
+      .eq("accommodationsId", id)
       .eq("status", "confirmed")
-      .lte("checkInDate", checkout)
-      .gte("checkOutDate", checkin);
+      .or(`checkOutDate.gt.${checkin},checkInDate.lt.${checkout}`);
 
-    if (bookingError) throw bookingError;
+    if (error) throw error;
 
-    // count bookings per room
-    const bookingCounts: Record<string, number> = {};
-    booked?.forEach((b) => {
-      bookingCounts[b.accommodationsId] =
-        (bookingCounts[b.accommodationsId] || 0) + 1;
+    const bookedDates: string[] = [];
+
+    bookings?.forEach((booking) => {
+      const start = new Date(booking.checkInDate);
+      const end = new Date(booking.checkOutDate);
+      for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+        bookedDates.push(d.toISOString().split("T")[0]);
+      }
     });
 
-    const availableAccommodations = accommodations
-      .map((item) => {
-        const bookedCount = bookingCounts[item.id] || 0;
-        const availableUnits = item.totalUnits - bookedCount;
-        return {
-          ...item,
-          available_units: availableUnits,
-          price: normalizePrice(item.price),
-        };
-      })
-      .filter((r) => r.available_units > 0);
-
-    return NextResponse.json(availableAccommodations);
+    return NextResponse.json(bookedDates);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unexpected error";
     console.error("Availability API error:", message);

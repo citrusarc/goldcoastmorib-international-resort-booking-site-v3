@@ -5,7 +5,12 @@ import { PriceItem } from "@/types";
 function normalizePrice(price: unknown): PriceItem {
   if (typeof price === "string") {
     try {
-      return JSON.parse(price) as PriceItem;
+      const parsed = JSON.parse(price);
+      return {
+        currency: (parsed.currency as string) || "RM",
+        current: Number(parsed.current ?? 0),
+        original: Number(parsed.original ?? parsed.current ?? 0),
+      };
     } catch {
       return {
         currency: "RM",
@@ -17,7 +22,12 @@ function normalizePrice(price: unknown): PriceItem {
   if (typeof price === "number") {
     return { currency: "RM", current: price, original: price };
   }
-  return price as PriceItem;
+  return {
+    currency: (price as PriceItem)?.currency || "RM",
+    current: (price as PriceItem)?.current ?? 0,
+    original:
+      (price as PriceItem)?.original ?? (price as PriceItem)?.current ?? 0,
+  };
 }
 
 export async function GET(request: Request) {
@@ -46,11 +56,13 @@ export async function GET(request: Request) {
       });
     }
 
-    // Get all rooms with totalUnits
-    const { data: accommodations, error: accommodationError } = await supabase
+    const accommodationsQuery = supabase
       .from("accommodations")
       .select("*, totalUnits")
       .order("id", { ascending: true });
+
+    const { data: accommodations, error: accommodationError } =
+      await accommodationsQuery;
 
     if (accommodationError) {
       console.error("Supabase accommodations error:", accommodationError);
@@ -65,7 +77,7 @@ export async function GET(request: Request) {
       return NextResponse.json(allAccommodations);
     }
 
-    // Get all confirmed bookings that overlap today
+    // Filter by availability based on today
     const { data: booked, error: bookingError } = await supabase
       .from("bookings")
       .select("accommodationsId")
@@ -78,21 +90,20 @@ export async function GET(request: Request) {
       throw bookingError;
     }
 
-    // Count bookings per room
     const bookingCounts: Record<string, number> = {};
     booked?.forEach((b) => {
       bookingCounts[b.accommodationsId] =
         (bookingCounts[b.accommodationsId] || 0) + 1;
     });
 
-    // Filter rooms with available units
+    // Map and filter
     const availableAccommodations = (accommodations || [])
       .map((r) => {
         const bookedCount = bookingCounts[r.id] || 0;
         const availableUnits = r.totalUnits - bookedCount;
         return {
           ...r,
-          availableUnits: availableUnits,
+          availableUnits,
           price: normalizePrice(r.price),
         };
       })
@@ -100,8 +111,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json(availableAccommodations);
   } catch (err: unknown) {
-    console.error("API /api/accommodations error:", err);
     const message = err instanceof Error ? err.message : "Unexpected error";
+    console.error("API /api/accommodations error:", err);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

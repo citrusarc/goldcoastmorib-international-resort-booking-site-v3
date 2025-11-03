@@ -35,7 +35,7 @@ import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
-import { AccommodationsItem } from "@/types";
+import { AccommodationsItem, BookingItem } from "@/types";
 import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
 import { SuccessModal, ErrorModal } from "@/components/ui/Modal";
 
@@ -130,6 +130,7 @@ export default function AccommodationsDetailsPage() {
     null
   );
   const [loading, setLoading] = useState(true);
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
   const tagColor = (tag?: string) => {
     switch (tag?.toLowerCase()) {
@@ -218,9 +219,7 @@ export default function AccommodationsDetailsPage() {
       try {
         const res = await fetch(`/api/accommodations/${slug}`);
         if (!res.ok) throw new Error("Failed to fetch accommodations");
-
         const data = await res.json();
-
         const mappedData = mapAccommodationsData(data);
         setAccommodation(mappedData);
       } catch (err) {
@@ -230,9 +229,44 @@ export default function AccommodationsDetailsPage() {
         setLoading(false);
       }
     };
-
     if (slug) fetchAccommodation();
   }, [slug]);
+
+  useEffect(() => {
+    if (!accommodation?.id) return;
+
+    const fetchUnavailableDates = async () => {
+      const { checkIn, checkOut } = form.getValues();
+
+      try {
+        const res = await fetch(
+          `/api/accommodations/availability?id=${
+            accommodation.id
+          }&checkin=${checkIn.toISOString()}&checkout=${checkOut.toISOString()}`
+        );
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Failed to fetch availability: ${errorText}`);
+        }
+
+        const bookedDates: string[] = await res.json();
+
+        const dates: Date[] = bookedDates.map((d) => {
+          const date = new Date(d);
+          date.setHours(0, 0, 0, 0);
+          return date;
+        });
+
+        setUnavailableDates(dates);
+      } catch (err) {
+        console.error("Error fetching unavailable dates:", err);
+        // Optional: show user-friendly message
+      }
+    };
+
+    fetchUnavailableDates();
+  }, [accommodation?.id, form]);
 
   useEffect(() => {
     if (!accommodation?.src) return;
@@ -438,6 +472,19 @@ export default function AccommodationsDetailsPage() {
                                   }}
                                   numberOfMonths={1}
                                   className="w-full"
+                                  disabled={(date: Date) => {
+                                    const today = new Date();
+                                    today.setHours(0, 0, 0, 0);
+                                    const normalizedDate = new Date(date);
+                                    normalizedDate.setHours(0, 0, 0, 0);
+
+                                    if (normalizedDate < today) return true;
+
+                                    return unavailableDates.some(
+                                      (d) =>
+                                        d.getTime() === normalizedDate.getTime()
+                                    );
+                                  }}
                                 />
                               </PopoverContent>
                             </Popover>

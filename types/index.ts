@@ -57,6 +57,22 @@ export type AccommodationsItem = {
   status?: ItemStatus;
 };
 
+export type BookingItem = {
+  id: string;
+  accommodationsId: string;
+  status: "confirmed" | "cancelled" | string;
+  checkInDate: string;
+  checkOutDate: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  adults?: number;
+  children?: number;
+  earlyCheckIn?: string | null;
+  remarks?: string | null;
+};
+
 export type ActivitiesItem = {
   id: string;
   name: string;
