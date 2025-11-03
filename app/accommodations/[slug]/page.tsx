@@ -32,8 +32,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import ReactCountryFlag from "react-country-flag";
-import { Minus, Plus } from "iconoir-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
@@ -123,6 +122,8 @@ function Stepper({
 export default function AccommodationsDetailsPage() {
   const { slug } = useParams();
   const router = useRouter();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imageCarousel, setImageCarousel] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -221,6 +222,28 @@ export default function AccommodationsDetailsPage() {
     if (slug) fetchAccommodation();
   }, [slug]);
 
+  useEffect(() => {
+    if (!accommodation?.src) return;
+
+    const src = Array.isArray(accommodation.src)
+      ? accommodation.src[0] // first image
+      : accommodation.src;
+
+    const parts = src.split("/");
+    const file = parts.pop()!;
+    const [base, ext] = file.split(".");
+
+    const baseWithoutIndex = base.replace(/-\d+$/, "");
+
+    // // generate all images with -1, -2, -3, -4 suffix
+    const allImages = Array.from({ length: 4 }, (_, i) => {
+      return `${parts.join("/")}/${baseWithoutIndex}-${i + 1}.${ext}`;
+    });
+
+    setSelectedImage(allImages[0]); // // main image = first
+    setImageCarousel(allImages); // // store all images for carousel
+  }, [accommodation?.src]);
+
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
@@ -255,12 +278,39 @@ export default function AccommodationsDetailsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16">
             <div className="flex flex-col gap-4 sm:gap-8 shrink-0">
               <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-4xl overflow-hidden">
-                <Image
-                  fill
-                  src={accommodation.src}
-                  alt={accommodation.alt}
-                  className="object-cover"
-                />
+                {selectedImage ? ( // // only render if image exists
+                  <Image
+                    fill
+                    src={selectedImage}
+                    alt={accommodation?.alt || "Accommodation Image"} // // fallback alt
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-500">No Image</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-2 overflow-x-auto mt-2 pb-2">
+                {imageCarousel.map((item, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setSelectedImage(item)} // // select main image
+                    className={cn(
+                      "relative w-24 h-24 rounded-xl overflow-hidden shrink-0 cursor-pointer border-2 transition-all",
+                      selectedImage === item
+                        ? "border-amber-500" // // highlight selected
+                        : "border-transparent hover:border-amber-300" // // hover effect
+                    )}
+                  >
+                    <Image
+                      src={item}
+                      alt={`${accommodation.name} ${i + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
               </div>
               <h2 className="text-2xl sm:text-3xl font-semibold">
                 {accommodation.name}

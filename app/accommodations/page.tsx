@@ -84,7 +84,7 @@ export default function AccommodationsPage() {
                 <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
                   <Image
                     fill
-                    src={item.src}
+                    src={item.src[0]}
                     alt={item.alt ? item.alt : `Hero Banner ${index + 1}`}
                     className="object-cover"
                   />

@@ -45,7 +45,7 @@ export type IconProps = {
 export type AccommodationsItem = {
   id: string;
   name: string;
-  src: string;
+  src: string | string[];
   alt: string;
   description?: string;
   label?: string;

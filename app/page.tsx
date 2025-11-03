@@ -267,7 +267,7 @@ export default function Home() {
                       <div className="relative w-full sm:w-40 aspect-4/3 sm:aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
                         <Image
                           fill
-                          src={item.src}
+                          src={item.src[0]}
                           alt={item.alt ? item.alt : `Hero Banner ${index + 1}`}
                           className="object-cover"
                         />

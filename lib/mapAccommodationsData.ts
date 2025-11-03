@@ -35,7 +35,13 @@ export function mapAccommodationsData(
   return {
     id: raw.id as string,
     name: raw.name as string,
-    src: (raw.src as string) || (raw.image as string) || "",
+    src: Array.isArray(raw.src)
+      ? (raw.src as string[])
+      : typeof raw.src === "string"
+      ? [raw.src]
+      : typeof raw.image === "string"
+      ? [raw.image]
+      : [],
     alt: (raw.alt as string) || "Accommodation Image",
     description: raw.description as string,
     label: (raw.label as string) || undefined,
