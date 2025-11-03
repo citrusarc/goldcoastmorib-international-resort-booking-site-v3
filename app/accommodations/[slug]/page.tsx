@@ -453,7 +453,7 @@ export default function AccommodationsDetailsPage() {
                               </PopoverTrigger>
                               <PopoverContent
                                 align="start"
-                                className="p-2 w-[var(--radix-popover-trigger-width)] rounded-xl sm:rounded-2xl"
+                                className="p-2 w-(--radix-popover-trigger-width) rounded-xl sm:rounded-2xl"
                               >
                                 <Calendar
                                   mode="range"
@@ -648,7 +648,7 @@ export default function AccommodationsDetailsPage() {
                                   onValueChange={field.onChange}
                                   value={field.value}
                                 >
-                                  <SelectTrigger className="!h-12 rounded-xl sm:rounded-2xl">
+                                  <SelectTrigger className="h-12! rounded-xl sm:rounded-2xl">
                                     <SelectValue placeholder="+60">
                                       {field.value}
                                     </SelectValue>
@@ -747,7 +747,7 @@ export default function AccommodationsDetailsPage() {
                               onValueChange={field.onChange}
                               value={field.value || ""}
                             >
-                              <SelectTrigger className="w-full !h-12 rounded-xl sm:rounded-2xl">
+                              <SelectTrigger className="w-full h-12! rounded-xl sm:rounded-2xl">
                                 <SelectValue placeholder="Select a time" />
                               </SelectTrigger>
                               <SelectContent
