@@ -1,5 +1,3 @@
-import { Clock, DoubleCheck, Pin } from "iconoir-react";
-
 import { EventsItem, ItemStatus } from "@/types";
 
 const defaultStatus: ItemStatus = {
@@ -23,11 +21,10 @@ export const events: EventsItem[] = [
     description:
       "Take a relaxing stroll along Morib Beach and enjoy breathtaking golden-hour sunsets over the Straits of Malacca.",
     tag: "Relaxation",
-    details: [
-      { icon: Clock, label: "1 Single Bed + 1 King Bed" },
-      { icon: DoubleCheck, label: "Rain Shower" },
-      { icon: Pin, label: "Garden View" },
-    ],
+    date: "2025-11-15",
+    startTime: "17:30",
+    endTime: "19:00",
+    location: "Morib Beach, Selangor",
     status: { ...defaultStatus },
   },
   {
@@ -42,11 +39,10 @@ export const events: EventsItem[] = [
     description:
       "Ride an ATV across the sandy coastline for a thrilling experience perfect for families and groups of friends.",
     tag: "Adventure",
-    details: [
-      { icon: Clock, label: "1 Single Bed + 1 King Bed" },
-      { icon: DoubleCheck, label: "Rain Shower" },
-      { icon: Pin, label: "Garden View" },
-    ],
+    date: "2025-11-15",
+    startTime: "17:30",
+    endTime: "19:00",
+    location: "Morib Beach, Selangor",
     status: { ...defaultStatus },
   },
   {
@@ -61,11 +57,10 @@ export const events: EventsItem[] = [
     description:
       "Feel the excitement of water sports with banana boat rides and jet skiing right off the Morib coastline.",
     tag: "Water Sports",
-    details: [
-      { icon: Clock, label: "1 Single Bed + 1 King Bed" },
-      { icon: DoubleCheck, label: "Rain Shower" },
-      { icon: Pin, label: "Garden View" },
-    ],
+    date: "2025-11-15",
+    startTime: "17:30",
+    endTime: "19:00",
+    location: "Morib Beach, Selangor",
     status: { ...defaultStatus },
   } satisfies EventsItem,
 ];

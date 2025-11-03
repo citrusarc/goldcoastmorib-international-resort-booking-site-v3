@@ -28,7 +28,7 @@ export default function ActivitiesPage() {
           </div>
         </div>
         {activities.length === 0 ? (
-          <p className="text-center text-zinc-500 py-8">
+          <p className="text-center text-neutral-400 py-8">
             No activities available.
           </p>
         ) : (
@@ -42,7 +42,7 @@ export default function ActivitiesPage() {
                 <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
                   <Image
                     fill
-                    src={item.src[0]}
+                    src={Array.isArray(item.src) ? item.src[0] : item.src}
                     alt={item.alt ? item.alt : `Activities Image ${index + 1}`}
                     className="object-cover"
                   />

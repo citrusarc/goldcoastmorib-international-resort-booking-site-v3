@@ -55,11 +55,11 @@ export default function FacilitiesPage() {
                   if (!detail?.icon) return null;
                   const Icon = detail.icon;
                   const itemClassName =
-                    "flex flex-row gap-4 items-center text-zinc-500";
+                    "flex flex-row gap-4 items-center text-neutral-500";
                   return (
                     <li key={detail.label} className={itemClassName}>
                       <Icon className="w-6 h-6" />
-                      {item.tag}
+                      {detail.label}
                     </li>
                   );
                 })}

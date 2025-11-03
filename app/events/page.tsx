@@ -1,11 +1,11 @@
 import Image from "next/image";
+import { Clock, Calendar, CalendarPlus, Pin } from "iconoir-react";
 
 import { cormorantGaramond, merriweather } from "@/config/fonts";
 import { events } from "@/data/events";
 
 export default function EventsPage() {
   const formatDateForCalendar = (date: Date) => {
-    // // removed | string
     const pad = (n: number) => n.toString().padStart(2, "0");
     return (
       date.getUTCFullYear().toString() +
@@ -20,12 +20,25 @@ export default function EventsPage() {
   };
 
   const getGoogleCalendarLink = (event: (typeof events)[number]) => {
-    const now = new Date(); // // use current date since no date in event
-    const start = formatDateForCalendar(now); // //
-    const end = formatDateForCalendar(new Date(now.getTime() + 60 * 60 * 1000)); // // default 1 hour later
+    let startDate: Date;
+    let endDate: Date;
+
+    if (event.date && event.startTime && event.endTime) {
+      startDate = new Date(`${event.date}T${event.startTime}:00`);
+      endDate = new Date(`${event.date}T${event.endTime}:00`);
+    } else {
+      const now = new Date();
+      startDate = now;
+      endDate = new Date(now.getTime() + 60 * 60 * 1000);
+    }
+
+    const start = formatDateForCalendar(startDate);
+    const end = formatDateForCalendar(endDate);
     const title = encodeURIComponent(event.name);
     const details = encodeURIComponent(event.description || "");
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}`;
+    const location = encodeURIComponent(event.location || "");
+
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
   };
 
   return (
@@ -71,39 +84,58 @@ export default function EventsPage() {
               <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
                 <Image
                   fill
-                  src={item.src[0]}
+                  src={Array.isArray(item.src) ? item.src[0] : item.src}
                   alt={item.alt}
                   className="object-cover"
                 />
               </div>
               <div className="p-2 space-y-6">
                 <div className="space-y-2">
-                  <h2 className="text-2xl sm:text-3xl font-semibold truncate">
-                    {item.name}
-                  </h2>
-                  <ul className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
-                    {item.details?.map((detail) => {
-                      if (!detail?.icon) return null;
-                      const Icon = detail.icon;
-                      const itemClassName =
-                        "flex flex-row gap-4 items-center text-zinc-500";
-                      return (
-                        <li key={detail.label} className={itemClassName}>
-                          <Icon className="w-6 h-6" />
-                          {detail.label}
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <div className="flex space-x-2 w-full items-center justify-between">
+                    <h2 className="text-2xl sm:text-3xl font-semibold truncate">
+                      {item.name}
+                    </h2>
+                    <a
+                      href={getGoogleCalendarLink(item)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-10 h-10 items-center justify-center shrink-0 rounded-full backdrop-blur-sm hover:text-blue-600 bg-neutral-100 hover:bg-blue-500/50"
+                    >
+                      <CalendarPlus className="w-4 h-4" />
+                    </a>
+                  </div>
+                  {(item.date || item.startTime || item.location) && (
+                    <div className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start text-neutral-500">
+                      {item.date && (
+                        <div className="flex flex-row gap-4 items-center">
+                          <Calendar className="w-6 h-6" />
+                          <p>
+                            {new Date(item.date).toLocaleDateString("en-MY", {
+                              weekday: "short",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
+                        </div>
+                      )}
+                      {item.startTime && item.endTime && (
+                        <div className="flex flex-row gap-4 items-center">
+                          <Clock className="w-6 h-6" />
+                          <p>
+                            {item.startTime} – {item.endTime}
+                          </p>
+                        </div>
+                      )}
+                      {item.location && (
+                        <div className="flex flex-row gap-4 items-center">
+                          <Pin className="w-6 h-6" />
+                          <p>{item.location}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                <a
-                  href={getGoogleCalendarLink(item)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 w-full block text-center rounded-full cursor-pointer text-white bg-amber-500 hover:bg-amber-600"
-                >
-                  Add To Calendar
-                </a>
               </div>
             </div>
           ))}

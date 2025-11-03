@@ -71,7 +71,7 @@ export default function AccommodationsPage() {
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-amber-500 border-solid" />
           </div>
         ) : accommodations.length === 0 ? (
-          <p className="text-center text-zinc-500 py-8">
+          <p className="text-center text-neutral-400 py-8">
             No accommodations available.
           </p>
         ) : (
@@ -85,7 +85,7 @@ export default function AccommodationsPage() {
                 <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
                   <Image
                     fill
-                    src={item.src[0]}
+                    src={Array.isArray(item.src) ? item.src[0] : item.src}
                     alt={
                       item.alt ? item.alt : `Accommodations Image ${index + 1}`
                     }

@@ -316,7 +316,7 @@ export default function AccommodationsDetailsPage() {
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-amber-500 border-solid" />
           </div>
         ) : !accommodation ? (
-          <p className="text-center text-zinc-500 py-8">
+          <p className="text-center text-neutral-400 py-8">
             No accommodations available.
           </p>
         ) : (
@@ -378,7 +378,7 @@ export default function AccommodationsDetailsPage() {
                     if (!item?.icon) return null;
                     const Icon = item.icon;
                     const itemClassName =
-                      "flex flex-row gap-4 items-center text-zinc-500";
+                      "flex flex-row gap-4 items-center text-neutral-500";
                     return (
                       <li key={item.label} className={itemClassName}>
                         <Icon className="w-6 h-6" />

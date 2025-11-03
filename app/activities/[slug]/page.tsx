@@ -45,7 +45,7 @@ export default function ActivitiesDetailsPage() {
         </div>
 
         {!activity ? (
-          <p className="text-center text-zinc-500 py-8">
+          <p className="text-center text-neutral-400 py-8">
             No activities available.
           </p>
         ) : (

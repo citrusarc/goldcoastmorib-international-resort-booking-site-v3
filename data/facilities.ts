@@ -43,7 +43,7 @@ export const facilities: FacilitiesItem[] = [
       "Ride an ATV across the sandy coastline for a thrilling experience perfect for families and groups of friends.",
     tag: "Adventure",
     details: [
-      { icon: Clock, label: "1 Single Bed + 1 King Bed" },
+      { icon: Clock, label: "2 Single Bed + 1 King Bed" },
       { icon: DoubleCheck, label: "Rain Shower" },
       { icon: Pin, label: "Garden View" },
     ],
@@ -62,7 +62,7 @@ export const facilities: FacilitiesItem[] = [
       "Feel the excitement of water sports with banana boat rides and jet skiing right off the Morib coastline.",
     tag: "Water Sports",
     details: [
-      { icon: Clock, label: "1 Single Bed + 1 King Bed" },
+      { icon: Clock, label: "3 Single Bed + 1 King Bed" },
       { icon: DoubleCheck, label: "Rain Shower" },
       { icon: Pin, label: "Garden View" },
     ],

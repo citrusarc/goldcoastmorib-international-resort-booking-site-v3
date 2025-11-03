@@ -266,7 +266,7 @@ export default function Home() {
                       <div className="relative w-full sm:w-40 aspect-4/3 sm:aspect-square rounded-xl sm:rounded-2xl overflow-hidden">
                         <Image
                           fill
-                          src={item.src[0]}
+                          src={Array.isArray(item.src) ? item.src[0] : item.src}
                           alt={
                             item.alt
                               ? item.alt
@@ -373,7 +373,7 @@ export default function Home() {
                     <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
                       <Image
                         fill
-                        src={item.src[0]}
+                        src={Array.isArray(item.src) ? item.src[0] : item.src}
                         alt={
                           item.alt ? item.alt : `Activities Image ${index + 1}`
                         }

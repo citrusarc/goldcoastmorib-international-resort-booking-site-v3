@@ -101,7 +101,10 @@ export type EventsItem = {
   alt: string;
   description?: string;
   tag?: string;
-  details?: IconProps[];
+  date?: string;
+  startTime?: string;
+  endTime?: string;
+  location?: string;
   status?: ItemStatus;
 };
 
