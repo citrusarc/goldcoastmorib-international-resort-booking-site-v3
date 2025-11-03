@@ -379,11 +379,11 @@ export default function Home() {
                         }
                         className="object-cover"
                       />
-                    </div>
-                    <div className="absolute bottom-0 p-5 sm:p-6 w-full space-y-2">
-                      <h2 className="text-xl font-semibold truncate">
-                        {item.name}
-                      </h2>
+                      <div className="absolute bottom-0 p-5 sm:p-6 w-full space-y-2">
+                        <h2 className="text-xl font-semibold truncate">
+                          {item.name}
+                        </h2>
+                      </div>
                     </div>
                   </Link>
                 ))}
