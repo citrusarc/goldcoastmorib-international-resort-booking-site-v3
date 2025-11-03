@@ -51,7 +51,7 @@ export const siteConfig = {
     {
       id: "events",
       name: "Events",
-      href: "/meetings-and-events",
+      href: "/events",
       icon: CalendarDotsIcon,
       status: { ...defaultStatus },
     },

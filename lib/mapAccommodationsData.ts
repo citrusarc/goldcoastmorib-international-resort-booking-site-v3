@@ -44,7 +44,7 @@ export function mapAccommodationsData(
       : [],
     alt: (raw.alt as string) || "Accommodation Image",
     description: raw.description as string,
-    label: (raw.label as string) || undefined,
+    tag: (raw.tag as string) || undefined,
     facilities: Array.isArray(raw.facilities)
       ? raw.facilities.map((f: { label: string; icon?: string }) => ({
           label: f.label,

@@ -48,7 +48,7 @@ export type AccommodationsItem = {
   src: string | string[];
   alt: string;
   description?: string;
-  label?: string;
+  tag?: string;
   facilities?: IconProps[];
   price: PriceItem;
   maxGuests: number;
@@ -63,18 +63,20 @@ export type ActivitiesItem = {
   src: string | string[];
   alt: string;
   description?: string;
-  label?: string;
+  tag?: string;
   status?: ItemStatus;
 };
 
-// export type BookingForms = {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   phone: string;
-//   earlyCheckIn?: string;
-//   remarks?: string;
-// };
+export type FacilitiesItem = {
+  id: string;
+  name: string;
+  src: string | string[];
+  alt: string;
+  description?: string;
+  tag?: string;
+  details?: IconProps[];
+  status?: ItemStatus;
+};
 
 export type BookingEmailTemplateProps = {
   bookingNumber: string;

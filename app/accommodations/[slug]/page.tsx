@@ -131,8 +131,8 @@ export default function AccommodationsDetailsPage() {
   );
   const [loading, setLoading] = useState(true);
 
-  const labelColor = (label?: string) => {
-    switch (label?.toLowerCase()) {
+  const tagColor = (tag?: string) => {
+    switch (tag?.toLowerCase()) {
       case "recommended":
         return "text-green-600 bg-green-500/20";
       case "good":
@@ -287,89 +287,88 @@ export default function AccommodationsDetailsPage() {
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16">
-            <div className="flex flex-col gap-4 sm:gap-8 shrink-0">
-              <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-4xl overflow-hidden">
-                {selectedImage ? (
-                  <Image
-                    fill
-                    src={selectedImage}
-                    alt={accommodation.alt}
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-500">No Image</span>
-                  </div>
-                )}
-              </div>
-              <div className="flex gap-4 overflow-x-auto">
-                {imageCarousel.map((item, index) => (
-                  <div
-                    key={index}
-                    onClick={() => setSelectedImage(item)}
-                    className={cn(
-                      "relative w-24 h-24 shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all border-2",
-                      selectedImage === item
-                        ? "border-amber-500"
-                        : "border-transparent hover:border-amber-200"
-                    )}
-                  >
+            <div className="flex flex-col gap-8 sm:gap-16 shrink-0">
+              <div className="space-y-4">
+                <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-4xl overflow-hidden">
+                  {selectedImage ? (
                     <Image
                       fill
-                      src={item}
-                      alt={`${accommodation.alt} ${index + 1}`}
+                      src={selectedImage}
+                      alt={accommodation.alt}
                       className="object-cover"
                     />
-                  </div>
-                ))}
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500">No Image</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-4 overflow-x-auto">
+                  {imageCarousel.map((item, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setSelectedImage(item)}
+                      className={cn(
+                        "relative w-24 h-24 shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all border-2",
+                        selectedImage === item
+                          ? "border-amber-500"
+                          : "border-transparent hover:border-amber-200"
+                      )}
+                    >
+                      <Image
+                        fill
+                        src={item}
+                        alt={`${accommodation.alt} ${index + 1}`}
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="space-y-2">
-                <h2 className="text-2xl sm:text-3xl font-semibold">
-                  {accommodation.name}
-                </h2>
-                <p
-                  className={`px-2 py-1 w-fit rounded-full ${labelColor(
-                    accommodation.label
-                  )}`}
-                >
-                  {accommodation.label}
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <h2 className="text-2xl sm:text-3xl font-semibold">
+                    {accommodation.name}
+                  </h2>
+                  <p
+                    className={`px-2 py-1 w-fit rounded-full ${tagColor(
+                      accommodation.tag
+                    )}`}
+                  >
+                    {accommodation.tag}
+                  </p>
+                </div>
+                <p>{accommodation.description}</p>
+                <ul className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
+                  {accommodation.facilities?.map((item) => {
+                    if (!item?.icon) return null;
+                    const Icon = item.icon;
+                    const itemClassName =
+                      "flex flex-row gap-4 items-center text-zinc-500";
+                    return (
+                      <li key={item.label} className={itemClassName}>
+                        <Icon className="w-6 h-6" />
+                        {item.label}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <p className="text-2xl sm:text-3xl font-semibold text-blue-600 ">
+                  {accommodation.price.currency}
+                  {accommodation.price.current}
+                  <span className="text-xl sm:text-2xl font-normal text-neutral-400">
+                    /night
+                  </span>
                 </p>
               </div>
-              <p>{accommodation.description}</p>
-
-              <ul className="flex flex-row sm:flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
-                {accommodation.facilities?.map((item) => {
-                  if (!item?.icon) return null;
-                  const Icon = item.icon;
-                  const itemClassName =
-                    "flex flex-col sm:flex-row gap-2 sm:gap-4 items-center text-zinc-500";
-                  return (
-                    <li
-                      key={item.label || Math.random()}
-                      className={itemClassName}
-                    >
-                      <Icon className="w-6 h-6" />
-                      {item.label}
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <p className="text-2xl sm:text-3xl font-semibold text-blue-600 ">
-                {accommodation.price.currency}
-                {accommodation.price.current}
-                <span className="text-xl sm:text-2xl font-normal text-neutral-400">
-                  /night
-                </span>
-              </p>
             </div>
 
             <div className="relative z-10 flex flex-col w-full">
-              <div className="relative p-4 sm:p-8 w-full rounded-2xl sm:rounded-4xl overflow-hidden shadow-md border border-neutral-200 text-neutral-600 bg-white">
+              <div className="relative p-6 sm:p-8 w-full rounded-2xl sm:rounded-4xl overflow-hidden shadow-md border border-neutral-200 text-neutral-600 bg-white">
                 <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 sm:space-y-8"
+                    className="space-y-6 sm:space-y-8"
                   >
                     {/* Dates */}
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 w-full">
@@ -503,7 +502,7 @@ export default function AccommodationsDetailsPage() {
                     </div>
 
                     {/* Name */}
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
                       <FormField
                         control={form.control}
                         name="firstName"

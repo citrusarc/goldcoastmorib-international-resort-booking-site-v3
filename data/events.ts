@@ -1,16 +1,16 @@
 import { SlideItem } from "@/types";
 
-export const slides: SlideItem[] = [
+export const events: SlideItem[] = [
   {
-    src: "/Images/hero-banner-1.png",
+    src: "/Images/dummy-image-1.jpg",
     alt: "Hero Banner 1",
   },
   {
-    src: "/Images/hero-banner-2.jpg",
+    src: "/Images/dummy-image-2.jpg",
     alt: "Hero Banner 2",
   },
   {
-    src: "/Images/hero-banner-3.jpg",
+    src: "/Images/dummy-image-3.jpg",
     alt: "Hero Banner 3",
   } satisfies SlideItem,
 ];

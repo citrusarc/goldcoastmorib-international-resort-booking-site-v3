@@ -50,48 +50,50 @@ export default function ActivitiesDetailsPage() {
           </p>
         ) : (
           <div>
-            <div className="flex flex-col gap-4 sm:gap-8 shrink-0">
-              <div className="relative w-full h-[240px] sm:h-[560px] rounded-2xl sm:rounded-4xl shrink-0 overflow-hidden">
-                {selectedImage ? (
-                  <Image
-                    fill
-                    src={selectedImage}
-                    alt={activity.alt}
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-500">No Image</span>
-                  </div>
-                )}
-              </div>
-              <div className="flex gap-4 overflow-x-auto">
-                {imageCarousel.map((item, index) => (
-                  <div
-                    key={index}
-                    onClick={() => setSelectedImage(item)}
-                    className={cn(
-                      "relative w-24 sm:w-28 h-24 sm:h-28 shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all border-2",
-                      selectedImage === item
-                        ? "border-amber-500"
-                        : "border-transparent hover:border-amber-200"
-                    )}
-                  >
+            <div className="flex flex-col gap-8 sm:gap-16 shrink-0">
+              <div className="space-y-4">
+                <div className="relative w-full h-[240px] sm:h-[560px] rounded-2xl sm:rounded-4xl shrink-0 overflow-hidden">
+                  {selectedImage ? (
                     <Image
                       fill
-                      src={item}
-                      alt={`${activity.alt} ${index + 1}`}
+                      src={selectedImage}
+                      alt={activity.alt}
                       className="object-cover"
                     />
-                  </div>
-                ))}
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500">No Image</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-4 overflow-x-auto">
+                  {imageCarousel.map((item, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setSelectedImage(item)}
+                      className={cn(
+                        "relative w-24 sm:w-28 h-24 sm:h-28 shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all border-2",
+                        selectedImage === item
+                          ? "border-amber-500"
+                          : "border-transparent hover:border-amber-200"
+                      )}
+                    >
+                      <Image
+                        fill
+                        src={item}
+                        alt={`${activity.alt} ${index + 1}`}
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl font-semibold">
                   {activity.name}
                 </h2>
+                <p>{activity.description}</p>
               </div>
-              <p>{activity.description}</p>
             </div>
           </div>
         )}

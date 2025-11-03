@@ -12,7 +12,7 @@ import {
 } from "iconoir-react";
 
 import { cormorantGaramond, merriweather } from "@/config/fonts";
-import { slides } from "@/data/slideBanner";
+import { overview } from "@/data/overview";
 import { activities } from "@/data/activities";
 import { benefits } from "@/data/benefits";
 import { supabase } from "@/utils/supabase/client";
@@ -33,14 +33,13 @@ export default function Home() {
     setTouchStart(e.targetTouches[0].clientX);
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) =>
     setTouchEnd(e.targetTouches[0].clientX);
-
   const handleTouchEnd = () => {
     if (touchStart === null || touchEnd === null) return;
     const distance = touchStart - touchEnd;
     if (distance > minSwipeDistance) {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % overview.length);
     } else if (distance < -minSwipeDistance) {
-      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+      setCurrentSlide((prev) => (prev === 0 ? overview.length - 1 : prev - 1));
     }
     setTouchStart(null);
     setTouchEnd(null);
@@ -48,7 +47,7 @@ export default function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % overview.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -184,7 +183,7 @@ export default function Home() {
             className="flex transition-transform duration-500 ease-in-out select-none"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {slides.map((item, index) => (
+            {overview.map((item, index) => (
               <div
                 key={index}
                 className="relative w-full h-[180px] sm:h-[360px] shrink-0"
@@ -192,7 +191,7 @@ export default function Home() {
                 <Image
                   fill
                   src={item.src}
-                  alt={item.alt || `Slides Image ${index + 1}`}
+                  alt={item.alt || `Overview Image ${index + 1}`}
                   priority={index === 0}
                   className="object-cover"
                 />
@@ -423,7 +422,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16 text-center">
           {benefits.map((item, index) => (
             <div
               key={index}
@@ -437,7 +436,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
+              <h2 className="text-xl sm:text-2xl font-semibold text-blue-600">
                 {item.name}
               </h2>
               <p className="text-neutral-600 max-w-xs">{item.description}</p>
