@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -132,6 +131,19 @@ export default function AccommodationsDetailsPage() {
   );
   const [loading, setLoading] = useState(true);
 
+  const labelColor = (label?: string) => {
+    switch (label?.toLowerCase()) {
+      case "recommended":
+        return "text-green-600 bg-green-500/20";
+      case "good":
+        return "text-amber-600 bg-amber-500/20";
+      case "not recommended":
+        return "text-red-600 bg-red-500/20";
+      default:
+        return "text-neutral-600 bg-neutral-200";
+    }
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -226,7 +238,7 @@ export default function AccommodationsDetailsPage() {
     if (!accommodation?.src) return;
 
     const src = Array.isArray(accommodation.src)
-      ? accommodation.src[0] // first image
+      ? accommodation.src[0]
       : accommodation.src;
 
     const parts = src.split("/");
@@ -235,13 +247,12 @@ export default function AccommodationsDetailsPage() {
 
     const baseWithoutIndex = base.replace(/-\d+$/, "");
 
-    // // generate all images with -1, -2, -3, -4 suffix
     const allImages = Array.from({ length: 4 }, (_, i) => {
       return `${parts.join("/")}/${baseWithoutIndex}-${i + 1}.${ext}`;
     });
 
-    setSelectedImage(allImages[0]); // // main image = first
-    setImageCarousel(allImages); // // store all images for carousel
+    setSelectedImage(allImages[0]);
+    setImageCarousel(allImages);
   }, [accommodation?.src]);
 
   return (
@@ -278,11 +289,11 @@ export default function AccommodationsDetailsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16">
             <div className="flex flex-col gap-4 sm:gap-8 shrink-0">
               <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-4xl overflow-hidden">
-                {selectedImage ? ( // // only render if image exists
+                {selectedImage ? (
                   <Image
                     fill
                     src={selectedImage}
-                    alt={accommodation?.alt || "Accommodation Image"} // // fallback alt
+                    alt={accommodation.alt}
                     className="object-cover"
                   />
                 ) : (
@@ -291,16 +302,16 @@ export default function AccommodationsDetailsPage() {
                   </div>
                 )}
               </div>
-              <div className="flex gap-2 overflow-x-auto mt-2 pb-2">
+              <div className="flex gap-4 overflow-x-auto">
                 {imageCarousel.map((item, i) => (
                   <div
                     key={i}
-                    onClick={() => setSelectedImage(item)} // // select main image
+                    onClick={() => setSelectedImage(item)}
                     className={cn(
-                      "relative w-24 h-24 rounded-xl overflow-hidden shrink-0 cursor-pointer border-2 transition-all",
+                      "relative w-24 h-24 shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all border-2",
                       selectedImage === item
-                        ? "border-amber-500" // // highlight selected
-                        : "border-transparent hover:border-amber-300" // // hover effect
+                        ? "border-amber-500"
+                        : "border-transparent hover:border-amber-200"
                     )}
                   >
                     <Image
@@ -312,9 +323,18 @@ export default function AccommodationsDetailsPage() {
                   </div>
                 ))}
               </div>
-              <h2 className="text-2xl sm:text-3xl font-semibold">
-                {accommodation.name}
-              </h2>
+              <div className="space-y-2">
+                <h2 className="text-2xl sm:text-3xl font-semibold">
+                  {accommodation.name}
+                </h2>
+                <p
+                  className={`px-2 py-1 w-fit rounded-full ${labelColor(
+                    accommodation.label
+                  )}`}
+                >
+                  {accommodation.label}
+                </p>
+              </div>
               <p>{accommodation.description}</p>
 
               <ul className="flex flex-row sm:flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
