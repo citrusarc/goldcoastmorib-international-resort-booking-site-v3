@@ -60,7 +60,7 @@ export type AccommodationsItem = {
 export type ActivitiesItem = {
   id: string;
   name: string;
-  src: string;
+  src: string | string[];
   alt: string;
   description?: string;
   label?: string;

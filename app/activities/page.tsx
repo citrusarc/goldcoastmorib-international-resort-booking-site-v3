@@ -1,16 +1,11 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { ArrowRight } from "iconoir-react";
 
 import { cormorantGaramond } from "@/config/fonts";
 import { activities } from "@/data/activities";
 
 export default function ActivitiesPage() {
-  // const [activities, setActivities] = useState<any[]>([]);
-
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
