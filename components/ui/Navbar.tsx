@@ -3,14 +3,30 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 import { siteConfig } from "@/config/site";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [scroll, setScroll] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScroll(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <nav className="sticky top-0 z-50 flex p-4 sm:p-8 items-center justify-center">
-      <div className="flex p-4 items-center justify-between w-full max-w-6xl rounded-full backdrop-blur-sm transition-all duration-200 border border-black/5 text-white bg-white/30">
+      <div
+        className={clsx(
+          "flex p-4 items-center justify-between w-full max-w-6xl rounded-full backdrop-blur-sm transition-all duration-200 border border-black/5 bg-white/30",
+          scroll ? "text-amber-300" : "text-white"
+        )}
+      >
         <Link href="/">
           <Image
             src="/Images/brand-logo.png"

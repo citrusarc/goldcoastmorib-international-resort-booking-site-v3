@@ -141,7 +141,7 @@ export default function Home() {
             <div
               className="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start 
                 w-24 h-24 sm:w-fit sm:h-auto 
-                sm:px-4 sm:py-2 
+                sm:px-4 sm:py-3
                 gap-2
                 rounded-full
                 border border-blue-500 bg-blue-50 text-blue-500"
@@ -152,7 +152,7 @@ export default function Home() {
             <div
               className="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start 
                 w-24 h-24 sm:w-fit sm:h-auto 
-                sm:px-4 sm:py-2 
+                sm:px-4 sm:py-3
                 gap-2
                 rounded-full
                 border border-blue-50 bg-linear-to-r from-blue-800 to-blue-500 text-amber-500"
@@ -163,7 +163,7 @@ export default function Home() {
             <div
               className="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start 
             w-24 h-24 sm:w-fit sm:h-auto 
-            sm:px-4 sm:py-2 
+            sm:px-4 sm:py-3
             gap-2
             rounded-full
             border border-blue-500 bg-blue-50 text-blue-500"
@@ -223,8 +223,8 @@ export default function Home() {
                 className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
               >
                 <span className="hidden sm:inline">See All Accommodations</span>
-                <div className="flex sm:hidden w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
-                  <ArrowRight className="w-4 h-4" />
+                <div className="flex sm:hidden w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
+                  <ArrowRight className="w-5 h-5" />
                 </div>
               </Link>
             </div>
@@ -238,9 +238,9 @@ export default function Home() {
                       : prev - 1
                   )
                 }
-                className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+                className="absolute left-0 z-10 flex w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-5 h-5" />
               </button>
 
               <div className="w-full overflow-hidden">
@@ -312,9 +312,9 @@ export default function Home() {
                       : prev + 1
                   )
                 }
-                className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+                className="absolute right-0 z-10 flex w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
               >
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -331,8 +331,8 @@ export default function Home() {
               className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
             >
               <span className="hidden sm:inline">See What&apos;s Around</span>
-              <div className="flex sm:hidden w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
-                <ArrowRight className="w-4 h-4" />
+              <div className="flex sm:hidden w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
+                <ArrowRight className="w-5 h-5" />
               </div>
             </Link>
           </div>
@@ -345,9 +345,9 @@ export default function Home() {
                     : prev - 1
                 )
               }
-              className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+              className="absolute left-0 z-10 flex w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-5 h-5" />
             </button>
 
             <div className="w-full overflow-hidden">
@@ -363,7 +363,7 @@ export default function Home() {
                   <Link
                     key={index}
                     href={`/activities/${item.id}`}
-                    className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden" // shrink-0
+                    className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden"
                     style={{
                       flex: `0 0 calc((100% - ${
                         (itemsToShow - 1) * 16
@@ -398,9 +398,9 @@ export default function Home() {
                     : prev + 1
                 )
               }
-              className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+              className="absolute right-0 z-10 flex w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
             >
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         </div>

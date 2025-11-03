@@ -46,12 +46,12 @@ export default function ActivitiesPage() {
                     alt={item.alt ? item.alt : `Activities Image ${index + 1}`}
                     className="object-cover"
                   />
-                  <div className="absolute flex bottom-0 p-4 sm:p-6 space-x-2 w-full items-center justify-between">
+                  <div className="absolute flex p-4 sm:p-6 bottom-0 space-x-2 w-full items-center justify-between">
                     <h2 className="text-xl font-semibold truncate">
                       {item.name}
                     </h2>
-                    <div className="flex w-10 h-10 items-center justify-center shrink-0 rounded-full backdrop-blur-sm group-hover:text-blue-600 bg-neutral-100 group-hover:bg-blue-500/50">
-                      <ArrowRight className="w-4 h-4" />
+                    <div className="flex w-12 h-12 items-center justify-center shrink-0 rounded-full backdrop-blur-sm text-amber-500 group-hover:text-amber-600 bg-amber-100 group-hover:bg-amber-500/50">
+                      <ArrowRight className="w-5 h-5" />
                     </div>
                   </div>
                 </div>

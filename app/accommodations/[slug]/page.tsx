@@ -31,7 +31,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import ReactCountryFlag from "react-country-flag";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
+import { Plus, Minus } from "iconoir-react";
 import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
@@ -100,19 +101,19 @@ function Stepper({
       <Button
         type="button"
         variant="ghost"
-        className="w-10 h-10 p-0 rounded-full border border-neutral-200 "
+        className="w-12 h-12 p-0 rounded-full border border-neutral-200 "
         onClick={() => onChange(Math.max(min, value - 1))}
       >
-        –
+        <Minus className="w-5 h-5" />
       </Button>
       <div className="flex-1 text-center select-none">{value}</div>
       <Button
         type="button"
         variant="ghost"
-        className="w-10 h-10 p-0 rounded-full border border-neutral-200 "
+        className="w-12 h-12 p-0 rounded-full border border-neutral-200 "
         onClick={() => onChange(value + 1)}
       >
-        +
+        <Plus className="w-5 h-5" />
       </Button>
     </div>
   );

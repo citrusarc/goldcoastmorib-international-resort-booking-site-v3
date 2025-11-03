@@ -24,7 +24,7 @@ export function bookingEmailTemplate({
       <hr style="border:none; border-top:2px solid #e63946; margin:16px 0"/>
       <h2 style="font-size:22px; font-weight:600; margin:0 0 12px;">Hey ${firstName}!</h2>
       <p style="margin:0 0 8px; font-size:14px; color:#333;">
-        Packed your bags yet?<br/>Your reservation is all set. Here’s a quick look at your stay:
+        Packed your bags yet?<br/>Your booking is all set. Here’s a quick look at your stay:
       </p>
 
       <table style="width:100%; border-collapse:collapse; margin-top:12px; font-size:14px;">

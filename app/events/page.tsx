@@ -90,20 +90,10 @@ export default function EventsPage() {
                 />
               </div>
               <div className="p-2 space-y-6">
-                <div className="space-y-2">
-                  <div className="flex space-x-2 w-full items-center justify-between">
-                    <h2 className="text-2xl sm:text-3xl font-semibold truncate">
-                      {item.name}
-                    </h2>
-                    <a
-                      href={getGoogleCalendarLink(item)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-10 h-10 items-center justify-center shrink-0 rounded-full backdrop-blur-sm hover:text-blue-600 bg-neutral-100 hover:bg-blue-500/50"
-                    >
-                      <CalendarPlus className="w-4 h-4" />
-                    </a>
-                  </div>
+                <div className="relative space-y-2">
+                  <h2 className="text-2xl sm:text-3xl font-semibold truncate">
+                    {item.name}
+                  </h2>
                   {(item.date || item.startTime || item.location) && (
                     <div className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start text-neutral-500">
                       {item.date && (
@@ -135,6 +125,16 @@ export default function EventsPage() {
                       )}
                     </div>
                   )}
+                  <div className="absolute flex bottom-0 right-0">
+                    <a
+                      href={getGoogleCalendarLink(item)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-12 h-12 items-center justify-center shrink-0 rounded-full backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
+                    >
+                      <CalendarPlus className="w-5 h-5" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
