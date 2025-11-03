@@ -32,8 +32,8 @@ export default function AccommodationsPage() {
     fetchAccommodations();
   }, []);
 
-  const labelColor = (label?: string) => {
-    switch (label?.toLowerCase()) {
+  const tagColor = (tag?: string) => {
+    switch (tag?.toLowerCase()) {
       case "recommended":
         return "text-green-600 bg-green-500/20";
       case "good":
@@ -97,11 +97,11 @@ export default function AccommodationsPage() {
                     {item.name}
                   </h2>
                   <p
-                    className={`px-2 py-1 w-fit rounded-full ${labelColor(
-                      item.label
+                    className={`px-2 py-1 w-fit rounded-full ${tagColor(
+                      item.tag
                     )}`}
                   >
-                    {item.label}
+                    {item.tag}
                   </p>
                   <div className="flex items-end justify-between">
                     <p className="text-2xl font-semibold text-blue-600">

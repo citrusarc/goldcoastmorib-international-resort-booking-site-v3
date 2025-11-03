@@ -90,8 +90,8 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, [accommodations.length, activities.length]);
 
-  const labelColor = (label?: string) => {
-    switch (label?.toLowerCase()) {
+  const tagColor = (tag?: string) => {
+    switch (tag?.toLowerCase()) {
       case "recommended":
         return "text-green-600 bg-green-500/20";
       case "good":
@@ -281,11 +281,11 @@ export default function Home() {
                             {item.name}
                           </h2>
                           <p
-                            className={`px-2 py-1 w-fit rounded-full ${labelColor(
-                              item.label
+                            className={`px-2 py-1 w-fit rounded-full ${tagColor(
+                              item.tag
                             )}`}
                           >
-                            {item.label}
+                            {item.tag}
                           </p>
                         </div>
                         <p className="text-2xl font-semibold text-blue-600">
@@ -359,51 +359,34 @@ export default function Home() {
                   }px) / ${itemsToShow} + 16px)))`,
                 }}
               >
-                {activities.slice(0, 5).map((item, index) => {
-                  const labelColor = (label?: string) => {
-                    switch (label?.toLowerCase()) {
-                      case "recommended":
-                        return "text-green-600 bg-green-500/20";
-                      case "good":
-                        return "text-amber-600 bg-amber-500/20";
-                      case "not recommended":
-                        return "text-red-600 bg-red-500/20";
-                      default:
-                        return "text-neutral-600 bg-neutral-200";
-                    }
-                  };
-
-                  return (
-                    <Link
-                      key={index}
-                      href={`/activities/${item.id}`}
-                      className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden" // shrink-0
-                      style={{
-                        flex: `0 0 calc((100% - ${
-                          (itemsToShow - 1) * 16
-                        }px) / ${itemsToShow})`,
-                      }}
-                    >
-                      <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
-                        <Image
-                          fill
-                          src={item.src[0]}
-                          alt={
-                            item.alt
-                              ? item.alt
-                              : `Activities Image ${index + 1}`
-                          }
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="absolute bottom-0 p-5 sm:p-6 w-full space-y-2">
-                        <h2 className="text-xl font-semibold truncate">
-                          {item.name}
-                        </h2>
-                      </div>
-                    </Link>
-                  );
-                })}
+                {activities.slice(0, 5).map((item, index) => (
+                  <Link
+                    key={index}
+                    href={`/activities/${item.id}`}
+                    className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden" // shrink-0
+                    style={{
+                      flex: `0 0 calc((100% - ${
+                        (itemsToShow - 1) * 16
+                      }px) / ${itemsToShow})`,
+                    }}
+                  >
+                    <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
+                      <Image
+                        fill
+                        src={item.src[0]}
+                        alt={
+                          item.alt ? item.alt : `Activities Image ${index + 1}`
+                        }
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="absolute bottom-0 p-5 sm:p-6 w-full space-y-2">
+                      <h2 className="text-xl font-semibold truncate">
+                        {item.name}
+                      </h2>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
 
