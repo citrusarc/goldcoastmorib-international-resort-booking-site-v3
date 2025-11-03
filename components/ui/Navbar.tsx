@@ -5,7 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
+
 import { siteConfig } from "@/config/site";
+import { merriweather } from "@/config/fonts";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -24,10 +26,10 @@ export default function Navbar() {
       <div
         className={clsx(
           "flex p-4 items-center justify-between w-full max-w-6xl rounded-full backdrop-blur-sm transition-all duration-200 border border-black/5 bg-white/30",
-          scroll ? "text-amber-300" : "text-white"
+          scroll ? "text-neutral-400" : "text-white"
         )}
       >
-        <Link href="/">
+        <Link href="/" className="flex items-center space-x-2">
           <Image
             src="/Images/brand-logo.png"
             alt="Gold Coast Morib International Resort Logo"
@@ -35,6 +37,10 @@ export default function Navbar() {
             height={36}
             className="w-8 h-8 sm:w-10 sm:h-10"
           />
+          <span className={`hidden sm:inline-flex ${merriweather.className}`}>
+            Gold Coast Morib <br />
+            International Resort
+          </span>
         </Link>
         <div className="flex gap-6 sm:gap-8">
           {siteConfig.navItems.map((item) => {
