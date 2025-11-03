@@ -192,7 +192,7 @@ export default function Home() {
                 <Image
                   fill
                   src={item.src}
-                  alt={item.alt || `Hero Banner ${index + 1}`}
+                  alt={item.alt || `Slides Image ${index + 1}`}
                   priority={index === 0}
                   className="object-cover"
                 />
@@ -224,7 +224,7 @@ export default function Home() {
                 className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
               >
                 <span className="hidden sm:inline">See All Accommodations</span>
-                <div className="flex sm:hidden w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
+                <div className="flex sm:hidden w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </Link>
@@ -239,7 +239,7 @@ export default function Home() {
                       : prev - 1
                   )
                 }
-                className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+                className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
@@ -257,7 +257,7 @@ export default function Home() {
                     <Link
                       key={index}
                       href={`/accommodations/${item.id}`}
-                      className="flex flex-col sm:flex-row gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+                      className="flex flex-col sm:flex-row gap-4 p-2 sm:p-4 h-[440px] sm:h-auto shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
                       style={{
                         flex: `0 0 calc((100% - ${
                           (itemsToShow - 1) * 16
@@ -268,19 +268,27 @@ export default function Home() {
                         <Image
                           fill
                           src={item.src[0]}
-                          alt={item.alt ? item.alt : `Hero Banner ${index + 1}`}
+                          alt={
+                            item.alt
+                              ? item.alt
+                              : `Accommodations Image ${index + 1}`
+                          }
                           className="object-cover"
                         />
                       </div>
-                      <div className="p-2 space-y-2">
-                        <h2 className="text-2xl font-semibold">{item.name}</h2>
-                        <p
-                          className={`px-2 py-1 w-fit rounded-full ${labelColor(
-                            item.label
-                          )}`}
-                        >
-                          {item.label}
-                        </p>
+                      <div className="flex flex-col p-2 justify-between">
+                        <div className="space-y-2">
+                          <h2 className="text-2xl font-semibold truncate">
+                            {item.name}
+                          </h2>
+                          <p
+                            className={`px-2 py-1 w-fit rounded-full ${labelColor(
+                              item.label
+                            )}`}
+                          >
+                            {item.label}
+                          </p>
+                        </div>
                         <p className="text-2xl font-semibold text-blue-600">
                           <span className="text-base font-normal text-neutral-400">
                             from <br />
@@ -305,7 +313,7 @@ export default function Home() {
                       : prev + 1
                   )
                 }
-                className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+                className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
               >
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -324,7 +332,7 @@ export default function Home() {
               className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
             >
               <span className="hidden sm:inline">See What&apos;s Around</span>
-              <div className="flex sm:hidden w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
+              <div className="flex sm:hidden w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
                 <ArrowRight className="w-4 h-4" />
               </div>
             </Link>
@@ -338,7 +346,7 @@ export default function Home() {
                     : prev - 1
                 )
               }
-              className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+              className="absolute left-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
@@ -370,7 +378,7 @@ export default function Home() {
                     <Link
                       key={index}
                       href={`/activities/${item.id}`}
-                      className="flex gap-4 h-45 sm:h-48 shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden"
+                      className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden" // shrink-0
                       style={{
                         flex: `0 0 calc((100% - ${
                           (itemsToShow - 1) * 16
@@ -380,13 +388,19 @@ export default function Home() {
                       <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
                         <Image
                           fill
-                          src={item.src}
-                          alt={item.alt ? item.alt : `Hero Banner ${index + 1}`}
+                          src={item.src[0]}
+                          alt={
+                            item.alt
+                              ? item.alt
+                              : `Activities Image ${index + 1}`
+                          }
                           className="object-cover"
                         />
                       </div>
                       <div className="absolute bottom-0 p-5 sm:p-6 w-full space-y-2">
-                        <h2 className="text-xl font-semibold">{item.name}</h2>
+                        <h2 className="text-xl font-semibold truncate">
+                          {item.name}
+                        </h2>
                       </div>
                     </Link>
                   );
@@ -402,7 +416,7 @@ export default function Home() {
                     : prev + 1
                 )
               }
-              className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
+              className="absolute right-0 z-10 flex w-10 h-10 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-600 hover:text-white bg-amber-500/30 hover:bg-amber-500/50"
             >
               <ArrowRight className="w-4 h-4" />
             </button>
@@ -423,9 +437,9 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-xl sm:text-2xl font-semibold text-amber-500">
+              <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
                 {item.name}
-              </h3>
+              </h2>
               <p className="text-neutral-600 max-w-xs">{item.description}</p>
             </div>
           ))}

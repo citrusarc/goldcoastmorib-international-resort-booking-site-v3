@@ -303,9 +303,9 @@ export default function AccommodationsDetailsPage() {
                 )}
               </div>
               <div className="flex gap-4 overflow-x-auto">
-                {imageCarousel.map((item, i) => (
+                {imageCarousel.map((item, index) => (
                   <div
-                    key={i}
+                    key={index}
                     onClick={() => setSelectedImage(item)}
                     className={cn(
                       "relative w-24 h-24 shrink-0 cursor-pointer rounded-xl overflow-hidden transition-all border-2",
@@ -315,9 +315,9 @@ export default function AccommodationsDetailsPage() {
                     )}
                   >
                     <Image
-                      src={item}
-                      alt={`${accommodation.name} ${i + 1}`}
                       fill
+                      src={item}
+                      alt={`${accommodation.alt} ${index + 1}`}
                       className="object-cover"
                     />
                   </div>

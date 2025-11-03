@@ -77,20 +77,25 @@ export default function AccommodationsPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {accommodations.map((item, index) => (
-              <div
+              <Link
                 key={index}
-                className="flex flex-col gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+                href={`/accommodations/${item.id}`}
+                className="group flex flex-col gap-4 p-2 sm:p-4 h-[440px] shrink-0 rounded-2xl sm:rounded-4xl cursor-pointer border border-neutral-200 bg-white"
               >
                 <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
                   <Image
                     fill
                     src={item.src[0]}
-                    alt={item.alt ? item.alt : `Hero Banner ${index + 1}`}
+                    alt={
+                      item.alt ? item.alt : `Accommodations Image ${index + 1}`
+                    }
                     className="object-cover"
                   />
                 </div>
                 <div className="p-2 space-y-2">
-                  <h2 className="text-2xl font-semibold">{item.name}</h2>
+                  <h2 className="text-2xl font-semibold truncate">
+                    {item.name}
+                  </h2>
                   <p
                     className={`px-2 py-1 w-fit rounded-full ${labelColor(
                       item.label
@@ -98,7 +103,7 @@ export default function AccommodationsPage() {
                   >
                     {item.label}
                   </p>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-end justify-between">
                     <p className="text-2xl font-semibold text-blue-600">
                       <span className="text-base font-normal text-neutral-400">
                         from <br />
@@ -109,15 +114,12 @@ export default function AccommodationsPage() {
                         /night
                       </span>
                     </p>
-                    <Link
-                      href={`/accommodations/${item.id}`}
-                      className="flex w-10 h-10 items-center justify-center rounded-full cursor-pointer backdrop-blur-sm hover:text-blue-600 bg-neutral-100 hover:bg-blue-500/50"
-                    >
+                    <div className="flex w-10 h-10 items-center justify-center shrink-0 rounded-full backdrop-blur-sm group-hover:text-blue-600 bg-neutral-100 group-hover:bg-blue-500/50">
                       <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
