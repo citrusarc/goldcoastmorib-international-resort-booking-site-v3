@@ -2,15 +2,15 @@ import { SlideItem } from "@/types";
 
 export const overview: SlideItem[] = [
   {
-    src: "/Images/dummy-image-1.jpg",
-    alt: "Hero Banner 1",
+    src: "/Images/overview-image-1.jpg",
+    alt: "Overview Image 1",
   },
   {
-    src: "/Images/dummy-image-2.jpg",
-    alt: "Hero Banner 2",
+    src: "/Images/overview-image-2.jpg",
+    alt: "Overview Image 2",
   },
   {
-    src: "/Images/dummy-image-3.jpg",
-    alt: "Hero Banner 3",
+    src: "/Images/overview-image-3.jpg",
+    alt: "Overview Image 3",
   } satisfies SlideItem,
 ];

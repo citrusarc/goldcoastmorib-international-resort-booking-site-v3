@@ -109,8 +109,8 @@ export default function Home() {
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/hero-banner-1.png"
-            alt="Gold Coast Morib International Resort Booking Hero Banner"
+            src="/Images/home-hero-banner.jpg"
+            alt="Gold Coast Morib International Resort Booking Home Hero Banner"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/15" />
