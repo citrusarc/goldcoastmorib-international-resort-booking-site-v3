@@ -20,7 +20,7 @@ export const accommodations: AccommodationsItem[] = [
     ],
     alt: "Studio Suite Images",
     description:
-      "A cozy retreat with 2 single beds, garden views, and a private balcony — perfect for couples or friends seeking a relaxing escape.",
+      "A cozy retreat featuring two single beds, a private balcony, and tranquil garden views — ideal for couples or friends looking for a relaxing getaway.",
     tag: "Recommended",
     facilities: [
       { icon: Bed, label: "2 Single Beds" },
@@ -43,7 +43,7 @@ export const accommodations: AccommodationsItem[] = [
     ],
     alt: "3 Rooms Penthouse Images",
     description:
-      "Spacious 46 m² apartment featuring a queen bed, shower + bathtub, and a balcony/terrace for a relaxing stay.",
+      "Elegant 46 m² penthouse with a queen bed, ensuite bathroom featuring a rain shower and bathtub, and a spacious balcony overlooking lush greenery.",
     tag: "Recommended",
     facilities: [
       { icon: Bed, label: "1 Queen Bed" },
@@ -66,7 +66,7 @@ export const accommodations: AccommodationsItem[] = [
     ],
     alt: "4 Rooms Penthouse Images",
     description:
-      "Expansive 177 m² penthouse featuring 1 king and 1 single bed, a shower, sweeping garden views, and an extra-large balcony facing the sea — spacious enough to host private events of up to 50 guests.",
+      "An expansive 177 m² penthouse featuring a king and a single bed, luxurious rain shower, panoramic garden views, and an extra-large balcony facing the sea.",
     tag: "Recommended",
     facilities: [
       { icon: Bed, label: "1 Single Bed + 1 King Bed" },

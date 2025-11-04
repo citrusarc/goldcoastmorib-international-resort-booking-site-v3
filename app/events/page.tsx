@@ -76,69 +76,75 @@ export default function EventsPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
-            >
-              <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
-                <Image
-                  fill
-                  src={Array.isArray(item.src) ? item.src[0] : item.src}
-                  alt={item.alt}
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-2 space-y-6">
-                <div className="relative space-y-2">
-                  <h2 className="text-2xl sm:text-3xl font-semibold truncate">
-                    {item.name}
-                  </h2>
-                  {(item.date || item.startTime || item.location) && (
-                    <div className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start text-neutral-500">
-                      {item.date && (
-                        <div className="flex flex-row gap-4 items-center">
-                          <Calendar className="w-6 h-6" />
-                          <p>
-                            {new Date(item.date).toLocaleDateString("en-MY", {
-                              weekday: "short",
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </p>
-                        </div>
-                      )}
-                      {item.startTime && item.endTime && (
-                        <div className="flex flex-row gap-4 items-center">
-                          <Clock className="w-6 h-6" />
-                          <p>
-                            {item.startTime} – {item.endTime}
-                          </p>
-                        </div>
-                      )}
-                      {item.location && (
-                        <div className="flex flex-row gap-4 items-center">
-                          <Pin className="w-6 h-6" />
-                          <p>{item.location}</p>
-                        </div>
-                      )}
+          {events.length === 0 ? (
+            <p className="text-start text-neutral-400 py-8">
+              No events available.
+            </p>
+          ) : (
+            events.map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-4 p-2 sm:p-4 shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
+              >
+                <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
+                  <Image
+                    fill
+                    src={Array.isArray(item.src) ? item.src[0] : item.src}
+                    alt={item.alt}
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-2 space-y-6">
+                  <div className="relative space-y-2">
+                    <h2 className="text-2xl sm:text-3xl font-semibold truncate">
+                      {item.name}
+                    </h2>
+                    {(item.date || item.startTime || item.location) && (
+                      <div className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start text-neutral-500">
+                        {item.date && (
+                          <div className="flex flex-row gap-4 items-center">
+                            <Calendar className="w-6 h-6" />
+                            <p>
+                              {new Date(item.date).toLocaleDateString("en-MY", {
+                                weekday: "short",
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              })}
+                            </p>
+                          </div>
+                        )}
+                        {item.startTime && item.endTime && (
+                          <div className="flex flex-row gap-4 items-center">
+                            <Clock className="w-6 h-6" />
+                            <p>
+                              {item.startTime} – {item.endTime}
+                            </p>
+                          </div>
+                        )}
+                        {item.location && (
+                          <div className="flex flex-row gap-4 items-center">
+                            <Pin className="w-6 h-6" />
+                            <p>{item.location}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    <div className="absolute flex bottom-0 right-0">
+                      <a
+                        href={getGoogleCalendarLink(item)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex w-12 h-12 items-center justify-center shrink-0 rounded-full backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
+                      >
+                        <CalendarPlus className="w-5 h-5" />
+                      </a>
                     </div>
-                  )}
-                  <div className="absolute flex bottom-0 right-0">
-                    <a
-                      href={getGoogleCalendarLink(item)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-12 h-12 items-center justify-center shrink-0 rounded-full backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
-                    >
-                      <CalendarPlus className="w-5 h-5" />
-                    </a>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>

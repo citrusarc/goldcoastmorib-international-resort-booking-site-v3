@@ -27,46 +27,52 @@ export default function FacilitiesPage() {
           </div>
         </div>
 
-        {facilities.map((item, index) => (
-          <div
-            key={index}
-            className={cn(
-              "flex flex-col sm:flex-row p-2 sm:p-4 gap-4 sm:gap-8 shrink-0 border border-neutral-200 rounded-2xl sm:rounded-4xl",
-              index % 2 !== 0 && "sm:flex-row-reverse"
-            )}
-          >
-            <div className="relative w-full sm:w-1/2 aspect-4/3 rounded-2xl sm:rounded-4xl overflow-hidden">
-              <Image
-                fill
-                src={item.src[0]}
-                alt={item.alt}
-                className="object-cover"
-              />
-            </div>
-            <div className="p-2 space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl sm:text-3xl font-semibold truncate">
-                  {item.name}
-                </h2>
-                <p>{item.description}</p>
+        {facilities.length === 0 ? (
+          <p className="text-start text-neutral-400 py-8">
+            No facilities available.
+          </p>
+        ) : (
+          facilities.map((item, index) => (
+            <div
+              key={index}
+              className={cn(
+                "flex flex-col sm:flex-row p-2 sm:p-4 gap-4 sm:gap-8 shrink-0 border border-neutral-200 rounded-2xl sm:rounded-4xl",
+                index % 2 !== 0 && "sm:flex-row-reverse"
+              )}
+            >
+              <div className="relative w-full sm:w-1/2 aspect-4/3 rounded-2xl sm:rounded-4xl overflow-hidden">
+                <Image
+                  fill
+                  src={item.src[0]}
+                  alt={item.alt}
+                  className="object-cover"
+                />
               </div>
-              <ul className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
-                {item.details?.map((detail) => {
-                  if (!detail?.icon) return null;
-                  const Icon = detail.icon;
-                  const itemClassName =
-                    "flex flex-row gap-4 items-center text-neutral-500";
-                  return (
-                    <li key={detail.label} className={itemClassName}>
-                      <Icon className="w-6 h-6" />
-                      {detail.label}
-                    </li>
-                  );
-                })}
-              </ul>
+              <div className="p-2 space-y-6">
+                <div className="space-y-2">
+                  <h2 className="text-2xl sm:text-3xl font-semibold truncate">
+                    {item.name}
+                  </h2>
+                  <p>{item.description}</p>
+                </div>
+                <ul className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
+                  {item.details?.map((detail) => {
+                    if (!detail?.icon) return null;
+                    const Icon = detail.icon;
+                    const itemClassName =
+                      "flex flex-row gap-4 items-center text-neutral-500";
+                    return (
+                      <li key={detail.label} className={itemClassName}>
+                        <Icon className="w-6 h-6" />
+                        {detail.label}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </section>
   );
