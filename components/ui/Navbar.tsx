@@ -25,8 +25,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 flex p-4 sm:p-8 items-center justify-center">
       <div
         className={clsx(
-          "flex p-4 items-center justify-between w-full max-w-6xl rounded-full backdrop-blur-sm transition-all duration-200 border border-black/5 bg-white/50",
-          scroll ? "text-amber-500/60" : "text-white"
+          "flex p-4 items-center justify-between w-full max-w-6xl rounded-full backdrop-blur-sm transition-all duration-200 shadow-xl border border-white/30 bg-white/10",
+          scroll ? "text-amber-500" : "text-white"
         )}
       >
         <Link href="/" className="flex items-center space-x-2">
