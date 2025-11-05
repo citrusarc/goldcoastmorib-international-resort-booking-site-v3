@@ -50,7 +50,7 @@ export default function FacilitiesPage() {
               </div>
               <div className="p-2 space-y-6">
                 <div className="space-y-2">
-                  <h2 className="text-2xl sm:text-3xl font-semibold truncate">
+                  <h2 className="text-2xl sm:text-3xl font-semibold truncate text-amber-500">
                     {item.name}
                   </h2>
                   <p>{item.description}</p>
