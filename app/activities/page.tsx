@@ -7,7 +7,7 @@ import { activities } from "@/data/activities";
 
 export default function ActivitiesPage() {
   return (
-    <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
+    <section className="flex p-4 sm:p-8 items-center justify-center text-white">
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
@@ -47,7 +47,7 @@ export default function ActivitiesPage() {
                     className="object-cover"
                   />
                   <div className="absolute flex p-4 sm:p-6 bottom-0 space-x-2 w-full items-center justify-between">
-                    <h2 className="text-xl font-semibold truncate">
+                    <h2 className="px-4 py-2 text-xl font-semibold rounded-full truncate text-amber-500 bg-white/80">
                       {item.name}
                     </h2>
                     <div className="flex w-12 h-12 items-center justify-center shrink-0 rounded-full backdrop-blur-sm text-amber-500 group-hover:text-amber-600 bg-amber-100 group-hover:bg-amber-500/50">

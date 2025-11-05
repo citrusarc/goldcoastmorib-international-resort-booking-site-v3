@@ -37,7 +37,9 @@ export default function Navbar() {
             height={36}
             className="w-8 h-8 sm:w-10 sm:h-10"
           />
-          <span className={`hidden sm:inline-flex ${merriweather.className}`}>
+          <span
+            className={`hidden sm:inline-flex ${merriweather.className} text-white`}
+          >
             Gold Coast Morib <br />
             International Resort
           </span>

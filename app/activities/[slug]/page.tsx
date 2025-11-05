@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
@@ -9,19 +10,23 @@ import { activities } from "@/data/activities";
 import { ActivitiesItem } from "@/types";
 
 export default function ActivitiesDetailsPage() {
+  const params = useParams();
+  const slug = params?.slug;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [imageCarousel, setImageCarousel] = useState<string[]>([]);
   const [activity, setActivity] = useState<ActivitiesItem | null>(null);
 
   useEffect(() => {
-    if (activities.length > 0) {
-      const first = activities[0];
-      setActivity(first);
-      const srcArray = Array.isArray(first.src) ? first.src : [first.src];
+    if (!slug) return;
+    const found = activities.find((a) => a.id === slug);
+    if (found) {
+      setActivity(found);
+      const srcArray = Array.isArray(found.src) ? found.src : [found.src];
       setImageCarousel(srcArray);
       setSelectedImage(srcArray[0]);
     }
-  }, []);
+  }, [slug]);
+
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
