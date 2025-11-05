@@ -22,8 +22,8 @@ export default function ActivitiesPage() {
             <p
               className={`block leading-none text-[40px] sm:text-[72px] text-center ${cormorantGaramond.className}`}
             >
-              Make Every Day Memorable <br />
-              Discover Something New
+              Make Every Day Count <br />
+              Discover More
             </p>
           </div>
         </div>

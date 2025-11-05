@@ -22,7 +22,7 @@ export default function FacilitiesPage() {
               className={`block leading-none text-[40px] sm:text-[72px] text-center ${cormorantGaramond.className}`}
             >
               Enjoy Every Moment <br />
-              For Your Ultimate Comfort
+              Feel At Home
             </p>
           </div>
         </div>

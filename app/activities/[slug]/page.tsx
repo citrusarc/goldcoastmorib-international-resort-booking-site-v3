@@ -43,8 +43,8 @@ export default function ActivitiesDetailsPage() {
             <p
               className={`block leading-none text-[40px] sm:text-[72px] text-center ${cormorantGaramond.className}`}
             >
-              Plan Your Experience <br />
-              Create Lasting Memories
+              Find New Joys <br />
+              Create Memories
             </p>
           </div>
         </div>
