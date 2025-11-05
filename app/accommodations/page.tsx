@@ -51,13 +51,13 @@ export default function AccommodationsPage() {
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/hero-banner-1.png"
+            src="/Images/accommodations-hero-banner.jpg"
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/15" />
           <div className="absolute inset-0 flex flex-col gap-4 pb-24 items-center justify-end text-white">
-            <h1 className="text-lg sm:text-xl">Your Getaway Starts Here</h1>
+            <h1 className="text-lg sm:text-xl">Find Your Perfect Stay</h1>
             <p
               className={`block leading-none text-[40px] sm:text-[72px] text-center ${cormorantGaramond.className}`}
             >
