@@ -5,19 +5,19 @@ export const benefits: BenefitsItem[] = [
     name: "Best Rate",
     description:
       "Get the lowest price guaranteed when you book direct, no hidden fees.",
-    src: "/Images/dummy-image-1.jpg",
+    src: "/Images/best-rate.jpg",
     alt: "Benefits Image 1",
   },
   {
     name: "Family-Friendly",
     description: "Water park access, playgrounds, and kid-friendly dining.",
-    src: "/Images/dummy-image-2.jpg",
+    src: "/Images/family-friendly.jpg",
     alt: "Benefits Image 2",
   },
   {
     name: "Local Deals",
     description: "Enjoy on-site offers, exclusive deals and special add-ons.",
-    src: "/Images/dummy-image-3.jpg",
+    src: "/Images/local-deals.jpg",
     alt: "Benefits Image 3",
   } satisfies BenefitsItem,
 ];
