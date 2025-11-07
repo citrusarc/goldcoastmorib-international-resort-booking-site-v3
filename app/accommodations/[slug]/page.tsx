@@ -91,18 +91,26 @@ function Stepper({
   value,
   onChange,
   min = 0,
+  max,
 }: {
   value: number;
   onChange: (v: number) => void;
   min?: number;
+  max?: number;
 }) {
+  const isMax = max !== undefined && value >= max;
+  const isMin = value <= min;
   return (
     <div className="flex w-full items-center overflow-hidden">
       <Button
         type="button"
         variant="ghost"
-        className="w-12 h-12 p-0 rounded-full border border-neutral-200 "
+        className={cn(
+          "w-12 h-12 p-0 rounded-full border border-neutral-200",
+          isMin && "opacity-50 cursor-not-allowed"
+        )}
         onClick={() => onChange(Math.max(min, value - 1))}
+        disabled={isMin}
       >
         <Minus className="w-5 h-5" />
       </Button>
@@ -110,8 +118,12 @@ function Stepper({
       <Button
         type="button"
         variant="ghost"
-        className="w-12 h-12 p-0 rounded-full border border-neutral-200 "
+        className={cn(
+          "w-12 h-12 p-0 rounded-full border border-neutral-200",
+          isMax && "opacity-50 cursor-not-allowed"
+        )}
         onClick={() => onChange(value + 1)}
+        disabled={isMax}
       >
         <Plus className="w-5 h-5" />
       </Button>
@@ -514,8 +526,16 @@ export default function AccommodationsDetailsPage() {
                             <FormControl>
                               <Stepper
                                 value={field.value}
-                                onChange={field.onChange}
+                                onChange={(v) => {
+                                  const otherValue = form.getValues("children");
+                                  if (v + otherValue <= accommodation.maxGuests)
+                                    field.onChange(v);
+                                }}
                                 min={1}
+                                max={
+                                  accommodation.maxGuests -
+                                  form.watch("children")
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -539,8 +559,15 @@ export default function AccommodationsDetailsPage() {
                             <FormControl>
                               <Stepper
                                 value={field.value}
-                                onChange={field.onChange}
+                                onChange={(v) => {
+                                  const otherValue = form.getValues("adults");
+                                  if (v + otherValue <= accommodation.maxGuests)
+                                    field.onChange(v);
+                                }}
                                 min={0}
+                                max={
+                                  accommodation.maxGuests - form.watch("adults")
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -810,7 +837,16 @@ export default function AccommodationsDetailsPage() {
                       disabled={submitting}
                       className="p-6 w-full rounded-full cursor-pointer text-white bg-amber-500 hover:bg-amber-600"
                     >
-                      {submitting ? "Booking..." : "Book Now"}
+                      {submitting
+                        ? "Booking..."
+                        : `Book Now (RM${
+                            accommodation
+                              ? accommodation.price.current *
+                                ((form.watch("checkOut")!.getTime() -
+                                  form.watch("checkIn")!.getTime()) /
+                                  (1000 * 60 * 60 * 24))
+                              : 0
+                          })`}
                     </Button>
                   </form>
                 </Form>
