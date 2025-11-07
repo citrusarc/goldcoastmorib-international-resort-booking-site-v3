@@ -66,12 +66,12 @@ export const activities: ActivitiesItem[] = [
     status: { ...defaultStatus },
   },
   {
-    id: "forest-playground",
-    name: "Tree-Top Adventure Net Playground",
+    id: "skyworld-playground",
+    name: "Skyworld Playground",
     src: [
-      "/Images/forest-playground-1.jpg",
-      "/Images/forest-playground-2.jpg",
-      "/Images/forest-playground-3.jpg",
+      "/Images/skyworld-playground-1.jpg",
+      "/Images/skyworld-playground-2.jpg",
+      "/Images/skyworld-playground-3.jpg",
     ],
     alt: "Colorful tree-top net playground with duck decorations at Morib",
     description:
