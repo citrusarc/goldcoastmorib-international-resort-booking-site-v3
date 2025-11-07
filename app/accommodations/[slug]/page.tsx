@@ -282,7 +282,7 @@ export default function AccommodationsDetailsPage() {
 
     const baseWithoutIndex = base.replace(/-\d+$/, "");
 
-    const allImages = Array.from({ length: 3 }, (_, i) => {
+    const allImages = Array.from({ length: 5 }, (_, i) => {
       return `${parts.join("/")}/${baseWithoutIndex}-${i + 1}.${ext}`;
     });
 
