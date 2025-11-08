@@ -42,6 +42,8 @@ export const accommodations: AccommodationsItem[] = [
       "/Images/two-rooms-apartment-1.jpg",
       "/Images/two-rooms-apartment-2.jpg",
       "/Images/two-rooms-apartment-3.jpg",
+      "/Images/two-rooms-apartment-4.jpg",
+      "/Images/two-rooms-apartment-5.jpg",
     ],
     alt: "2 Rooms Apartment Images",
     description:
@@ -65,6 +67,8 @@ export const accommodations: AccommodationsItem[] = [
       "/Images/three-rooms-apartment-1.jpg",
       "/Images/three-rooms-apartment-2.jpg",
       "/Images/three-rooms-apartment-3.jpg",
+      "/Images/three-rooms-apartment-4.jpg",
+      "/Images/three-rooms-apartment-5.jpg",
     ],
     alt: "3 Rooms Apartment Images",
     description:
@@ -88,6 +92,8 @@ export const accommodations: AccommodationsItem[] = [
       "/Images/three-rooms-penthouse-1.jpg",
       "/Images/three-rooms-penthouse-2.jpg",
       "/Images/three-rooms-penthouse-3.jpg",
+      "/Images/three-rooms-penthouse-4.jpg",
+      "/Images/three-rooms-penthouse-5.jpg",
     ],
     alt: "3 Rooms Penthouse Images",
     description:
@@ -111,6 +117,8 @@ export const accommodations: AccommodationsItem[] = [
       "/Images/four-rooms-penthouse-1.jpg",
       "/Images/four-rooms-penthouse-2.jpg",
       "/Images/four-rooms-penthouse-3.jpg",
+      "/Images/four-rooms-penthouse-4.jpg",
+      "/Images/four-rooms-penthouse-5.jpg",
     ],
     alt: "4 Rooms Penthouse Images",
     description:
