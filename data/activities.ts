@@ -24,6 +24,20 @@ export const activities: ActivitiesItem[] = [
     status: { ...defaultStatus },
   },
   {
+    id: "skyworld-playground",
+    name: "Skyworld Playground",
+    src: [
+      "/Images/skyworld-playground-1.jpg",
+      "/Images/skyworld-playground-2.jpg",
+      "/Images/skyworld-playground-3.jpg",
+    ],
+    alt: "Colorful tree-top net playground with duck decorations at Morib",
+    description:
+      "Enjoy a unique tree-top experience on bright net bridges and swings — a fun outdoor spot for kids to climb, play, and explore safely under the shade of tall pine trees.",
+    tag: "Family Fun",
+    status: { ...defaultStatus },
+  },
+  {
     id: "atv-beach-ride",
     name: "ATV Beach Ride",
     src: [
@@ -33,8 +47,46 @@ export const activities: ActivitiesItem[] = [
     ],
     alt: "ATV riders driving along the beach",
     description:
-      "Ride an ATV across the sandy coastline for a thrilling experience perfect for families and groups of friends.",
+      "Ride an ATV across the sandy coastline for a thrilling beach adventure — perfect for families and groups of friends.",
     tag: "Adventure",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "seafood-catch",
+    name: "Seafood Catch",
+    src: [
+      "/Images/seafood-catch-1.jpg",
+      "/Images/seafood-catch-2.jpg",
+      "/Images/seafood-catch-3.jpg",
+    ],
+    alt: "Guests catching crabs and fish by the beach",
+    description:
+      "Join our seaside activity where guests can catch crabs and fish along the shore — an exciting hands-on experience for all ages.",
+    tag: "Activity",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "bubble-foam-play",
+    name: "Bubble Foam Play",
+    src: [
+      "/Images/bubble-foam-play-1.jpg",
+      "/Images/bubble-foam-play-2.jpg",
+      "/Images/bubble-foam-play-3.jpg",
+    ],
+    alt: "Children playing with bubbles and foam outdoors",
+    description:
+      "A bubbly and joyful play area where kids can jump, laugh, and have fun in a sea of foam — perfect for family bonding.",
+    tag: "Family Fun",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "birthday-party",
+    name: "Birthday Party Celebration",
+    src: ["/Images/birthday-party-1.jpg", "/Images/birthday-party-2.jpg"],
+    alt: "Beachside birthday celebration setup",
+    description:
+      "Celebrate birthdays in style with customizable packages, decorations, and catering for unforgettable moments by the beach.",
+    tag: "Event",
     status: { ...defaultStatus },
   },
   {
@@ -61,22 +113,8 @@ export const activities: ActivitiesItem[] = [
     ],
     alt: "Jugra Lighthouse overlooking the coast",
     description:
-      "Just a short drive away, Bukit Jugra offers panoramic coastal views, photo ops, and a glimpse of local heritage.",
+      "Visit Bukit Jugra Lighthouse for panoramic coastal views, photo opportunities, and a glimpse of local heritage.",
     tag: "Sightseeing",
-    status: { ...defaultStatus },
-  },
-  {
-    id: "skyworld-playground",
-    name: "Skyworld Playground",
-    src: [
-      "/Images/skyworld-playground-1.jpg",
-      "/Images/skyworld-playground-2.jpg",
-      "/Images/skyworld-playground-3.jpg",
-    ],
-    alt: "Colorful tree-top net playground with duck decorations at Morib",
-    description:
-      "Enjoy a unique tree-top experience on bright net bridges and swings — a fun outdoor spot for kids to climb, play, and explore safely under the shade of tall pine trees.",
-    tag: "Family Fun",
     status: { ...defaultStatus },
   },
   {
@@ -89,7 +127,7 @@ export const activities: ActivitiesItem[] = [
     ],
     alt: "Paragliding above Jugra hills",
     description:
-      "For thrill-seekers, soar above the coastline with tandem paragliding sessions at Bukit Jugra’s scenic cliffs.",
+      "Soar above the coastline with tandem paragliding sessions at Bukit Jugra’s scenic cliffs — an unforgettable thrill for adventure seekers.",
     tag: "Adventure",
     status: { ...defaultStatus },
   },
