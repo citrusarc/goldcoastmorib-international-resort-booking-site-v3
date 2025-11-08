@@ -12,5 +12,5 @@ export const overview: SlideItem[] = [
   {
     src: "/Images/overview-image-3.jpg",
     alt: "Overview Image 3",
-  } satisfies SlideItem,
-];
+  },
+] satisfies SlideItem[];

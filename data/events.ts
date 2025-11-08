@@ -50,5 +50,5 @@ export const events: EventsItem[] = [
   //   endTime: "19:00",
   //   location: "Morib Beach, Selangor",
   //   status: { ...defaultStatus },
-  // } satisfies EventsItem,
-];
+  // },
+] satisfies EventsItem[];

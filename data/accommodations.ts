@@ -126,5 +126,5 @@ export const accommodations: AccommodationsItem[] = [
     totalUnits: 1,
     availableUnits: 1,
     status: { ...defaultStatus },
-  } satisfies AccommodationsItem,
-];
+  },
+] satisfies AccommodationsItem[];

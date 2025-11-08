@@ -19,5 +19,5 @@ export const benefits: BenefitsItem[] = [
     description: "Enjoy on-site offers, exclusive deals and special add-ons.",
     src: "/Images/local-deals.jpg",
     alt: "Benefits Image 3",
-  } satisfies BenefitsItem,
-];
+  },
+] satisfies BenefitsItem[];

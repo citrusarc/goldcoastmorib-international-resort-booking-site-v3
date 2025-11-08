@@ -12,47 +12,17 @@ const defaultStatus: ItemStatus = {
 
 export const facilities: FacilitiesItem[] = [
   {
-    id: "business-center",
-    name: "Business Center",
-    src: ["/Images/business-center-1.jpg"],
-    alt: "Business center with computers and meeting spaces",
+    id: "beach",
+    name: "Beach",
+    src: ["/Images/beach-1.jpg"],
+    alt: "Beautiful beach with soft sand and clear water",
     description:
-      "Work efficiently with our fully equipped business center, offering computers, printers, and meeting rooms.",
-    tag: "Work",
+      "Relax and unwind on our pristine private beach, offering golden sands, gentle waves, and stunning sea views.",
+    tag: "Nature",
     details: [
-      { icon: Clock, label: "24/7 Access" },
-      { icon: DoubleCheck, label: "High-Speed Internet" },
-      { icon: Pin, label: "Private Workstations" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
-    id: "restaurants-cafe",
-    name: "Restaurants & Café",
-    src: ["/Images/restaurants-cafe-1.jpg"],
-    alt: "Dining area with tables and delicious food",
-    description:
-      "Enjoy a variety of local and international cuisines at our on-site restaurants and cozy café.",
-    tag: "Food",
-    details: [
-      { icon: Clock, label: "Breakfast to Dinner" },
-      { icon: DoubleCheck, label: "Vegetarian Options" },
-      { icon: Pin, label: "Indoor & Outdoor Seating" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
-    id: "free-parking",
-    name: "Free Parking",
-    src: ["/Images/free-parking-1.jpg"],
-    alt: "Spacious parking area for guests",
-    description:
-      "Convenient and secure parking available for all guests at no extra charge.",
-    tag: "Convenience",
-    details: [
-      { icon: Clock, label: "24/7 Access" },
-      { icon: DoubleCheck, label: "Ample Space" },
-      { icon: Pin, label: "Close to Main Entrance" },
+      { icon: Clock, label: "Open Daily" },
+      { icon: DoubleCheck, label: "Clean & Safe Area" },
+      { icon: Pin, label: "Direct Access from Resort" },
     ],
     status: { ...defaultStatus },
   },
@@ -68,6 +38,21 @@ export const facilities: FacilitiesItem[] = [
       { icon: Clock, label: "Open Daily" },
       { icon: DoubleCheck, label: "Family-Friendly" },
       { icon: Pin, label: "Safety Lifeguards" },
+    ],
+    status: { ...defaultStatus },
+  },
+  {
+    id: "restaurants-cafe",
+    name: "Restaurants & Café",
+    src: ["/Images/restaurants-cafe-1.jpg"],
+    alt: "Dining area with tables and delicious food",
+    description:
+      "Enjoy a variety of local and international cuisines at our on-site restaurants and cozy café.",
+    tag: "Food",
+    details: [
+      { icon: Clock, label: "Breakfast to Dinner" },
+      { icon: DoubleCheck, label: "Vegetarian Options" },
+      { icon: Pin, label: "Indoor & Outdoor Seating" },
     ],
     status: { ...defaultStatus },
   },
@@ -115,5 +100,35 @@ export const facilities: FacilitiesItem[] = [
       { icon: Pin, label: "Indoor Activities" },
     ],
     status: { ...defaultStatus },
-  } satisfies FacilitiesItem,
-];
+  },
+  {
+    id: "free-parking",
+    name: "Free Parking",
+    src: ["/Images/free-parking-1.jpg"],
+    alt: "Spacious parking area for guests",
+    description:
+      "Convenient and secure parking available for all guests at no extra charge.",
+    tag: "Convenience",
+    details: [
+      { icon: Clock, label: "24/7 Access" },
+      { icon: DoubleCheck, label: "Ample Space" },
+      { icon: Pin, label: "Close to Main Entrance" },
+    ],
+    status: { ...defaultStatus },
+  },
+  {
+    id: "business-center",
+    name: "Business Center",
+    src: ["/Images/business-center-1.jpg"],
+    alt: "Business center with computers and meeting spaces",
+    description:
+      "Work efficiently with our fully equipped business center, offering computers, printers, and meeting rooms.",
+    tag: "Work",
+    details: [
+      { icon: Clock, label: "24/7 Access" },
+      { icon: DoubleCheck, label: "High-Speed Internet" },
+      { icon: Pin, label: "Private Workstations" },
+    ],
+    status: { ...defaultStatus },
+  },
+] satisfies FacilitiesItem[];

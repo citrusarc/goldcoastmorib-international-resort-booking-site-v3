@@ -92,5 +92,5 @@ export const activities: ActivitiesItem[] = [
       "For thrill-seekers, soar above the coastline with tandem paragliding sessions at Bukit Jugra’s scenic cliffs.",
     tag: "Adventure",
     status: { ...defaultStatus },
-  } satisfies ActivitiesItem,
-];
+  },
+] satisfies ActivitiesItem[];
