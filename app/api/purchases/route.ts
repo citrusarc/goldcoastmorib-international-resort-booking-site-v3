@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     //   productName: "Deluxe Room",
     //   price: 1000, // in cents (MYR 10.00)
     //   brandId: "409eb80e-3782-4b1d-afa8-b779759266a5"
-    // } tetst
+    // }
 
     const res = await fetch("https://gate.chip-in.asia/api/v1/purchases/", {
       method: "POST",
