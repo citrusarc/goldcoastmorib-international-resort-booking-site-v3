@@ -95,7 +95,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {" "}
         <meta name="theme-color" content="#f59e0b" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta
