@@ -3,16 +3,16 @@ import Link from "next/link";
 import { ArrowRight } from "iconoir-react";
 
 import { cormorantGaramond } from "@/config/fonts";
-import { activities } from "@/data/activities";
+import { nearbyAttractions } from "@/data/nearby-attractions";
 
-export default function ActivitiesPage() {
+export default function NearbyAttractionsPage() {
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-white">
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/activities-hero-banner.jpg"
+            src="/Images/nearby-attractions-hero-banner.jpg"
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
@@ -27,23 +27,27 @@ export default function ActivitiesPage() {
             </p>
           </div>
         </div>
-        {activities.length === 0 ? (
+        {nearbyAttractions.length === 0 ? (
           <p className="text-center text-neutral-400 py-8">
-            No activities available.
+            No nearby attractions available.
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {activities.map((item, index) => (
+            {nearbyAttractions.map((item, index) => (
               <Link
                 key={index}
-                href={`/activities/${item.id}`}
+                href={`/nearby-attractions/${item.id}`}
                 className="group flex flex-col gap-4 h-[440px] shrink-0 rounded-2xl sm:rounded-4xl cursor-pointer border border-neutral-200 bg-white"
               >
                 <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
                   <Image
                     fill
                     src={Array.isArray(item.src) ? item.src[0] : item.src}
-                    alt={item.alt ? item.alt : `Activities Image ${index + 1}`}
+                    alt={
+                      item.alt
+                        ? item.alt
+                        : `Nearby Attractions Image ${index + 1}`
+                    }
                     className="object-cover"
                   />
                   <div className="absolute flex p-4 sm:p-6 bottom-0 space-x-2 w-full items-center justify-between">

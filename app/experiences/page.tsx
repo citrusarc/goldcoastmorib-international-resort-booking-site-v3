@@ -2,16 +2,16 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
-import { facilities } from "@/data/facilities";
+import { experiences } from "@/data/experiences";
 
-export default function FacilitiesPage() {
+export default function ExperiencesPage() {
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/facilities-hero-banner.jpg"
+            src="/Images/experiences-hero-banner.jpg"
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
@@ -27,12 +27,12 @@ export default function FacilitiesPage() {
           </div>
         </div>
 
-        {facilities.length === 0 ? (
+        {experiences.length === 0 ? (
           <p className="text-start text-neutral-400 py-8">
-            No facilities available.
+            No experiences available.
           </p>
         ) : (
-          facilities.map((item, index) => (
+          experiences.map((item, index) => (
             <div
               key={index}
               className={cn(

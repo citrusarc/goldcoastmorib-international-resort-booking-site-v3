@@ -189,6 +189,10 @@ export default function AccommodationsDetailsPage() {
     try {
       const payload = {
         accommodationsId: accommodation.id,
+        accommodation: {
+          name: accommodation.name,
+          id: accommodation.id,
+        },
         status: "confirmed",
         firstName: values.firstName,
         lastName: values.lastName,
@@ -200,9 +204,10 @@ export default function AccommodationsDetailsPage() {
         children: values.children,
         earlyCheckIn: values.earlyCheckIn || null,
         remarks: values.remarks?.trim() || null,
+        price: accommodation.price.current,
       };
 
-      const response = await fetch("/api/bookings", {
+      const response = await fetch("/api/purchases", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -216,8 +221,10 @@ export default function AccommodationsDetailsPage() {
         throw new Error(data.error || "Failed to submit booking");
       }
 
-      setSuccessMessage("Your booking has been submitted successfully!");
-      form.reset();
+      window.location.href = data.checkout_url;
+
+      // setSuccessMessage("Your booking has been submitted successfully!");
+      // form.reset();
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Error submitting booking";

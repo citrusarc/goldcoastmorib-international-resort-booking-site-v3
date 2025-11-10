@@ -73,7 +73,7 @@ export type BookingItem = {
   remarks?: string | null;
 };
 
-export type ActivitiesItem = {
+export type NearbyAttractionsItem = {
   id: string;
   name: string;
   src: string | string[];
@@ -83,7 +83,7 @@ export type ActivitiesItem = {
   status?: ItemStatus;
 };
 
-export type FacilitiesItem = {
+export type ExperiencesItem = {
   id: string;
   name: string;
   src: string | string[];

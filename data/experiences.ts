@@ -1,6 +1,6 @@
 import { Clock, DoubleCheck, Pin } from "iconoir-react";
 
-import { FacilitiesItem, ItemStatus } from "@/types";
+import { ExperiencesItem, ItemStatus } from "@/types";
 
 const defaultStatus: ItemStatus = {
   isDisabled: false,
@@ -10,7 +10,21 @@ const defaultStatus: ItemStatus = {
   isRecommended: false,
 };
 
-export const facilities: FacilitiesItem[] = [
+export const experiences: ExperiencesItem[] = [
+  {
+    id: "skyworld-playground",
+    name: "Skyworld Playground",
+    src: [
+      "/Images/skyworld-playground-1.jpg",
+      "/Images/skyworld-playground-2.jpg",
+      "/Images/skyworld-playground-3.jpg",
+    ],
+    alt: "Colorful tree-top net playground with duck decorations at Morib",
+    description:
+      "Enjoy a unique tree-top experience on bright net bridges and swings — a fun outdoor spot for kids to climb, play, and explore safely under the shade of tall pine trees.",
+    tag: "Family Fun",
+    status: { ...defaultStatus },
+  },
   {
     id: "beach",
     name: "Beach",
@@ -39,6 +53,34 @@ export const facilities: FacilitiesItem[] = [
       { icon: DoubleCheck, label: "Family-Friendly" },
       { icon: Pin, label: "Safety Lifeguards" },
     ],
+    status: { ...defaultStatus },
+  },
+  {
+    id: "seafood-catch",
+    name: "Seafood Catch",
+    src: [
+      "/Images/seafood-catch-1.jpg",
+      "/Images/seafood-catch-2.jpg",
+      "/Images/seafood-catch-3.jpg",
+    ],
+    alt: "Guests catching crabs and fish by the beach",
+    description:
+      "Join our seaside activity where guests can catch crabs and fish along the shore — an exciting hands-on experience for all ages.",
+    tag: "Activity",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "bubble-foam-play",
+    name: "Bubble Foam Play",
+    src: [
+      "/Images/bubble-foam-play-1.jpg",
+      "/Images/bubble-foam-play-2.jpg",
+      "/Images/bubble-foam-play-3.jpg",
+    ],
+    alt: "Children playing with bubbles and foam outdoors",
+    description:
+      "A bubbly and joyful play area where kids can jump, laugh, and have fun in a sea of foam — perfect for family bonding.",
+    tag: "Family Fun",
     status: { ...defaultStatus },
   },
   {
@@ -131,4 +173,4 @@ export const facilities: FacilitiesItem[] = [
     ],
     status: { ...defaultStatus },
   },
-] satisfies FacilitiesItem[];
+] satisfies ExperiencesItem[];

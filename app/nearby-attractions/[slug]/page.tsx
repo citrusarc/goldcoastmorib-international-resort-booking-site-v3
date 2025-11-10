@@ -6,21 +6,23 @@ import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
-import { activities } from "@/data/activities";
-import { ActivitiesItem } from "@/types";
+import { nearbyAttractions } from "@/data/nearby-attractions";
+import { NearbyAttractionsItem } from "@/types";
 
-export default function ActivitiesDetailsPage() {
+export default function NearbyAttractionsDetailsPage() {
   const params = useParams();
   const slug = params?.slug;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [imageCarousel, setImageCarousel] = useState<string[]>([]);
-  const [activity, setActivity] = useState<ActivitiesItem | null>(null);
+  const [attraction, setAttraction] = useState<NearbyAttractionsItem | null>(
+    null
+  );
 
   useEffect(() => {
     if (!slug) return;
-    const found = activities.find((a) => a.id === slug);
+    const found = nearbyAttractions.find((a) => a.id === slug);
     if (found) {
-      setActivity(found);
+      setAttraction(found);
       const srcArray = Array.isArray(found.src) ? found.src : [found.src];
       setImageCarousel(srcArray);
       setSelectedImage(srcArray[0]);
@@ -33,7 +35,7 @@ export default function ActivitiesDetailsPage() {
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/activities-details-hero-banner.jpg"
+            src="/Images/nearby-attractions-details-hero-banner.jpg"
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
@@ -49,9 +51,9 @@ export default function ActivitiesDetailsPage() {
           </div>
         </div>
 
-        {!activity ? (
+        {!attraction ? (
           <p className="text-center text-neutral-400 py-8">
-            No activities available.
+            No nearby attractions available.
           </p>
         ) : (
           <div>
@@ -62,7 +64,7 @@ export default function ActivitiesDetailsPage() {
                     <Image
                       fill
                       src={selectedImage}
-                      alt={activity.alt}
+                      alt={attraction.alt}
                       className="object-cover"
                     />
                   ) : (
@@ -86,7 +88,7 @@ export default function ActivitiesDetailsPage() {
                       <Image
                         fill
                         src={item}
-                        alt={`${activity.alt} ${index + 1}`}
+                        alt={`${attraction.alt} ${index + 1}`}
                         className="object-cover"
                       />
                     </div>
@@ -95,9 +97,9 @@ export default function ActivitiesDetailsPage() {
               </div>
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl font-semibold">
-                  {activity.name}
+                  {attraction.name}
                 </h2>
-                <p>{activity.description}</p>
+                <p>{attraction.description}</p>
               </div>
             </div>
           </div>

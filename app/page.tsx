@@ -13,7 +13,7 @@ import {
 
 import { cormorantGaramond, merriweather } from "@/config/fonts";
 import { overview } from "@/data/overview";
-import { activities } from "@/data/activities";
+import { nearbyAttractions } from "@/data/nearby-attractions";
 import { benefits } from "@/data/benefits";
 import { supabase } from "@/utils/supabase/client";
 import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
@@ -21,7 +21,7 @@ import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentAccommodations, setCurrentAccommodations] = useState(0);
-  const [currentActivities, setCurrentActivities] = useState(0);
+  const [currentNearbyAttractions, setCurrentNearbyAttractions] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(2);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -80,15 +80,15 @@ export default function Home() {
       setCurrentAccommodations((prev) =>
         Math.min(prev, Math.max(0, accommodations.length - newItems))
       );
-      setCurrentActivities((prev) =>
-        Math.min(prev, Math.max(0, activities.length - newItems))
+      setCurrentNearbyAttractions((prev) =>
+        Math.min(prev, Math.max(0, nearbyAttractions.length - newItems))
       );
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [accommodations.length, activities.length]);
+  }, [accommodations.length, nearbyAttractions.length]);
 
   const tagColor = (tag?: string) => {
     switch (tag?.toLowerCase()) {
@@ -323,11 +323,11 @@ export default function Home() {
           <div className="flex items-center justify-between text-neutral-400">
             <div className="space-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
-                Nearby activities
+                Nearby attractions
               </h2>
             </div>
             <Link
-              href="/activities"
+              href="/nearby-attractions"
               className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
             >
               <span className="hidden sm:inline">See What&apos;s Around</span>
@@ -339,9 +339,9 @@ export default function Home() {
           <div className="relative flex items-center">
             <button
               onClick={() =>
-                setCurrentActivities((prev) =>
+                setCurrentNearbyAttractions((prev) =>
                   prev <= 0
-                    ? activities.slice(0, 5).length - itemsToShow
+                    ? nearbyAttractions.slice(0, 5).length - itemsToShow
                     : prev - 1
                 )
               }
@@ -354,15 +354,15 @@ export default function Home() {
               <div
                 className="flex transition-transform duration-500 ease-in-out gap-4"
                 style={{
-                  transform: `translateX(calc(-${currentActivities} * ((100% - ${
+                  transform: `translateX(calc(-${currentNearbyAttractions} * ((100% - ${
                     (itemsToShow - 1) * 16
                   }px) / ${itemsToShow} + 16px)))`,
                 }}
               >
-                {activities.slice(0, 5).map((item, index) => (
+                {nearbyAttractions.slice(0, 5).map((item, index) => (
                   <Link
                     key={index}
-                    href={`/activities/${item.id}`}
+                    href={`/nearby-attractions/${item.id}`}
                     className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden"
                     style={{
                       flex: `0 0 calc((100% - ${
@@ -375,7 +375,9 @@ export default function Home() {
                         fill
                         src={Array.isArray(item.src) ? item.src[0] : item.src}
                         alt={
-                          item.alt ? item.alt : `Activities Image ${index + 1}`
+                          item.alt
+                            ? item.alt
+                            : `Nearby Attractions Image ${index + 1}`
                         }
                         className="object-cover"
                       />
@@ -392,8 +394,8 @@ export default function Home() {
 
             <button
               onClick={() =>
-                setCurrentActivities((prev) =>
-                  prev >= activities.slice(0, 5).length - itemsToShow
+                setCurrentNearbyAttractions((prev) =>
+                  prev >= nearbyAttractions.slice(0, 5).length - itemsToShow
                     ? 0
                     : prev + 1
                 )
