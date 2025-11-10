@@ -2,7 +2,6 @@ import {
   BedIcon,
   BeachBallIcon,
   CalendarDotsIcon,
-  ForkKnifeIcon,
   LockersIcon,
 } from "@phosphor-icons/react";
 
