@@ -207,7 +207,7 @@ export default function AccommodationsDetailsPage() {
         price: accommodation.price.current,
       };
 
-      const response = await fetch("/api/purchases", {
+      const response = await fetch("/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
