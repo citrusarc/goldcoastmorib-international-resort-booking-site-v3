@@ -10,42 +10,45 @@ const defaultStatus: ItemStatus = {
 
 export const nearbyAttractions: NearbyAttractionsItem[] = [
   {
-    id: "beach-walk",
-    name: "Beach Walks & Sunset Viewing",
-    src: [
-      "/Images/beach-walk-1.jpg",
-      "/Images/beach-walk-2.jpg",
-      "/Images/beach-walk-3.jpg",
-    ],
-    alt: "People walking on Morib Beach during sunset",
-    description:
-      "Take a relaxing stroll along Morib Beach and enjoy breathtaking golden-hour sunsets over the Straits of Malacca.",
-    tag: "Relaxation",
-    status: { ...defaultStatus },
-  },
-  {
     id: "atv-beach-ride",
-    name: "ATV Beach Ride",
+    name: "ATV Coastal Adventure Ride",
     src: [
       "/Images/atv-beach-ride-1.jpg",
       "/Images/atv-beach-ride-2.jpg",
       "/Images/atv-beach-ride-3.jpg",
     ],
-    alt: "ATV riders driving along the beach",
+    alt: "Guests riding ATVs along the sandy Morib coastline",
     description:
-      "Ride an ATV across the sandy coastline for a thrilling beach adventure — perfect for families and groups of friends.",
+      "Hop on an ATV and explore the coastal sands of Morib for an exciting beach adventure — perfect for families, couples, and thrill seekers.",
     tag: "Adventure",
     status: { ...defaultStatus },
   },
-
   {
-    id: "birthday-party",
-    name: "Birthday Party Celebration",
-    src: ["/Images/birthday-party-1.jpg", "/Images/birthday-party-2.jpg"],
-    alt: "Beachside birthday celebration setup",
+    id: "team-building",
+    name: "Outdoor Team Building",
+    src: [
+      "/Images/team-building-1.jpg",
+      "/Images/team-building-2.jpg",
+      "/Images/team-building-3.jpg",
+    ],
+    alt: "Corporate team engaging in outdoor team-building activities by the beach",
     description:
-      "Celebrate birthdays in style with customizable packages, decorations, and catering for unforgettable moments by the beach.",
-    tag: "Event",
+      "Strengthen teamwork and leadership through fun and challenging outdoor activities designed for corporate retreats, schools, and groups.",
+    tag: "Corporate",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "telematch-games",
+    name: "Telematch Beach Games",
+    src: [
+      "/Images/telematch-games-1.jpg",
+      "/Images/telematch-games-2.jpg",
+      "/Images/telematch-games-3.jpg",
+    ],
+    alt: "Groups competing in beach telematch games under the sun",
+    description:
+      "Enjoy a series of lively and competitive games by the beach that promote teamwork, laughter, and lasting memories for everyone.",
+    tag: "Activity",
     status: { ...defaultStatus },
   },
   {
@@ -56,38 +59,75 @@ export const nearbyAttractions: NearbyAttractionsItem[] = [
       "/Images/fireflies-cruise-2.jpg",
       "/Images/fireflies-cruise-3.jpg",
     ],
-    alt: "Boat cruise at night surrounded by glowing fireflies",
+    alt: "Boat gliding through mangroves surrounded by glowing fireflies",
     description:
-      "Take an enchanting night boat ride through mangroves illuminated by thousands of fireflies — a magical sight to remember.",
+      "Experience a serene evening boat cruise through mangrove forests illuminated by thousands of magical fireflies — a must-see natural wonder.",
     tag: "Nature",
     status: { ...defaultStatus },
   },
   {
     id: "bukit-jugra-lighthouse",
-    name: "Bukit Jugra Lighthouse Visit",
+    name: "Bukit Jugra Lighthouse & Hill Viewpoint",
     src: [
       "/Images/bukit-jugra-lighthouse-1.jpg",
       "/Images/bukit-jugra-lighthouse-2.jpg",
       "/Images/bukit-jugra-lighthouse-3.jpg",
     ],
-    alt: "Jugra Lighthouse overlooking the coast",
+    alt: "Historic lighthouse on Bukit Jugra hill overlooking the coast",
     description:
-      "Visit Bukit Jugra Lighthouse for panoramic coastal views, photo opportunities, and a glimpse of local heritage.",
+      "Hike or drive up Bukit Jugra to visit its iconic lighthouse and enjoy sweeping views of the coastline, the river, and the countryside.",
     tag: "Sightseeing",
     status: { ...defaultStatus },
   },
   {
     id: "paragliding-jugra",
-    name: "Paragliding at Bukit Jugra",
+    name: "Paragliding Experience at Bukit Jugra",
     src: [
       "/Images/paragliding-jugra-1.jpg",
       "/Images/paragliding-jugra-2.jpg",
       "/Images/paragliding-jugra-3.jpg",
     ],
-    alt: "Paragliding above Jugra hills",
+    alt: "Paragliders soaring above the scenic hills and coastline of Jugra",
     description:
-      "Soar above the coastline with tandem paragliding sessions at Bukit Jugra’s scenic cliffs — an unforgettable thrill for adventure seekers.",
+      "Take flight with a tandem paragliding session at Bukit Jugra and enjoy breathtaking views of the hills, river, and sea below — perfect for adventure seekers.",
     tag: "Adventure",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "birthday-party",
+    name: "Birthday Party by the Beach",
+    src: ["/Images/birthday-party-1.jpg", "/Images/birthday-party-2.jpg"],
+    alt: "Beachside birthday party setup with balloons and colorful decorations",
+    description:
+      "Celebrate your special day with a beachside party featuring custom themes, catering, and decorations — fun for kids, teens, and adults alike.",
+    tag: "Event",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "wedding-event",
+    name: "Beachfront Wedding Celebration",
+    src: [
+      "/Images/wedding-event-1.jpg",
+      "/Images/wedding-event-2.jpg",
+      "/Images/wedding-event-3.jpg",
+    ],
+    alt: "Romantic wedding ceremony setup by the beach with floral arch and seating",
+    description:
+      "Say ‘I do’ by the sea with a romantic beachfront wedding, complete with stunning decor, catering, and event coordination tailored to your dream day.",
+    tag: "Event",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "anniversary-celebration",
+    name: "Romantic Anniversary Celebration",
+    src: [
+      "/Images/anniversary-celebration-1.jpg",
+      "/Images/anniversary-celebration-2.jpg",
+    ],
+    alt: "Romantic candlelit dinner setup for couple celebrating anniversary by the beach",
+    description:
+      "Celebrate your love with an intimate beachfront dinner or private setup under the stars — perfect for couples marking a special milestone.",
+    tag: "Event",
     status: { ...defaultStatus },
   },
 ] satisfies NearbyAttractionsItem[];
