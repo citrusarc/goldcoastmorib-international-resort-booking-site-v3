@@ -17,7 +17,7 @@ export const experiences: ExperiencesItem[] = [
     src: ["/Images/skyworld-playground-1.jpg"],
     alt: "Tree-top net playground surrounded by pine trees at Morib Resort",
     description:
-      "Experience Malaysia’s first Skyworld Adventure Playground, a vibrant treetop adventure with colorful net bridges, swings, and playful duck decorations. Perfect for kids to climb, play, and explore under the shady pines.",
+      "Experience Malaysia’s first Skyworld Adventure Playground, a vibrant treetop adventure with colorful net bridges, swings, and playful duck decorations.",
     tag: "Family",
     details: [
       { icon: Clock, label: "Open Daily" },
