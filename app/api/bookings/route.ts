@@ -8,8 +8,8 @@ import { formatDate } from "@/utils/formatDate";
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
 const CHIP_TOKEN = process.env.CHIP_TEST_API_TOKEN!; // //
-const SUCCESS_REDIRECT = `/`;
-const FAILURE_REDIRECT = `/`;
+const SUCCESS_REDIRECT = `/`; // //
+const FAILURE_REDIRECT = `/`; // //
 
 // GET all bookings
 export async function GET(req: NextRequest) {
