@@ -321,7 +321,7 @@ export default function Home() {
               </h2>
             </div>
             <Link
-              href="/nearby-attractions"
+              href="/nearby"
               className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
             >
               <span className="hidden sm:inline">See What&apos;s Around</span>
@@ -354,7 +354,7 @@ export default function Home() {
                 {nearby.slice(0, 5).map((item, index) => (
                   <Link
                     key={index}
-                    href={`/nearby-attractions/${item.id}`}
+                    href={`/nearby/${item.id}`}
                     className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden"
                     style={{
                       flex: `0 0 calc((100% - ${

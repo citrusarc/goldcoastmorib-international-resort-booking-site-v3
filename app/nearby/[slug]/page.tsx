@@ -39,12 +39,12 @@ export default function NearbyDetailsPage() {
           />
           <div className="absolute inset-0 bg-black/15" />
           <div className="absolute inset-0 flex flex-col gap-4 pb-24 items-center justify-end text-white">
-            <h1 className="text-lg sm:text-xl">Discover the Fun</h1>
+            <h1 className="text-lg sm:text-xl">Dive Into Excitement</h1>
             <p
               className={`block leading-none text-[40px] sm:text-[72px] text-center ${cormorantGaramond.className}`}
             >
-              Find New Joys <br />
-              Create Memories
+              Chase New Smiles <br />
+              Collect Moments
             </p>
           </div>
         </div>

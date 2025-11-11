@@ -6,52 +6,6 @@ import { cormorantGaramond } from "@/config/fonts";
 import { activitiesAndEvents } from "@/data/activities-and-events";
 
 export default function ActivitiesAndEventsPage() {
-  const formatDateForCalendar = (date: Date) => {
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    return (
-      date.getUTCFullYear().toString() +
-      pad(date.getUTCMonth() + 1) +
-      pad(date.getUTCDate()) +
-      "T" +
-      pad(date.getUTCHours()) +
-      pad(date.getUTCMinutes()) +
-      pad(date.getUTCSeconds()) +
-      "Z"
-    );
-  };
-
-  const getGoogleCalendarLink = (
-    activityAndEvent: (typeof activitiesAndEvents)[number]
-  ) => {
-    let startDate: Date;
-    let endDate: Date;
-
-    if (
-      activityAndEvent.date &&
-      activityAndEvent.startTime &&
-      activityAndEvent.endTime
-    ) {
-      startDate = new Date(
-        `${activityAndEvent.date}T${activityAndEvent.startTime}:00`
-      );
-      endDate = new Date(
-        `${activityAndEvent.date}T${activityAndEvent.endTime}:00`
-      );
-    } else {
-      const now = new Date();
-      startDate = now;
-      endDate = new Date(now.getTime() + 60 * 60 * 1000);
-    }
-
-    const start = formatDateForCalendar(startDate);
-    const end = formatDateForCalendar(endDate);
-    const title = encodeURIComponent(activityAndEvent.name);
-    const details = encodeURIComponent(activityAndEvent.description || "");
-    const location = encodeURIComponent(activityAndEvent.location || "");
-
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
-  };
-
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">

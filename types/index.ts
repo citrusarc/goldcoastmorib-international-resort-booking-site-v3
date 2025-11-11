@@ -75,6 +75,17 @@ export type ActivitiesAndEventsItem = {
   alt: string;
   description?: string;
   tag?: string;
+  details?: IconProps[];
+  status?: ItemStatus;
+};
+
+export type EventsItem = {
+  id: string;
+  name: string;
+  src: string | string[];
+  alt: string;
+  description?: string;
+  tag?: string;
   date?: string;
   startTime?: string;
   endTime?: string;

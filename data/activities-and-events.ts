@@ -25,8 +25,8 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
     name: "Telimatch",
     src: [
       "/Images/telimatch-1.jpg",
-      "/Images/telimatch--2.jpg",
-      "/Images/telimatch--3.jpg",
+      "/Images/telimatch-2.jpg",
+      "/Images/telimatch-3.jpg",
     ],
     alt: "Telimatch",
     // //
@@ -68,7 +68,11 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
   {
     id: "anniversary",
     name: "Anniversary",
-    src: ["/Images/anniversary-1.jpg", "/Images/anniversary-2.jpg"],
+    src: [
+      "/Images/anniversary-1.jpg",
+      "/Images/anniversary-2.jpg",
+      "/Images/anniversary-3.jpg",
+    ],
     alt: "Anniversary",
     // //
     description:
