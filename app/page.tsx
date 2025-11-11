@@ -13,19 +13,19 @@ import {
 
 import { cormorantGaramond, merriweather } from "@/config/fonts";
 import { overview } from "@/data/overview";
-import { nearbyAttractions } from "@/data/nearby-attractions";
+import { nearby } from "@/data/nearby";
 import { benefits } from "@/data/benefits";
 import { supabase } from "@/utils/supabase/client";
-import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
+import { mapRoomsData } from "@/lib/mapRoomsData";
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentAccommodations, setCurrentAccommodations] = useState(0);
+  const [currentRooms, setCurrentRooms] = useState(0);
   const [currentNearbyAttractions, setCurrentNearbyAttractions] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(2);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [accommodations, setAccommodations] = useState<any[]>([]);
+  const [rooms, setRooms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const minSwipeDistance = 50;
 
@@ -53,22 +53,22 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const fetchAccommodations = async () => {
+    const fetchRooms = async () => {
       try {
         const { data, error } = await supabase
-          .from("accommodations")
+          .from("rooms")
           .select("*")
           .eq("status->>isHidden", "false");
 
         if (error) throw error;
-        setAccommodations(data.map(mapAccommodationsData));
+        setRooms(data.map(mapRoomsData));
       } catch (err) {
-        console.error("Error loading accommodations:", err);
+        console.error("Error loading rooms:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchAccommodations();
+    fetchRooms();
   }, []);
 
   useEffect(() => {
@@ -77,18 +77,18 @@ export default function Home() {
       const newItems = width < 640 ? 1 : width < 1024 ? 1 : 2;
       setItemsToShow(newItems);
 
-      setCurrentAccommodations((prev) =>
-        Math.min(prev, Math.max(0, accommodations.length - newItems))
+      setCurrentRooms((prev) =>
+        Math.min(prev, Math.max(0, rooms.length - newItems))
       );
       setCurrentNearbyAttractions((prev) =>
-        Math.min(prev, Math.max(0, nearbyAttractions.length - newItems))
+        Math.min(prev, Math.max(0, nearby.length - newItems))
       );
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [accommodations.length, nearbyAttractions.length]);
+  }, [rooms.length, nearby.length]);
 
   const tagColor = (tag?: string) => {
     switch (tag?.toLowerCase()) {
@@ -203,26 +203,24 @@ export default function Home() {
           <div className="flex justify-center items-center h-[400px]">
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-amber-500 border-solid" />
           </div>
-        ) : accommodations.length === 0 ? (
-          <p className="text-center text-zinc-500 py-8">
-            No accommodations available.
-          </p>
+        ) : rooms.length === 0 ? (
+          <p className="text-center text-zinc-500 py-8">No rooms available.</p>
         ) : (
           <div className="space-y-8">
             <div className="flex items-center justify-between text-neutral-400">
               <div className="space-y-2">
                 <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
-                  Explore our accommodations
+                  Explore our rooms
                 </h2>
                 <p className="text-neutral-600">
                   Find the perfect place to stay
                 </p>
               </div>
               <Link
-                href="/accommodations"
+                href="/rooms"
                 className="group flex gap-2 items-center cursor-pointer hover:text-blue-600"
               >
-                <span className="hidden sm:inline">See All Accommodations</span>
+                <span className="hidden sm:inline">See All Rooms</span>
                 <div className="flex sm:hidden w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm bg-neutral-100 group-hover:bg-blue-500/50">
                   <ArrowRight className="w-5 h-5" />
                 </div>
@@ -232,9 +230,9 @@ export default function Home() {
             <div className="relative flex items-center">
               <button
                 onClick={() =>
-                  setCurrentAccommodations((prev) =>
+                  setCurrentRooms((prev) =>
                     prev <= 0
-                      ? accommodations.slice(0, 5).length - itemsToShow
+                      ? rooms.slice(0, 5).length - itemsToShow
                       : prev - 1
                   )
                 }
@@ -247,15 +245,15 @@ export default function Home() {
                 <div
                   className="flex transition-transform duration-500 ease-in-out gap-4"
                   style={{
-                    transform: `translateX(calc(-${currentAccommodations} * ((100% - ${
+                    transform: `translateX(calc(-${currentRooms} * ((100% - ${
                       (itemsToShow - 1) * 16
                     }px) / ${itemsToShow} + 16px)))`,
                   }}
                 >
-                  {accommodations.slice(0, 5).map((item, index) => (
+                  {rooms.slice(0, 5).map((item, index) => (
                     <Link
                       key={index}
-                      href={`/accommodations/${item.id}`}
+                      href={`/rooms/${item.id}`}
                       className="flex flex-col sm:flex-row gap-4 p-2 sm:p-4 h-[440px] sm:h-auto shrink-0 rounded-2xl sm:rounded-4xl border border-neutral-200 bg-white"
                       style={{
                         flex: `0 0 calc((100% - ${
@@ -267,11 +265,7 @@ export default function Home() {
                         <Image
                           fill
                           src={Array.isArray(item.src) ? item.src[0] : item.src}
-                          alt={
-                            item.alt
-                              ? item.alt
-                              : `Accommodations Image ${index + 1}`
-                          }
+                          alt={item.alt ? item.alt : `Rooms Image ${index + 1}`}
                           className="object-cover"
                         />
                       </div>
@@ -306,8 +300,8 @@ export default function Home() {
 
               <button
                 onClick={() =>
-                  setCurrentAccommodations((prev) =>
-                    prev >= accommodations.slice(0, 5).length - itemsToShow
+                  setCurrentRooms((prev) =>
+                    prev >= rooms.slice(0, 5).length - itemsToShow
                       ? 0
                       : prev + 1
                   )
@@ -340,9 +334,7 @@ export default function Home() {
             <button
               onClick={() =>
                 setCurrentNearbyAttractions((prev) =>
-                  prev <= 0
-                    ? nearbyAttractions.slice(0, 5).length - itemsToShow
-                    : prev - 1
+                  prev <= 0 ? nearby.slice(0, 5).length - itemsToShow : prev - 1
                 )
               }
               className="absolute left-0 z-10 flex w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"
@@ -359,7 +351,7 @@ export default function Home() {
                   }px) / ${itemsToShow} + 16px)))`,
                 }}
               >
-                {nearbyAttractions.slice(0, 5).map((item, index) => (
+                {nearby.slice(0, 5).map((item, index) => (
                   <Link
                     key={index}
                     href={`/nearby-attractions/${item.id}`}
@@ -395,9 +387,7 @@ export default function Home() {
             <button
               onClick={() =>
                 setCurrentNearbyAttractions((prev) =>
-                  prev >= nearbyAttractions.slice(0, 5).length - itemsToShow
-                    ? 0
-                    : prev + 1
+                  prev >= nearby.slice(0, 5).length - itemsToShow ? 0 : prev + 1
                 )
               }
               className="absolute right-0 z-10 flex w-12 h-12 items-center justify-center shrink-0 rounded-full cursor-pointer backdrop-blur-sm text-amber-500 hover:text-amber-600 bg-amber-100 hover:bg-amber-500/50"

@@ -9,17 +9,14 @@ export async function GET(
     const { id } = await context.params;
 
     const { data, error } = await supabase
-      .from("accommodations")
+      .from("rooms")
       .select("*")
       .eq("id", id)
       .single();
 
     if (error || !data) {
-      console.error("Supabase accommodation fetch error:", error);
-      return NextResponse.json(
-        { error: "Accommodations not found" },
-        { status: 404 }
-      );
+      console.error("Supabase room fetch error:", error);
+      return NextResponse.json({ error: "Rooms not found" }, { status: 404 });
     }
 
     let price = data.price;
@@ -52,7 +49,7 @@ export async function GET(
   } catch (err: unknown) {
     const message =
       err instanceof Error ? err.message : "Unknown error occurred";
-    console.error("Error fetching accommodations:", message);
+    console.error("Error fetching rooms:", message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -36,8 +36,8 @@ import { Plus, Minus } from "iconoir-react";
 import { cn } from "@/lib/utils";
 
 import { cormorantGaramond } from "@/config/fonts";
-import { AccommodationsItem, BookingItem } from "@/types";
-import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
+import { RoomsItem } from "@/types";
+import { mapRoomsData } from "@/lib/mapRoomsData";
 import { SuccessModal, ErrorModal } from "@/components/ui/Modal";
 
 const earlyCheckInSlots = Array.from({ length: 13 }, (_, i) => {
@@ -131,7 +131,7 @@ function Stepper({
   );
 }
 
-export default function AccommodationsDetailsPage() {
+export default function RoomsDetailsPage() {
   const { slug } = useParams();
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -139,9 +139,7 @@ export default function AccommodationsDetailsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [accommodation, setAccommodation] = useState<AccommodationsItem | null>(
-    null
-  );
+  const [room, setRoom] = useState<RoomsItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
@@ -180,7 +178,7 @@ export default function AccommodationsDetailsPage() {
   } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!accommodation) return;
+    if (!room) return;
 
     setSubmitting(true);
     setErrorMessage(null);
@@ -188,10 +186,10 @@ export default function AccommodationsDetailsPage() {
 
     try {
       const payload = {
-        accommodationsId: accommodation.id,
-        accommodation: {
-          name: accommodation.name,
-          id: accommodation.id,
+        roomsId: room.id,
+        room: {
+          name: room.name,
+          id: room.id,
         },
         status: "confirmed",
         firstName: values.firstName,
@@ -204,7 +202,7 @@ export default function AccommodationsDetailsPage() {
         children: values.children,
         earlyCheckIn: values.earlyCheckIn || null,
         remarks: values.remarks?.trim() || null,
-        price: accommodation.price.current,
+        price: room.price.current,
       };
 
       const response = await fetch("/api/bookings", {
@@ -235,33 +233,33 @@ export default function AccommodationsDetailsPage() {
   }
 
   useEffect(() => {
-    const fetchAccommodation = async () => {
+    const fetchRoom = async () => {
       try {
-        const res = await fetch(`/api/accommodations/${slug}`);
-        if (!res.ok) throw new Error("Failed to fetch accommodations");
+        const res = await fetch(`/api/rooms/${slug}`);
+        if (!res.ok) throw new Error("Failed to fetch rooms");
         const data = await res.json();
-        const mappedData = mapAccommodationsData(data);
-        setAccommodation(mappedData);
+        const mappedData = mapRoomsData(data);
+        setRoom(mappedData);
       } catch (err) {
-        console.error("Error fetching accommodation:", err);
-        setErrorMessage("Failed to load accommodation details");
+        console.error("Error fetching room:", err);
+        setErrorMessage("Failed to load room details");
       } finally {
         setLoading(false);
       }
     };
-    if (slug) fetchAccommodation();
+    if (slug) fetchRoom();
   }, [slug]);
 
   useEffect(() => {
-    if (!accommodation?.id) return;
+    if (!room?.id) return;
 
     const fetchUnavailableDates = async () => {
       const { checkIn, checkOut } = form.getValues();
 
       try {
         const res = await fetch(
-          `/api/accommodations/availability?id=${
-            accommodation.id
+          `/api/rooms/availability?id=${
+            room.id
           }&checkin=${checkIn.toISOString()}&checkout=${checkOut.toISOString()}`
         );
 
@@ -286,14 +284,12 @@ export default function AccommodationsDetailsPage() {
     };
 
     fetchUnavailableDates();
-  }, [accommodation?.id, form]);
+  }, [room?.id, form]);
 
   useEffect(() => {
-    if (!accommodation?.src) return;
+    if (!room?.src) return;
 
-    const src = Array.isArray(accommodation.src)
-      ? accommodation.src[0]
-      : accommodation.src;
+    const src = Array.isArray(room.src) ? room.src[0] : room.src;
 
     const parts = src.split("/");
     const file = parts.pop()!;
@@ -307,7 +303,7 @@ export default function AccommodationsDetailsPage() {
 
     setSelectedImage(allImages[0]);
     setImageCarousel(allImages);
-  }, [accommodation?.src]);
+  }, [room?.src]);
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
@@ -315,7 +311,7 @@ export default function AccommodationsDetailsPage() {
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/accommodations-details-hero-banner.jpg"
+            src="/Images/room-details-hero-banner.jpg"
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
@@ -335,9 +331,9 @@ export default function AccommodationsDetailsPage() {
           <div className="flex justify-center items-center h-[400px]">
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-amber-500 border-solid" />
           </div>
-        ) : !accommodation ? (
+        ) : !room ? (
           <p className="text-center text-neutral-400 py-8">
-            No accommodations available.
+            No rooms available.
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16">
@@ -348,7 +344,7 @@ export default function AccommodationsDetailsPage() {
                     <Image
                       fill
                       src={selectedImage}
-                      alt={accommodation.alt}
+                      alt={room.alt}
                       className="object-cover"
                     />
                   ) : (
@@ -372,7 +368,7 @@ export default function AccommodationsDetailsPage() {
                       <Image
                         fill
                         src={item}
-                        alt={`${accommodation.alt} ${index + 1}`}
+                        alt={`${room.alt} ${index + 1}`}
                         className="object-cover"
                       />
                     </div>
@@ -382,19 +378,19 @@ export default function AccommodationsDetailsPage() {
               <div className="space-y-6">
                 <div className="space-y-2">
                   <h2 className="text-2xl sm:text-3xl font-semibold">
-                    {accommodation.name}
+                    {room.name}
                   </h2>
                   <p
                     className={`px-2 py-1 w-fit rounded-full ${tagColor(
-                      accommodation.tag
+                      room.tag
                     )}`}
                   >
-                    {accommodation.tag}
+                    {room.tag}
                   </p>
                 </div>
-                <p>{accommodation.description}</p>
+                <p>{room.description}</p>
                 <ul className="flex flex-col gap-4 justify-between sm:justify-start text-center sm:text-start">
-                  {accommodation.facilities?.map((item) => {
+                  {room.facilities?.map((item) => {
                     if (!item?.icon) return null;
                     const Icon = item.icon;
                     const itemClassName =
@@ -408,8 +404,8 @@ export default function AccommodationsDetailsPage() {
                   })}
                 </ul>
                 <p className="text-2xl sm:text-3xl font-semibold text-blue-600 ">
-                  {accommodation.price.currency}
-                  {accommodation.price.current}
+                  {room.price.currency}
+                  {room.price.current}
                   <span className="text-xl sm:text-2xl font-normal text-neutral-400">
                     /night
                   </span>
@@ -535,14 +531,11 @@ export default function AccommodationsDetailsPage() {
                                 value={field.value}
                                 onChange={(v) => {
                                   const otherValue = form.getValues("children");
-                                  if (v + otherValue <= accommodation.maxGuests)
+                                  if (v + otherValue <= room.maxGuests)
                                     field.onChange(v);
                                 }}
                                 min={1}
-                                max={
-                                  accommodation.maxGuests -
-                                  form.watch("children")
-                                }
+                                max={room.maxGuests - form.watch("children")}
                               />
                             </FormControl>
                             <FormMessage />
@@ -568,13 +561,11 @@ export default function AccommodationsDetailsPage() {
                                 value={field.value}
                                 onChange={(v) => {
                                   const otherValue = form.getValues("adults");
-                                  if (v + otherValue <= accommodation.maxGuests)
+                                  if (v + otherValue <= room.maxGuests)
                                     field.onChange(v);
                                 }}
                                 min={0}
-                                max={
-                                  accommodation.maxGuests - form.watch("adults")
-                                }
+                                max={room.maxGuests - form.watch("adults")}
                               />
                             </FormControl>
                             <FormMessage />
@@ -847,8 +838,8 @@ export default function AccommodationsDetailsPage() {
                       {submitting
                         ? "Booking..."
                         : `Book Now (RM${
-                            accommodation
-                              ? accommodation.price.current *
+                            room
+                              ? room.price.current *
                                 ((form.watch("checkOut")!.getTime() -
                                   form.watch("checkIn")!.getTime()) /
                                   (1000 * 60 * 60 * 24))
@@ -870,7 +861,7 @@ export default function AccommodationsDetailsPage() {
         isOpen={!!successMessage}
         onClose={() => {
           setSuccessMessage(null);
-          router.push("/accommodations");
+          router.push("/rooms");
         }}
       />
       <ErrorModal

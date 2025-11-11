@@ -126,7 +126,7 @@ export default function RootLayout({
               name: "Gold Coast Morib International Resort",
               alternateName: "Gold Coast Morib Resort",
               description:
-                "Gold Coast Morib International Resort is a premier beachfront destination in Malaysia offering family-friendly accommodations, water park fun, and scenic coastal escapes.",
+                "Gold Coast Morib International Resort is a premier beachfront destination in Malaysia offering family-friendly rooms, water park fun, and scenic coastal escapes.",
               url: "https://www.goldcoastmoribresort.com",
               logo: "https://www.goldcoastmoribresort.com/Images/brand-logo.png",
               image: "https://www.goldcoastmoribresort.com/Images/banner.png",

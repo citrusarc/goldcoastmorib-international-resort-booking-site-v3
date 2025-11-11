@@ -1,8 +1,8 @@
 import {
   BedIcon,
   BeachBallIcon,
-  CalendarDotsIcon,
   LockersIcon,
+  TreePalmIcon,
 } from "@phosphor-icons/react";
 
 import { ItemStatus, NavItem } from "@/types";
@@ -20,31 +20,31 @@ const defaultStatus: ItemStatus = {
 export const siteConfig = {
   navItems: [
     {
-      id: "accommodations",
-      name: "Accommodations",
-      href: "/accommodations",
+      id: "rooms",
+      name: "Rooms",
+      href: "/rooms",
       icon: BedIcon,
       status: { ...defaultStatus },
     },
     {
-      id: "experiences",
-      name: "Experiences",
-      href: "/experiences",
+      id: "facilities",
+      name: "Facilities",
+      href: "/facilities",
       icon: LockersIcon,
       status: { ...defaultStatus },
     },
     {
-      id: "nearby-attractions",
-      name: "Nearby Attractions",
-      href: "/nearby-attractions",
+      id: "activities-and-events",
+      name: "Activities & Events",
+      href: "/activities-and-events",
       icon: BeachBallIcon,
       status: { ...defaultStatus },
     },
     {
-      id: "events",
-      name: "Events",
-      href: "/events",
-      icon: CalendarDotsIcon,
+      id: "nearby",
+      name: "Nearby",
+      href: "/nearby",
+      icon: TreePalmIcon,
       status: { ...defaultStatus },
     },
   ] satisfies NavItem[],

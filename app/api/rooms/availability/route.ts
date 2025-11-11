@@ -28,10 +28,7 @@ export async function GET(req: NextRequest) {
     const checkout = searchParams.get("checkout");
 
     if (!id) {
-      return NextResponse.json(
-        { error: "Missing accommodation ID" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing room ID" }, { status: 400 });
     }
 
     if (!checkin || !checkout) {
@@ -44,7 +41,7 @@ export async function GET(req: NextRequest) {
     const { data: bookings, error } = await supabase
       .from("bookings")
       .select("checkInDate, checkOutDate")
-      .eq("accommodationsId", id)
+      .eq("roomsId", id)
       .eq("status", "confirmed")
       .or(`checkOutDate.gt.${checkin},checkInDate.lt.${checkout}`);
 

@@ -4,7 +4,7 @@ export function bookingEmailTemplate({
   firstName,
   bookingNumber,
   createdAt,
-  accommodationsName,
+  roomsName,
   checkInDate,
   checkOutDate,
   adults,
@@ -39,7 +39,7 @@ export function bookingEmailTemplate({
           </tr>
           <tr style="background-color:#ffffff;">
             <td style="padding:8px; font-weight:bold;">Room Type</td>
-            <td style="padding:8px;">${accommodationsName}</td>
+            <td style="padding:8px;">${roomsName}</td>
           </tr>
           <tr style="background-color:#f9f9f9;">
             <td style="padding:8px; font-weight:bold;">Check In</td>

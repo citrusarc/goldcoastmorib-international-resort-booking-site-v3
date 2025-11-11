@@ -22,15 +22,6 @@ export type NavItem = {
   status?: ItemStatus;
 };
 
-export type SlideItem = { src: string; alt: string };
-
-export type BenefitsItem = {
-  name: string;
-  description?: string;
-  src: string;
-  alt: string;
-};
-
 export type PriceItem = {
   currency: string;
   original: number;
@@ -42,7 +33,16 @@ export type IconProps = {
   label?: string;
 };
 
-export type AccommodationsItem = {
+export type SlideItem = { src: string; alt: string };
+
+export type BenefitsItem = {
+  name: string;
+  description?: string;
+  src: string;
+  alt: string;
+};
+
+export type RoomsItem = {
   id: string;
   name: string;
   src: string | string[];
@@ -57,33 +57,7 @@ export type AccommodationsItem = {
   status?: ItemStatus;
 };
 
-export type BookingItem = {
-  id: string;
-  accommodationsId: string;
-  status: "confirmed" | "cancelled" | string;
-  checkInDate: string;
-  checkOutDate: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phone?: string;
-  adults?: number;
-  children?: number;
-  earlyCheckIn?: string | null;
-  remarks?: string | null;
-};
-
-export type NearbyAttractionsItem = {
-  id: string;
-  name: string;
-  src: string | string[];
-  alt: string;
-  description?: string;
-  tag?: string;
-  status?: ItemStatus;
-};
-
-export type ExperiencesItem = {
+export type FacilitiesItem = {
   id: string;
   name: string;
   src: string | string[];
@@ -94,7 +68,7 @@ export type ExperiencesItem = {
   status?: ItemStatus;
 };
 
-export type EventsItem = {
+export type ActivitiesAndEventsItem = {
   id: string;
   name: string;
   src: string | string[];
@@ -108,10 +82,36 @@ export type EventsItem = {
   status?: ItemStatus;
 };
 
+export type NearbyItem = {
+  id: string;
+  name: string;
+  src: string | string[];
+  alt: string;
+  description?: string;
+  tag?: string;
+  status?: ItemStatus;
+};
+
+export type BookingItem = {
+  id: string;
+  roomsId: string;
+  status: "confirmed" | "cancelled" | string;
+  checkInDate: string;
+  checkOutDate: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  adults?: number;
+  children?: number;
+  earlyCheckIn?: string | null;
+  remarks?: string | null;
+};
+
 export type BookingEmailTemplateProps = {
   bookingNumber: string;
   firstName: string;
-  accommodationsName: string;
+  roomsName: string;
   checkInDate: string;
   checkOutDate: string;
   adults: number;

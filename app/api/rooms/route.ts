@@ -39,16 +39,13 @@ export async function GET(request: Request) {
 
     if (slug) {
       const { data, error } = await supabase
-        .from("accommodations")
+        .from("rooms")
         .select("*, totalUnits")
         .eq("id", slug)
         .single();
       if (error || !data) {
-        console.error("Supabase single accommodation error:", error);
-        return NextResponse.json(
-          { error: "Accommodation not found" },
-          { status: 404 }
-        );
+        console.error("Supabase single room error:", error);
+        return NextResponse.json({ error: "Room not found" }, { status: 404 });
       }
       return NextResponse.json({
         ...data,
@@ -56,31 +53,30 @@ export async function GET(request: Request) {
       });
     }
 
-    const accommodationsQuery = supabase
-      .from("accommodations")
+    const roomsQuery = supabase
+      .from("rooms")
       .select("*, totalUnits")
       .order("id", { ascending: true });
 
-    const { data: accommodations, error: accommodationError } =
-      await accommodationsQuery;
+    const { data: rooms, error: roomError } = await roomsQuery;
 
-    if (accommodationError) {
-      console.error("Supabase accommodations error:", accommodationError);
-      throw accommodationError;
+    if (roomError) {
+      console.error("Supabase rooms error:", roomError);
+      throw roomError;
     }
 
     if (fetchAll) {
-      const allAccommodations = (accommodations || []).map((r) => ({
+      const allRooms = (rooms || []).map((r) => ({
         ...r,
         price: normalizePrice(r.price),
       }));
-      return NextResponse.json(allAccommodations);
+      return NextResponse.json(allRooms);
     }
 
     // Filter by availability based on today
     const { data: booked, error: bookingError } = await supabase
       .from("bookings")
-      .select("accommodationsId")
+      .select("roomsId")
       .eq("status", "confirmed")
       .lte("checkInDate", today)
       .gte("checkOutDate", today);
@@ -92,12 +88,11 @@ export async function GET(request: Request) {
 
     const bookingCounts: Record<string, number> = {};
     booked?.forEach((b) => {
-      bookingCounts[b.accommodationsId] =
-        (bookingCounts[b.accommodationsId] || 0) + 1;
+      bookingCounts[b.roomsId] = (bookingCounts[b.roomsId] || 0) + 1;
     });
 
     // Map and filter
-    const availableAccommodations = (accommodations || [])
+    const availableRooms = (rooms || [])
       .map((r) => {
         const bookedCount = bookingCounts[r.id] || 0;
         const availableUnits = r.totalUnits - bookedCount;
@@ -109,10 +104,10 @@ export async function GET(request: Request) {
       })
       .filter((r) => r.availableUnits > 0);
 
-    return NextResponse.json(availableAccommodations);
+    return NextResponse.json(availableRooms);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unexpected error";
-    console.error("API /api/accommodations error:", err);
+    console.error("API /api/rooms error:", err);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

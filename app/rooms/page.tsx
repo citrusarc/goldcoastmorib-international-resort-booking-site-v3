@@ -7,29 +7,29 @@ import { ArrowRight } from "iconoir-react";
 
 import { cormorantGaramond } from "@/config/fonts";
 import { supabase } from "@/utils/supabase/client";
-import { mapAccommodationsData } from "@/lib/mapAccommodationsData";
+import { mapRoomsData } from "@/lib/mapRoomsData";
 
-export default function AccommodationsPage() {
-  const [accommodations, setAccommodations] = useState<any[]>([]);
+export default function RoomsPage() {
+  const [rooms, setRooms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAccommodations = async () => {
+    const fetchRooms = async () => {
       try {
         const { data, error } = await supabase
-          .from("accommodations")
+          .from("rooms")
           .select("*")
           .eq("status->>isHidden", "false");
 
         if (error) throw error;
-        setAccommodations(data.map(mapAccommodationsData));
+        setRooms(data.map(mapRoomsData));
       } catch (err) {
-        console.error("Error loading accommodations:", err);
+        console.error("Error loading rooms:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchAccommodations();
+    fetchRooms();
   }, []);
 
   const tagColor = (tag?: string) => {
@@ -51,7 +51,7 @@ export default function AccommodationsPage() {
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/accommodations-hero-banner.jpg"
+            src="/Images/rooms-hero-banner.jpg"
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
@@ -70,25 +70,23 @@ export default function AccommodationsPage() {
           <div className="flex justify-center items-center h-[400px]">
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-amber-500 border-solid" />
           </div>
-        ) : accommodations.length === 0 ? (
+        ) : rooms.length === 0 ? (
           <p className="text-center text-neutral-400 py-8">
-            No accommodations available.
+            No rooms available.
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {accommodations.map((item, index) => (
+            {rooms.map((item, index) => (
               <Link
                 key={index}
-                href={`/accommodations/${item.id}`}
+                href={`/rooms/${item.id}`}
                 className="group flex flex-col gap-4 p-2 sm:p-4 h-[440px] shrink-0 rounded-2xl sm:rounded-4xl cursor-pointer border border-neutral-200 bg-white"
               >
                 <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden">
                   <Image
                     fill
                     src={Array.isArray(item.src) ? item.src[0] : item.src}
-                    alt={
-                      item.alt ? item.alt : `Accommodations Image ${index + 1}`
-                    }
+                    alt={item.alt ? item.alt : `Rooms Image ${index + 1}`}
                     className="object-cover"
                   />
                 </div>

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     // Find booking in Supabase
     const { data: booking, error } = await supabase
       .from("bookings")
-      .select("*, accommodations(*)")
+      .select("*, rooms(*)")
       .eq("bookingNumber", reference)
       .single();
 
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
           html: bookingEmailTemplate({
             bookingNumber: booking.bookingNumber,
             firstName: booking.firstName,
-            accommodationsName: booking.accommodations?.name || "Accommodation",
+            roomsName: booking.rooms?.name || "Room",
             checkInDate: formatDate(new Date(booking.checkInDate)),
             checkOutDate: formatDate(new Date(booking.checkOutDate)),
             adults: booking.adults,

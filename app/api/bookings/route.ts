@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/utils/supabase/client";
 
-import { transporter } from "@/utils/email";
-import { bookingEmailTemplate } from "@/utils/email/bookingEmailTemplate";
-import { formatDate } from "@/utils/formatDate";
+// import { transporter } from "@/utils/email";
+// import { bookingEmailTemplate } from "@/utils/email/bookingEmailTemplate";
+// import { formatDate } from "@/utils/formatDate";
 
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     const email = searchParams.get("email");
     const status = searchParams.get("status");
 
-    let query = supabase.from("bookings").select("*, accommodations(*)");
+    let query = supabase.from("bookings").select("*, rooms(*)");
 
     if (email) query = query.eq("email", email);
     if (status) query = query.eq("status", status);
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const {
-      accommodationsId,
+      roomsId,
       status,
       firstName,
       lastName,
@@ -58,19 +58,17 @@ export async function POST(req: NextRequest) {
       paymentMethod,
     } = body;
 
-    // Fetch accommodation and check availability
-    const { data: accommodation, error: accommodationError } = await supabase
-      .from("accommodations")
+    // Fetch room and check availability
+    const { data: room, error: roomError } = await supabase
+      .from("rooms")
       .select("id, name, price, totalUnits")
-      .eq("id", accommodationsId)
+      .eq("id", roomsId)
       .single();
 
-    if (accommodationError || !accommodation) {
+    if (roomError || !room) {
       return NextResponse.json(
         {
-          error: `Accommodations not found: ${
-            accommodationError?.message || "Unknown error"
-          }`,
+          error: `Rooms not found: ${roomError?.message || "Unknown error"}`,
         },
         { status: 404 }
       );
@@ -80,9 +78,7 @@ export async function POST(req: NextRequest) {
     const checkoutDate = new Date(checkOut);
 
     const price =
-      typeof accommodation.price === "string"
-        ? JSON.parse(accommodation.price)
-        : accommodation.price;
+      typeof room.price === "string" ? JSON.parse(room.price) : room.price;
 
     const nights = Math.max(
       1,
@@ -102,7 +98,7 @@ export async function POST(req: NextRequest) {
       .from("bookings")
       .insert([
         {
-          accommodationsId,
+          roomsId,
           bookingNumber,
           status: status || "pending",
           firstName: firstName.trim(),
@@ -121,7 +117,7 @@ export async function POST(req: NextRequest) {
           totalPrice,
         },
       ])
-      .select("*, accommodations(*)")
+      .select("*, rooms(*)")
       .single();
 
     if (bookingError)
@@ -133,7 +129,7 @@ export async function POST(req: NextRequest) {
       purchase: {
         products: [
           {
-            name: accommodation.name || "Accommodation Booking",
+            name: room.name || "Room Booking",
             price: totalPrice * 100,
           },
         ],
@@ -186,7 +182,7 @@ export async function POST(req: NextRequest) {
     //     html: bookingEmailTemplate({
     //       bookingNumber,
     //       firstName,
-    //       accommodationsName: accommodation?.name || "Accommodations",
+    //       roomsName: room?.name || "Rooms",
     //       checkInDate: formatDate(checkinDate),
     //       checkOutDate: formatDate(checkoutDate),
     //       adults,
