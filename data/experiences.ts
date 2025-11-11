@@ -116,94 +116,94 @@ export const experiences: ExperiencesItem[] = [
     ],
     status: { ...defaultStatus },
   },
-  {
-    id: "restaurants-cafe",
-    name: "Resort Restaurants & Café",
-    src: ["/Images/restaurants-cafe-1.jpg"],
-    alt: "Cozy dining area serving local and international cuisine",
-    description:
-      "Savor a variety of delicious local and international cuisines at the resort’s restaurants and café. Perfect for family meals or romantic dinners.",
-    tag: "Dining",
-    details: [
-      { icon: Clock, label: "Open from Breakfast to Dinner" },
-      { icon: DoubleCheck, label: "Vegetarian & Kids’ Menu Options" },
-      { icon: Pin, label: "Indoor and Outdoor Seating Available" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
-    id: "spa-wellness",
-    name: "Spa & Wellness Retreat",
-    src: ["/Images/spa-wellness-1.jpg"],
-    alt: "Spa guests receiving relaxing massages in a tranquil setting",
-    description:
-      "Rejuvenate your body and mind at the Spa & Wellness Retreat with massages, facials, and aromatherapy in a peaceful and serene atmosphere.",
-    tag: "Wellness",
-    details: [
-      { icon: Clock, label: "By Appointment Only" },
-      { icon: DoubleCheck, label: "Experienced Professional Therapists" },
-      { icon: Pin, label: "Indoor Serenity Rooms" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
-    id: "fitness-center",
-    name: "Fitness & Training Center",
-    src: ["/Images/fitness-center-1.jpg"],
-    alt: "Modern gym with cardio and strength training equipment",
-    description:
-      "Stay active at the fully equipped fitness center featuring modern cardio machines, free weights, and personal training support.",
-    tag: "Wellness",
-    details: [
-      { icon: Clock, label: "24/7 Access" },
-      { icon: DoubleCheck, label: "Modern Equipment & Free Weights" },
-      { icon: Pin, label: "Located Near Lobby Wing" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
-    id: "game-room",
-    name: "Indoor Game & Recreation Room",
-    src: ["/Images/game-room-1.jpg"],
-    alt: "Guests enjoying arcade and billiard games indoors",
-    description:
-      "Challenge friends or unwind with family in the indoor recreation space featuring arcade machines, billiards, and board games.",
-    tag: "Entertainment",
-    details: [
-      { icon: Clock, label: "Open Daily" },
-      { icon: DoubleCheck, label: "Wide Range of Games" },
-      { icon: Pin, label: "Located Next to Lobby" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
-    id: "free-parking",
-    name: "Complimentary Guest Parking",
-    src: ["/Images/free-parking-1.jpg"],
-    alt: "Spacious outdoor parking area for resort guests",
-    description:
-      "Enjoy convenient parking with ample space and round-the-clock security, complimentary for all resort guests.",
-    tag: "Service",
-    details: [
-      { icon: Clock, label: "24/7 Access" },
-      { icon: DoubleCheck, label: "Secure & Well-Lit Area" },
-      { icon: Pin, label: "Near Main Entrance" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
-    id: "business-center",
-    name: "Business & Meeting Center",
-    src: ["/Images/business-center-1.jpg"],
-    alt: "Professional business lounge with computers and meeting space",
-    description:
-      "Work efficiently with high-speed internet, printing facilities, and private meeting rooms. Ideal for business travelers and remote work.",
-    tag: "Business",
-    details: [
-      { icon: Clock, label: "24/7 Access" },
-      { icon: DoubleCheck, label: "High-Speed Wi-Fi & Printing" },
-      { icon: Pin, label: "Located in Main Building" },
-    ],
-    status: { ...defaultStatus },
-  },
+  // {
+  //   id: "restaurants-cafe",
+  //   name: "Resort Restaurants & Café",
+  //   src: ["/Images/restaurants-cafe-1.jpg"],
+  //   alt: "Cozy dining area serving local and international cuisine",
+  //   description:
+  //     "Savor a variety of delicious local and international cuisines at the resort’s restaurants and café. Perfect for family meals or romantic dinners.",
+  //   tag: "Dining",
+  //   details: [
+  //     { icon: Clock, label: "Open from Breakfast to Dinner" },
+  //     { icon: DoubleCheck, label: "Vegetarian & Kids’ Menu Options" },
+  //     { icon: Pin, label: "Indoor and Outdoor Seating Available" },
+  //   ],
+  //   status: { ...defaultStatus },
+  // },
+  // {
+  //   id: "spa-wellness",
+  //   name: "Spa & Wellness Retreat",
+  //   src: ["/Images/spa-wellness-1.jpg"],
+  //   alt: "Spa guests receiving relaxing massages in a tranquil setting",
+  //   description:
+  //     "Rejuvenate your body and mind at the Spa & Wellness Retreat with massages, facials, and aromatherapy in a peaceful and serene atmosphere.",
+  //   tag: "Wellness",
+  //   details: [
+  //     { icon: Clock, label: "By Appointment Only" },
+  //     { icon: DoubleCheck, label: "Experienced Professional Therapists" },
+  //     { icon: Pin, label: "Indoor Serenity Rooms" },
+  //   ],
+  //   status: { ...defaultStatus },
+  // },
+  // {
+  //   id: "fitness-center",
+  //   name: "Fitness & Training Center",
+  //   src: ["/Images/fitness-center-1.jpg"],
+  //   alt: "Modern gym with cardio and strength training equipment",
+  //   description:
+  //     "Stay active at the fully equipped fitness center featuring modern cardio machines, free weights, and personal training support.",
+  //   tag: "Wellness",
+  //   details: [
+  //     { icon: Clock, label: "24/7 Access" },
+  //     { icon: DoubleCheck, label: "Modern Equipment & Free Weights" },
+  //     { icon: Pin, label: "Located Near Lobby Wing" },
+  //   ],
+  //   status: { ...defaultStatus },
+  // },
+  // {
+  //   id: "game-room",
+  //   name: "Indoor Game & Recreation Room",
+  //   src: ["/Images/game-room-1.jpg"],
+  //   alt: "Guests enjoying arcade and billiard games indoors",
+  //   description:
+  //     "Challenge friends or unwind with family in the indoor recreation space featuring arcade machines, billiards, and board games.",
+  //   tag: "Entertainment",
+  //   details: [
+  //     { icon: Clock, label: "Open Daily" },
+  //     { icon: DoubleCheck, label: "Wide Range of Games" },
+  //     { icon: Pin, label: "Located Next to Lobby" },
+  //   ],
+  //   status: { ...defaultStatus },
+  // },
+  // {
+  //   id: "free-parking",
+  //   name: "Complimentary Guest Parking",
+  //   src: ["/Images/free-parking-1.jpg"],
+  //   alt: "Spacious outdoor parking area for resort guests",
+  //   description:
+  //     "Enjoy convenient parking with ample space and round-the-clock security, complimentary for all resort guests.",
+  //   tag: "Service",
+  //   details: [
+  //     { icon: Clock, label: "24/7 Access" },
+  //     { icon: DoubleCheck, label: "Secure & Well-Lit Area" },
+  //     { icon: Pin, label: "Near Main Entrance" },
+  //   ],
+  //   status: { ...defaultStatus },
+  // },
+  // {
+  //   id: "business-center",
+  //   name: "Business & Meeting Center",
+  //   src: ["/Images/business-center-1.jpg"],
+  //   alt: "Professional business lounge with computers and meeting space",
+  //   description:
+  //     "Work efficiently with high-speed internet, printing facilities, and private meeting rooms. Ideal for business travelers and remote work.",
+  //   tag: "Business",
+  //   details: [
+  //     { icon: Clock, label: "24/7 Access" },
+  //     { icon: DoubleCheck, label: "High-Speed Wi-Fi & Printing" },
+  //     { icon: Pin, label: "Located in Main Building" },
+  //   ],
+  //   status: { ...defaultStatus },
+  // },
 ] satisfies ExperiencesItem[];
