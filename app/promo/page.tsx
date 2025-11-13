@@ -2,45 +2,75 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { supabase } from "@/utils/supabase/client";
-
-import { cormorantGaramond } from "@/config/fonts";
-import { Input } from "@/components/ui/input";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { supabase } from "@/utils/supabase/client";
+import { cormorantGaramond } from "@/config/fonts";
+
+const formSchema = z.object({
+  image: z
+    .any()
+    .refine((file) => file?.length === 1, "Please select one image.")
+    .refine(
+      (file) =>
+        ["image/jpeg", "image/png", "image/webp"].includes(file?.[0]?.type),
+      "Only .jpg, .png, .webp allowed"
+    ),
+});
 
 export default function PromoPage() {
   const [uploading, setUploading] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0];
-    if (selected) setFile(selected);
-  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
 
-  const handleUpload = async () => {
-    if (!file) return alert("Please select an image first");
-
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setUploading(true);
 
+      const file = values.image[0];
       const fileExt = file.name.split(".").pop();
-      const fileName = `promo-image-${Date.now()}.${fileExt}`;
+      const fileName = `promo-${Date.now()}.${fileExt}`;
+      const filePath = `promo/${fileName}`;
 
       const { error } = await supabase.storage
-        .from("promo-images")
-        .upload(fileName, file, { upsert: true });
+        .from("promo-images") // // Bucket name
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
 
       if (error) throw error;
 
+      const { data } = supabase.storage
+        .from("promo-images")
+        .getPublicUrl(filePath);
+      const publicUrl = data.publicUrl;
+
+      setUploadedUrl(publicUrl);
+      localStorage.setItem("promoImageUrl", publicUrl); // // Save for PromoModal
       alert("Promo image uploaded successfully!");
-    } catch (err: any) {
-      console.error(err);
-      alert("Upload failed.");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to upload image.");
     } finally {
       setUploading(false);
-      setFile(null);
     }
-  };
+  }
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
@@ -64,17 +94,49 @@ export default function PromoPage() {
           </div>
         </div>
 
-        {/* Upload */}
-        <div className="flex flex-col items-center gap-4">
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full sm:w-80"
-          />
-          <Button onClick={handleUpload} disabled={!file || uploading}>
-            {uploading ? "Uploading..." : "Upload Image"}
-          </Button>
+        {/* START HERE */}
+        <div className="p-6 rounded-lg bg-white shadow-lg">
+          <h2 className="text-xl font-semibold mb-4">Upload Promo Image</h2>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-4"
+            >
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Promo Image (JPG, PNG, WEBP)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => field.onChange(e.target.files)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={uploading}>
+                {uploading ? "Uploading..." : "Upload Image"}
+              </Button>
+            </form>
+          </Form>
+          {uploadedUrl && (
+            <div className="mt-4">
+              <p className="text-sm text-neutral-500">Preview:</p>
+              <div className="relative w-64 h-64 mt-2 rounded-lg overflow-hidden">
+                <Image
+                  src={uploadedUrl}
+                  alt="Uploaded Promo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
