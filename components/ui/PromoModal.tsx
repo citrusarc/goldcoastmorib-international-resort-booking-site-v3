@@ -2,11 +2,32 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { supabase } from "@/utils/supabase/client";
 
 export default function PromoModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const [promoImage, setPromoImage] = useState("/Images/promo-image.jpg");
 
   useEffect(() => {
+    const fetchPromoImage = async () => {
+      // List files in the bucket and get the latest uploaded
+      const { data: list } = await supabase.storage
+        .from("promo-images")
+        .list("", {
+          sortBy: { column: "created_at", order: "desc" },
+          limit: 1,
+        });
+
+      if (list?.[0]) {
+        const { data: publicUrl } = supabase.storage
+          .from("promo-images")
+          .getPublicUrl(list[0].name);
+        if (publicUrl?.publicUrl) setPromoImage(publicUrl.publicUrl);
+      }
+    };
+
+    fetchPromoImage();
+
     const isViewed = sessionStorage.getItem("promoViewed");
     if (!isViewed) {
       setIsOpen(true);
@@ -15,20 +36,13 @@ export default function PromoModal() {
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  const handleClose = () => setIsOpen(false);
 
   if (!isOpen) return null;
 
@@ -48,7 +62,7 @@ export default function PromoModal() {
         </button>
         <Image
           fill
-          src="/Images/promo-image.jpg"
+          src={promoImage}
           alt="Promo Banner"
           className="object-cover rounded-lg shadow-lg"
         />

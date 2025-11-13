@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/utils/supabase/client";
 
-// import { transporter } from "@/utils/email";
-// import { bookingEmailTemplate } from "@/utils/email/bookingEmailTemplate";
-// import { formatDate } from "@/utils/formatDate";
-
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
-const CHIP_TOKEN = process.env.CHIP_TEST_API_TOKEN!; // //
-const SUCCESS_REDIRECT = `https://www.google.com`; // //
-const FAILURE_REDIRECT = `/`; // //
+const CHIP_TOKEN = process.env.CHIP_TEST_API_TOKEN!; //
+// const SUCCESS_REDIRECT = `?`; //
+// const FAILURE_REDIRECT = `?`; //
 
 // GET all bookings
 export async function GET(req: NextRequest) {
@@ -123,6 +119,9 @@ export async function POST(req: NextRequest) {
     if (bookingError)
       throw new Error(`Supabase insert error: ${bookingError.message}`);
 
+    const SUCCESS_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=success`;
+    const FAILURE_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=failed`;
+
     // Create CHIP purchase right after saving booking
     const chipPayload = {
       client: { email, full_name: `${firstName} ${lastName}`, phone },
@@ -134,8 +133,8 @@ export async function POST(req: NextRequest) {
           },
         ],
         currency: "MYR",
-        success_redirect: SUCCESS_REDIRECT,
-        failure_redirect: FAILURE_REDIRECT,
+        success_redirect: SUCCESS_REDIRECT, //
+        failure_redirect: FAILURE_REDIRECT, //
       },
       brand_id: CHIP_BRAND_ID,
       reference: bookingNumber,
@@ -171,32 +170,6 @@ export async function POST(req: NextRequest) {
         paymentStatus: "created",
       })
       .eq("id", newBooking.id);
-
-    // Send email confirmation
-    // try {
-    //   await transporter.sendMail({
-    //     from: `"Gold Coast Morib International Resort" <${process.env.EMAIL_USER}>`,
-    //     to: email,
-    //     bcc: process.env.ADMIN_EMAIL,
-    //     subject: "Booking Confirmation",
-    //     html: bookingEmailTemplate({
-    //       bookingNumber,
-    //       firstName,
-    //       roomsName: room?.name || "Rooms",
-    //       checkInDate: formatDate(checkinDate),
-    //       checkOutDate: formatDate(checkoutDate),
-    //       adults,
-    //       children,
-    //       earlyCheckIn,
-    //       remarks,
-    //       currency: price.currency || "RM",
-    //       totalPrice,
-    //       createdAt: formatDate(new Date()),
-    //     }),
-    //   });
-    // } catch (emailError: unknown) {
-    //   console.error("Email sending failed:", emailError);
-    // }
 
     // Return checkout URL to frontend for redirect
     return NextResponse.json({

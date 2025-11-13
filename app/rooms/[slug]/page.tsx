@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -134,6 +134,8 @@ function Stepper({
 export default function RoomsDetailsPage() {
   const { slug } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const status = searchParams.get("status");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [imageCarousel, setImageCarousel] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -304,6 +306,14 @@ export default function RoomsDetailsPage() {
     setSelectedImage(allImages[0]);
     setImageCarousel(allImages);
   }, [room?.src]);
+
+  useEffect(() => {
+    if (status === "success") {
+      setSuccessMessage("Payment successful! Your booking is confirmed.");
+    } else if (status === "failed") {
+      setErrorMessage("Payment failed. Please try again.");
+    }
+  }, [status]);
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
