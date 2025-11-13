@@ -62,7 +62,11 @@ export default function PromoPage() {
       const publicUrl = data.publicUrl;
 
       setUploadedUrl(publicUrl);
-      localStorage.setItem("promoImageUrl", publicUrl); // // Save for PromoModal
+      const { error: dbError } = await supabase
+        .from("promo_settings")
+        .upsert({ id: "singleton", image_url: publicUrl });
+
+      if (dbError) throw dbError;
       alert("Promo image uploaded successfully!");
     } catch (error) {
       console.error(error);
