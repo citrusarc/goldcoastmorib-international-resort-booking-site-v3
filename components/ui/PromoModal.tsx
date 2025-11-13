@@ -11,18 +11,13 @@ export default function PromoModal() {
   const [promoImage, setPromoImage] = useState("/Images/promo-image.jpg");
 
   useEffect(() => {
-    async function fetchPromoImage() {
-      const { data, error } = await supabase
-        .from("promo_settings")
-        .select("image_url")
-        .maybeSingle();
+    // // Fetch the same public file + add cache-busting param
+    const { data } = supabase.storage
+      .from("promo-images")
+      .getPublicUrl("promo/promo-image.jpg");
 
-      if (data?.image_url) {
-        setPromoImage(data.image_url);
-      }
-    }
-
-    fetchPromoImage();
+    const publicUrl = `${data.publicUrl}?v=${Date.now()}`; // //
+    setPromoImage(publicUrl); // //
 
     const isViewed = sessionStorage.getItem("promoViewed");
     if (!isViewed) {

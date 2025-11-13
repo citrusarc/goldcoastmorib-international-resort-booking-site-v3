@@ -43,30 +43,26 @@ export default function PromoPage() {
       setUploading(true);
 
       const file = values.image[0];
-      const fileExt = file.name.split(".").pop();
-      const fileName = `promo-${Date.now()}.${fileExt}`;
-      const filePath = `promo/${fileName}`;
+
+      // // Always overwrite the same file instead of generating new names
+      const filePath = "promo/promo-image.jpg"; // //
 
       const { error } = await supabase.storage
-        .from("promo-images") // // Bucket name
+        .from("promo-images")
         .upload(filePath, file, {
           cacheControl: "3600",
-          upsert: true,
+          upsert: true, // // overwrite the existing file
         });
 
       if (error) throw error;
 
+      // // Get public URL and append a cache-busting query param
       const { data } = supabase.storage
         .from("promo-images")
         .getPublicUrl(filePath);
-      const publicUrl = data.publicUrl;
+      const publicUrl = `${data.publicUrl}?v=${Date.now()}`; // //
 
       setUploadedUrl(publicUrl);
-      const { error: dbError } = await supabase
-        .from("promo_settings")
-        .upsert({ id: "singleton", image_url: publicUrl });
-
-      if (dbError) throw dbError;
       alert("Promo image uploaded successfully!");
     } catch (error) {
       console.error(error);
@@ -128,6 +124,7 @@ export default function PromoPage() {
               </Button>
             </form>
           </Form>
+
           {uploadedUrl && (
             <div className="mt-4">
               <p className="text-sm text-neutral-500">Preview:</p>
