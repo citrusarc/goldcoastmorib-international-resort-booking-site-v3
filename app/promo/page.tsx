@@ -95,12 +95,15 @@ export default function PromoPage() {
           />
           <div className="absolute inset-0 bg-black/15" />
           <div className="absolute inset-0 flex flex-col gap-4 pb-24 items-center justify-end text-white">
-            <h1 className="text-lg sm:text-xl">Title</h1>
+            <h1 className="text-lg sm:text-xl">
+              {" "}
+              Gold Coast Morib International Resort
+            </h1>
             <p
               className={`block leading-none text-[40px] sm:text-[72px] text-center ${cormorantGaramond.className}`}
             >
-              Lorem Ipsum <br />
-              Lorem Ipsum
+              Book Your Stay <br />
+              Experience Luxury
             </p>
           </div>
         </div>
