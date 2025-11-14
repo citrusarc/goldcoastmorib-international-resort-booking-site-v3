@@ -19,6 +19,7 @@ import {
 import { supabase } from "@/utils/supabase/client";
 import { cormorantGaramond } from "@/config/fonts";
 import { SuccessModal, ErrorModal } from "@/components/ui/Modal";
+import OTPModal from "@/components/ui/OTPModal";
 
 const formSchema = z.object({
   image: z
@@ -37,6 +38,7 @@ export default function PromoPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isUnlocked, setIsUnlocked] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,7 +78,13 @@ export default function PromoPage() {
   }
 
   return (
-    <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
+    <section className="relative flex p-4 sm:p-8 items-center justify-center text-neutral-600">
+      {!isUnlocked && (
+        <OTPModal
+          correctPassword="123456"
+          onUnlock={() => setIsUnlocked(true)}
+        />
+      )}
       <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-2xl">
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
@@ -111,7 +119,7 @@ export default function PromoPage() {
                   return (
                     <FormItem className="flex-1">
                       <FormLabel className="text-neutral-400">
-                        Promo Image (.jpeg, .jpg, .png)
+                        Promo Image (.jpg, .png, .webp)
                       </FormLabel>
 
                       <FormControl>
