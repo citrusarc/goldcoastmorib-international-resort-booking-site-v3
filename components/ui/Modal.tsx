@@ -1,7 +1,7 @@
 "use client";
 
 import ReactDOM from "react-dom";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { ModalProps } from "@/types";
 
@@ -37,13 +37,13 @@ export function SuccessModal({
         onClick={(e) => e.stopPropagation()}
         className="relative flex flex-col gap-4 p-4 w-full sm:w-96 rounded-2xl bg-white"
       >
-        <h2 className="text-xl sm:text-2xl font-semibold text-orange-600">
+        <h2 className="text-xl sm:text-2xl font-semibold text-amber-600">
           {title}
         </h2>
         <p className="text-neutral-600">{message}</p>
         <button
           onClick={onClose}
-          className="flex p-2 w-full items-center justify-center rounded-full cursor-pointer border text-white hover:text-orange-600 border-transparent hover:border-orange-600 bg-orange-600 hover:bg-white"
+          className="flex p-2 w-full items-center justify-center rounded-full cursor-pointer border text-white hover:text-amber-600 border-transparent hover:border-amber-600 bg-amber-600 hover:bg-white"
         >
           {CTA}
         </button>
@@ -85,13 +85,13 @@ export function ErrorModal({
         onClick={(e) => e.stopPropagation()}
         className="relative flex flex-col gap-4 p-4 w-full sm:w-96 rounded-2xl bg-white"
       >
-        <h2 className="text-xl sm:text-2xl font-semibold text-orange-600">
+        <h2 className="text-xl sm:text-2xl font-semibold text-amber-600">
           {title}
         </h2>
         <p className="text-neutral-600">{message}</p>
         <button
           onClick={onClose}
-          className="flex p-2 w-full items-center justify-center rounded-full cursor-pointer border text-white hover:text-orange-600 border-transparent hover:border-orange-600 bg-orange-600 hover:bg-white"
+          className="flex p-2 w-full items-center justify-center rounded-full cursor-pointer border text-white hover:text-amber-600 border-transparent hover:border-amber-600 bg-amber-600 hover:bg-white"
         >
           {CTA}
         </button>

@@ -18,6 +18,7 @@ import {
 
 import { supabase } from "@/utils/supabase/client";
 import { cormorantGaramond } from "@/config/fonts";
+import { SuccessModal, ErrorModal } from "@/components/ui/Modal";
 
 const formSchema = z.object({
   image: z
@@ -32,7 +33,10 @@ const formSchema = z.object({
 
 export default function PromoPage() {
   const [uploading, setUploading] = useState(false);
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [ratio, setRatio] = useState(1);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,29 +48,28 @@ export default function PromoPage() {
 
       const file = values.image[0];
 
-      // // Always overwrite the same file instead of generating new names
-      const filePath = "promo/promo-image.jpg"; // //
+      const filePath = "promo/promo-image.jpg";
 
       const { error } = await supabase.storage
         .from("promo-images")
         .upload(filePath, file, {
           cacheControl: "3600",
-          upsert: true, // // overwrite the existing file
+          upsert: true,
         });
 
       if (error) throw error;
 
-      // // Get public URL and append a cache-busting query param
+      // Get public URL and append a cache-busting query param
       const { data } = supabase.storage
         .from("promo-images")
         .getPublicUrl(filePath);
-      const publicUrl = `${data.publicUrl}?v=${Date.now()}`; // //
+      const publicUrl = `${data.publicUrl}?v=${Date.now()}`;
 
-      setUploadedUrl(publicUrl);
-      alert("Promo image uploaded successfully!");
+      setImagePreview(publicUrl);
+      setSuccessMessage("Promo image uploaded successfully!");
     } catch (error) {
       console.error(error);
-      alert("Failed to upload image.");
+      setErrorMessage("Failed to upload image.");
     } finally {
       setUploading(false);
     }
@@ -74,72 +77,140 @@ export default function PromoPage() {
 
   return (
     <section className="flex p-4 sm:p-8 items-center justify-center text-neutral-600">
-      <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-6xl">
+      <div className="flex flex-col gap-8 sm:gap-16 w-full max-w-2xl">
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/activities-and-events-hero-banner.jpg"
+            src="/Images/promo-image.jpg"
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/15" />
           <div className="absolute inset-0 flex flex-col gap-4 pb-24 items-center justify-end text-white">
-            <h1 className="text-lg sm:text-xl">Happenings You’ll Love</h1>
+            <h1 className="text-lg sm:text-xl">Title</h1>
             <p
               className={`block leading-none text-[40px] sm:text-[72px] text-center ${cormorantGaramond.className}`}
             >
-              Celebrate, Connect <br />
-              Enjoy Every Occasion
+              Lorem Ipsum <br />
+              Lorem Ipsum
             </p>
           </div>
         </div>
 
-        {/* START HERE */}
-        <div className="p-6 rounded-lg bg-white shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">Upload Promo Image</h2>
+        <div className="space-y-4 sm:space-y-8 p-4 sm:p-8 rounded-2xl sm:rounded-4xl backdrop-blur-sm shadow-xl border border-white/30 bg-white/10">
+          <h2 className="text-xl sm:text-2xl font-semibold">
+            Upload Promo Image
+          </h2>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Promo Image (JPG, PNG, WEBP)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => field.onChange(e.target.files)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const file = field.value?.[0];
+                  return (
+                    <FormItem className="flex-1">
+                      <FormLabel className="text-neutral-400">
+                        Promo Image (.jpeg, .jpg, .png)
+                      </FormLabel>
+
+                      <FormControl>
+                        {!file ? (
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const fileList = e.target.files;
+                              field.onChange(fileList);
+
+                              if (fileList && fileList[0]) {
+                                const file = fileList[0];
+
+                                const url = URL.createObjectURL(file);
+                                setImagePreview(url);
+
+                                const img = new window.Image();
+                                img.src = url;
+                                img.onload = () => {
+                                  setRatio(
+                                    img.naturalWidth / img.naturalHeight
+                                  );
+                                };
+                              } else {
+                                setImagePreview(null);
+                                setRatio(1);
+                              }
+                            }}
+                            className="flex h-10 w-full -px-4 cursor-pointer shadow-none border-transparent text-neutral-400"
+                          />
+                        ) : (
+                          <div className="flex h-10 items-center gap-2">
+                            <span className="truncate max-w-[200px] text-neutral-400">
+                              {file.name}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                field.onChange(null);
+                                setImagePreview(null);
+                                setRatio(1);
+                              }}
+                              className="cursor-pointer text-sm text-red-500 hover:underline"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        )}
+                      </FormControl>
+                      {imagePreview && (
+                        <div
+                          style={{
+                            paddingBottom: `${100 / ratio}%`,
+                          }}
+                          className="relative w-full rounded-xl overflow-hidden bg-black/10"
+                        >
+                          <Image
+                            fill
+                            src={imagePreview}
+                            alt="Image Preview"
+                            className="object-contain"
+                          />
+                        </div>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
-              <Button type="submit" disabled={uploading}>
+              <Button
+                type="submit"
+                disabled={uploading}
+                className="p-6 w-full rounded-full cursor-pointer text-white bg-amber-500 hover:bg-amber-600"
+              >
                 {uploading ? "Uploading..." : "Upload Image"}
               </Button>
             </form>
           </Form>
-
-          {uploadedUrl && (
-            <div className="mt-4">
-              <p className="text-sm text-neutral-500">Preview:</p>
-              <div className="relative w-64 h-64 mt-2 rounded-lg overflow-hidden">
-                <Image
-                  src={uploadedUrl}
-                  alt="Uploaded Promo"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          )}
         </div>
       </div>
+      <SuccessModal
+        title="Success!"
+        message={successMessage ?? ""}
+        CTA="Done"
+        isOpen={!!successMessage}
+        onClose={() => {
+          setSuccessMessage(null);
+          setImagePreview(null);
+          form.reset();
+        }}
+      />
+      <ErrorModal
+        title="Upload Failed"
+        message={errorMessage ?? ""}
+        CTA="Try Again"
+        isOpen={!!errorMessage}
+        onClose={() => setErrorMessage(null)}
+      />
     </section>
   );
 }
