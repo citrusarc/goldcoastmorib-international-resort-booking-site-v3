@@ -50,10 +50,13 @@ export async function GET(req: NextRequest) {
     const bookedDates: string[] = [];
 
     bookings?.forEach((booking) => {
-      const start = new Date(booking.checkInDate);
-      const end = new Date(booking.checkOutDate);
+      const start = new Date(booking.checkInDate + "T00:00");
+      const end = new Date(booking.checkOutDate + "T00:00");
       for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-        bookedDates.push(d.toISOString().split("T")[0]);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        bookedDates.push(`${yyyy}-${mm}-${dd}`);
       }
     });
 
