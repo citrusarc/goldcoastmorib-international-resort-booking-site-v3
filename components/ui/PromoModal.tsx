@@ -9,6 +9,7 @@ import { supabase } from "@/utils/supabase/client";
 export default function PromoModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [promoImage, setPromoImage] = useState("/Images/promo-image.jpg");
+  const [windowWidth, setWindowWidth] = useState(0);
   const [ratio, setRatio] = useState(1);
 
   useEffect(() => {
@@ -33,6 +34,17 @@ export default function PromoModal() {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 640;
+  const sizePercent = isMobile ? 80 : 40;
+
   const handleClose = () => setIsOpen(false);
 
   if (!isOpen) return null;
@@ -45,10 +57,10 @@ export default function PromoModal() {
         onClick={(e) => e.stopPropagation()}
         className="relative flex items-center justify-center"
         style={{
-          maxWidth: "50vw",
-          maxHeight: "50vh",
-          width: `min(50vw, ${50 * ratio}vh)`,
-          height: `min(50vh, ${50 / ratio}vw)`,
+          maxWidth: `${sizePercent}vw`,
+          maxHeight: `${sizePercent}vh`,
+          width: `min(${sizePercent}vw, ${sizePercent * ratio}vh)`,
+          height: `min(${sizePercent}vh, ${sizePercent / ratio}vw)`,
         }}
       >
         <button

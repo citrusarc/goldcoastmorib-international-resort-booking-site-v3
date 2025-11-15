@@ -373,8 +373,8 @@ export default function Home() {
                         }
                         className="object-cover"
                       />
-                      <div className="absolute bottom-0 p-2 sm:p-4 w-full space-y-2">
-                        <h2 className="px-4 py-2 w-full sm:w-fit text-xl font-semibold truncate rounded-full text-amber-500 bg-white/80">
+                      <div className="absolute bottom-0 p-4 w-full space-y-2">
+                        <h2 className="px-4 py-2 w-fit text-xl font-semibold truncate rounded-full text-amber-500 bg-white/80">
                           {item.name}
                         </h2>
                       </div>

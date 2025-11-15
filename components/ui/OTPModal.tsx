@@ -16,31 +16,32 @@ interface OTPModalProps {
 export default function OTPModal({ correctPassword, onUnlock }: OTPModalProps) {
   const [otpInput, setOtpInput] = useState("");
   const [otpError, setOtpError] = useState("");
-  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isUnlock, setIsUnlock] = useState(false);
 
   useEffect(() => {
     const unlockedSession = sessionStorage.getItem("promo-unlocked");
-    if (unlockedSession) setIsUnlocked(true);
+    if (!unlockedSession) setIsUnlock(true);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isUnlock ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isUnlock]);
 
   const handleUnlock = () => {
     if (otpInput === correctPassword) {
       sessionStorage.setItem("promo-unlocked", "true");
-      setIsUnlocked(true);
+      setIsUnlock(false);
       setOtpError("");
+      onUnlock();
     } else {
       setOtpError("Incorrect password");
     }
   };
 
-  useEffect(() => {
-    document.body.style.overflow = isUnlocked ? "" : "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isUnlocked]);
-
-  if (isUnlocked) return null;
+  if (!isUnlock) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex p-4 items-center justify-center">
