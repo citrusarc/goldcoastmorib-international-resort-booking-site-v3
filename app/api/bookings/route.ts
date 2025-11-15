@@ -3,9 +3,7 @@ import { supabase } from "@/utils/supabase/client";
 
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
-const CHIP_TOKEN = process.env.CHIP_TEST_API_TOKEN!; //
-// const SUCCESS_REDIRECT = `?`; //
-// const FAILURE_REDIRECT = `?`; //
+const CHIP_TOKEN = process.env.CHIP_TEST_API_TOKEN!;
 
 // GET all bookings
 export async function GET(req: NextRequest) {
@@ -133,13 +131,13 @@ export async function POST(req: NextRequest) {
           },
         ],
         currency: "MYR",
-        success_redirect: SUCCESS_REDIRECT, //
-        failure_redirect: FAILURE_REDIRECT, //
       },
       brand_id: CHIP_BRAND_ID,
       reference: bookingNumber,
       send_receipt: true,
       platform: "web",
+      success_redirect: SUCCESS_REDIRECT,
+      failure_redirect: FAILURE_REDIRECT,
       ...(paymentMethod ? { payment_method_whitelist: [paymentMethod] } : {}),
     };
 
