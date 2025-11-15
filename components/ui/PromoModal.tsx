@@ -65,7 +65,7 @@ export default function PromoModal() {
       >
         <button
           onClick={handleClose}
-          className="absolute top-2 right-2 z-10 text-white bg-black/50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 transition"
+          className="absolute top-2 right-2 z-10 text-white bg-black/50 rounded-full cursor-pointer w-10 h-10 flex items-center justify-center hover:bg-black/70 transition"
         >
           <Xmark className="w-8 h-8" />
         </button>

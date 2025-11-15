@@ -91,7 +91,7 @@ export function ErrorModal({
         <p className="text-neutral-600">{message}</p>
         <button
           onClick={onClose}
-          className="flex p-3 w-full items-center justify-center rounded-full border text-white hover:text-amber-600 border-transparent hover:border-amber-600 bg-amber-500 hover:bg-white"
+          className="flex p-3 w-full items-center justify-center rounded-full cursor-pointer border text-white hover:text-amber-600 border-transparent hover:border-amber-600 bg-amber-500 hover:bg-white"
         >
           {CTA}
         </button>

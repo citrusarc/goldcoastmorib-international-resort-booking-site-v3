@@ -75,7 +75,7 @@ export default function OTPModal({ correctPassword, onUnlock }: OTPModalProps) {
         {otpError && <p className="text-red-500">{otpError}</p>}
         <button
           onClick={handleUnlock}
-          className="flex p-3 w-full items-center justify-center rounded-full border text-white hover:text-amber-600 border-transparent hover:border-amber-600 bg-amber-500 hover:bg-white"
+          className="flex p-3 w-full items-center justify-center rounded-full cursor-pointer border text-white hover:text-amber-600 border-transparent hover:border-amber-600 bg-amber-500 hover:bg-white"
         >
           Unlock
         </button>
