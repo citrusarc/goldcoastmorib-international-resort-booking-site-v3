@@ -1,5 +1,7 @@
 import Script from "next/script";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { PageEdit, PageStar, PrivacyPolicy } from "iconoir-react";
 
 import "@/app/globals.css";
 import Navbar from "@/components/ui/Navbar";
@@ -236,8 +238,41 @@ export default function RootLayout({
         <PromoModal />
         <Navbar />
         <main>{children}</main>
-        <footer className="flex p-16 items-center justify-center text-center text-neutral-400">
-          © {new Date().getFullYear()} GOLD COAST MORIB INTERNATIONAL RESORT
+        <footer className="space-y-8 sm:space-y-4 py-16 w-full text-neutral-400">
+          <div className="flex flex-col sm:flex-row gap-8 sm:gap-0 mx-auto max-w-6xl items-center sm:justify-between text-center">
+            <div className="flex flex-col sm:flex-row gap-2 items-center order-2 sm:order-2">
+              <a href="tel:+60331981028" className="hover:text-amber-500">
+                +60331981028
+              </a>
+              <p className="hidden sm:block">/</p>
+              <a
+                href="mailto:reservation@goldcoastresort.com.my"
+                className="hover:text-amber-500"
+              >
+                reservation@goldcoastresort.com.my
+              </a>
+            </div>
+            <div className="order-3 sm:order-1 flex items-center gap-8 sm:gap-4">
+              <Link href="/term-of-use" className="hover:text-amber-500">
+                <PageEdit className="w-6 h-6" />
+              </Link>
+              <Link href="/privacy-policy" className="hover:text-amber-500">
+                <PrivacyPolicy className="w-6 h-6" />
+              </Link>
+              <Link href="/refund-policy" className="hover:text-amber-500">
+                <PageStar className="w-6 h-6" />
+              </Link>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-8 sm:gap-0 mx-auto max-w-6xl items-center sm:justify-between text-center">
+            <p className="order-1 sm:order-1">
+              GOLD COAST HOSPITALITY SDN. BHD.
+              <span> 200301008626 (611046)</span>
+            </p>
+            <p className="order-4 sm:order-2">
+              © {new Date().getFullYear()} GOLD COAST MORIB INTERNATIONAL RESORT
+            </p>
+          </div>
         </footer>
       </body>
     </html>
