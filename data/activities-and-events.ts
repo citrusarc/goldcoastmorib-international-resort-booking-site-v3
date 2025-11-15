@@ -14,7 +14,6 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
     name: "Birthday Party",
     src: ["/Images/birthday-party-1.jpg", "/Images/birthday-party-2.jpg"],
     alt: "Birthday Party",
-    // //
     description:
       "Celebrate your special day with a beachside party featuring custom themes, catering, and decorations — fun for kids, teens, and adults alike.",
     tag: "Event",
@@ -29,7 +28,6 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
       "/Images/telimatch-3.jpg",
     ],
     alt: "Telimatch",
-    // //
     description:
       "Enjoy a series of lively and competitive games by the beach that promote teamwork, laughter, and lasting memories for everyone.",
     tag: "Activity",
@@ -44,10 +42,20 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
       "/Images/team-building-3.jpg",
     ],
     alt: "Team Building",
-    // //
     description:
       "Strengthen teamwork and leadership through fun and challenging outdoor activities designed for corporate retreats, schools, and groups.",
     tag: "Corporate",
+    status: { ...defaultStatus },
+  },
+  {
+    id: "maraton",
+    name: "Maraton",
+    src: ["/Images/maraton-1.jpg"],
+    alt: "Maraton",
+
+    description:
+      "Join an exciting beachside marathon designed for runners of all levels — enjoy scenic views, refreshing sea breeze, and a fun, energetic atmosphere.",
+    tag: "Event",
     status: { ...defaultStatus },
   },
   {
@@ -59,7 +67,6 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
       "/Images/wedding-3.jpg",
     ],
     alt: "Wedding",
-    // //
     description:
       "Say ‘I do’ by the sea with a romantic beachfront wedding, complete with stunning decor, catering, and event coordination tailored to your dream day.",
     tag: "Event",
@@ -74,7 +81,6 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
       "/Images/anniversary-3.jpg",
     ],
     alt: "Anniversary",
-    // //
     description:
       "Celebrate your love with an intimate beachfront dinner or private setup under the stars — perfect for couples marking a special milestone.",
     tag: "Event",

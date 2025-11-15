@@ -21,7 +21,6 @@ export const rooms: RoomsItem[] = [
       "/Images/studio-suite-5.jpg",
     ],
     alt: "Studio Suite Images",
-    // //
     description:
       "A cozy retreat featuring two single beds, a private balcony, and tranquil garden views — ideal for couples or friends looking for a relaxing getaway.",
     tag: "Recommended",
@@ -47,7 +46,6 @@ export const rooms: RoomsItem[] = [
       "/Images/apartment-5.jpg",
     ],
     alt: "Apartment Images",
-    // //
     description:
       "Comfortable 51 m² unit with 2 single beds, shower, and a garden view — perfect for small families.",
     tag: "Recommended",
@@ -73,7 +71,6 @@ export const rooms: RoomsItem[] = [
       "/Images/penthouse-5.jpg",
     ],
     alt: "Penthouse Images",
-    // //
     description:
       "Large 68 m² apartment with 5 single beds, a shower, and garden views — great for groups or big families.",
     tag: "Recommended",

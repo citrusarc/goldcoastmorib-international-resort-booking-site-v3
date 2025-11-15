@@ -65,7 +65,7 @@ const formSchema = z
     earlyCheckIn: z
       .enum(earlyCheckInSlots as [EarlyCheckInSlot, ...EarlyCheckInSlot[]])
       .nullable(),
-    remarks: z.string().min(10, "Describe your request").max(300).optional(),
+    remarks: z.string().min(0, "Describe your request").max(300).optional(),
   })
   .superRefine((data, ctx) => {
     const today = new Date();

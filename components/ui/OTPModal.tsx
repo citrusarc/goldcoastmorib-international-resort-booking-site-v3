@@ -56,6 +56,8 @@ export default function OTPModal({ correctPassword, onUnlock }: OTPModalProps) {
           placeholder="Enter password"
           value={otpInput}
           onChange={(value: string) => setOtpInput(value)}
+          inputMode="text"
+          pattern=".*"
           className="w-full"
         >
           <InputOTPGroup className="flex justify-between w-full">
