@@ -3,6 +3,7 @@ import {
   BeachBallIcon,
   LockersIcon,
   TreePalmIcon,
+  LockLaminatedIcon,
 } from "@phosphor-icons/react";
 
 import { ItemStatus, NavItem } from "@/types";
@@ -45,6 +46,13 @@ export const siteConfig = {
       name: "Nearby",
       href: "/nearby",
       icon: TreePalmIcon,
+      status: { ...defaultStatus },
+    },
+    {
+      id: "promo",
+      name: "Promo",
+      href: "/promo",
+      icon: LockLaminatedIcon,
       status: { ...defaultStatus },
     },
   ] satisfies NavItem[],

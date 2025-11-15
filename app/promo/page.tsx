@@ -81,7 +81,7 @@ export default function PromoPage() {
     <section className="relative flex p-4 sm:p-8 items-center justify-center text-neutral-600">
       {!isUnlocked && (
         <OTPModal
-          correctPassword="123456"
+          correctPassword="gcr025"
           onUnlock={() => setIsUnlocked(true)}
         />
       )}
