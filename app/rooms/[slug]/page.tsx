@@ -204,7 +204,7 @@ export default function RoomsDetailsPage() {
         children: values.children,
         earlyCheckIn: values.earlyCheckIn || null,
         remarks: values.remarks?.trim() || null,
-        price: room.price.current,
+        price: room.price.weekday || room.price.weekend,
       };
 
       const response = await fetch("/api/bookings", {
@@ -222,8 +222,6 @@ export default function RoomsDetailsPage() {
       }
 
       window.location.href = data.checkout_url;
-
-      // setSuccessMessage("Your booking has been submitted successfully!");
       // form.reset();
     } catch (err: unknown) {
       const message =
@@ -413,13 +411,22 @@ export default function RoomsDetailsPage() {
                     );
                   })}
                 </ul>
-                <p className="text-2xl sm:text-3xl font-semibold text-blue-600 ">
-                  {room.price.currency}
-                  {room.price.current}
-                  <span className="text-xl sm:text-2xl font-normal text-neutral-400">
-                    /night
-                  </span>
-                </p>
+                <div>
+                  <p className="text-2xl sm:text-3xl font-semibold text-blue-600 ">
+                    {room.price.currency}
+                    {room.price.weekday}
+                    <span className="text-xl sm:text-2xl font-normal text-neutral-400">
+                      /weekday night
+                    </span>
+                  </p>
+                  <p className="text-2xl sm:text-3xl font-semibold text-blue-600 ">
+                    {room.price.currency}
+                    {room.price.weekend}
+                    <span className="text-xl sm:text-2xl font-normal text-neutral-400">
+                      /weekend night
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -849,7 +856,7 @@ export default function RoomsDetailsPage() {
                         ? "Booking..."
                         : `Book Now (RM${
                             room
-                              ? room.price.current *
+                              ? room.price.weekday *
                                 ((form.watch("checkOut")!.getTime() -
                                   form.watch("checkIn")!.getTime()) /
                                   (1000 * 60 * 60 * 24))

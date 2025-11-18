@@ -107,7 +107,7 @@ export default function RoomsPage() {
                         from <br />
                       </span>
                       {item.price.currency}
-                      {item.price.current}
+                      {item.price.weekday}
                       <span className="text-xl font-normal text-neutral-400">
                         /night
                       </span>

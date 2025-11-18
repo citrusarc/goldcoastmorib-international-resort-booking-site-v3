@@ -9,13 +9,13 @@ function normalizePrice(price: unknown): PriceItem {
     } catch {
       return {
         currency: "RM",
-        current: Number(price),
-        original: Number(price),
+        weekday: Number(price),
+        weekend: Number(price),
       };
     }
   }
   if (typeof price === "number") {
-    return { currency: "RM", current: price, original: price };
+    return { currency: "RM", weekday: price, weekend: price };
   }
   return price as PriceItem;
 }

@@ -8,25 +8,25 @@ function normalizePrice(price: unknown): PriceItem {
       const parsed = JSON.parse(price);
       return {
         currency: (parsed.currency as string) || "RM",
-        current: Number(parsed.current ?? 0),
-        original: Number(parsed.original ?? parsed.current ?? 0),
+        weekday: Number(parsed.weekday ?? 0),
+        weekend: Number(parsed.weekend ?? parsed.weekday ?? 0),
       };
     } catch {
       return {
         currency: "RM",
-        current: Number(price),
-        original: Number(price),
+        weekday: Number(price),
+        weekend: Number(price),
       };
     }
   }
   if (typeof price === "number") {
-    return { currency: "RM", current: price, original: price };
+    return { currency: "RM", weekday: price, weekend: price };
   }
   return {
     currency: (price as PriceItem)?.currency || "RM",
-    current: (price as PriceItem)?.current ?? 0,
-    original:
-      (price as PriceItem)?.original ?? (price as PriceItem)?.current ?? 0,
+    weekday: (price as PriceItem)?.weekday ?? 0,
+    weekend:
+      (price as PriceItem)?.weekend ?? (price as PriceItem)?.weekday ?? 0,
   };
 }
 

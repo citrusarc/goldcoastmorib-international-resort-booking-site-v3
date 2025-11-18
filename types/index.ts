@@ -24,8 +24,8 @@ export type NavItem = {
 
 export type PriceItem = {
   currency: string;
-  original: number;
-  current: number;
+  weekday: number;
+  weekend: number;
 };
 
 export type IconProps = {
@@ -44,48 +44,49 @@ export type BenefitsItem = {
 
 export type RoomsItem = {
   id: string;
+  tag?: string;
   name: string;
+  description?: string;
   src: string | string[];
   alt: string;
-  description?: string;
-  tag?: string;
   facilities?: IconProps[];
   price: PriceItem;
-  maxGuests: number;
   totalUnits?: number;
   availableUnits?: number;
+  maxGuests: number;
   status?: ItemStatus;
 };
 
 export type FacilitiesItem = {
   id: string;
+  tag?: string;
   name: string;
+  description?: string;
   src: string | string[];
   alt: string;
-  description?: string;
-  tag?: string;
   details?: IconProps[];
   status?: ItemStatus;
 };
 
 export type ActivitiesAndEventsItem = {
   id: string;
+
+  tag?: string;
   name: string;
+  description?: string;
   src: string | string[];
   alt: string;
-  description?: string;
-  tag?: string;
   details?: IconProps[];
   status?: ItemStatus;
 };
 
 export type EventsItem = {
   id: string;
+  tag?: string;
   name: string;
+  description?: string;
   src: string | string[];
   alt: string;
-  description?: string;
-  tag?: string;
   date?: string;
   startTime?: string;
   endTime?: string;
@@ -95,11 +96,11 @@ export type EventsItem = {
 
 export type NearbyItem = {
   id: string;
+  tag?: string;
   name: string;
+  description?: string;
   src: string | string[];
   alt: string;
-  description?: string;
-  tag?: string;
   status?: ItemStatus;
 };
 

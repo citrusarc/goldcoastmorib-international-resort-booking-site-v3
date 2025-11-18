@@ -13,12 +13,12 @@ const defaultStatus: ItemStatus = {
 export const facilities: FacilitiesItem[] = [
   {
     id: "skyworld",
+    tag: "Family",
     name: "Skyworld",
-    src: ["/Images/skyworld-1.jpg"],
-    alt: "Skyworld",
     description:
       "Experience Malaysia’s first Skyworld Adventure Playground, a vibrant treetop adventure with colorful net bridges, swings, and playful duck decorations.",
-    tag: "Family",
+    src: ["/Images/skyworld-1.jpg"],
+    alt: "Skyworld",
     details: [
       { icon: Clock, label: "Open Daily" },
       { icon: DoubleCheck, label: "Safety Supervision Available" },
@@ -28,7 +28,10 @@ export const facilities: FacilitiesItem[] = [
   },
   {
     id: "theme-park",
+    tag: "Relaxation",
     name: "Theme Park",
+    description:
+      "Take a peaceful stroll along the scenic shoreline and enjoy breathtaking sunsets over the Straits of Malacca. A serene escape right by the resort.",
     src: [
       "/Images/theme-park-1.jpg",
       "/Images/theme-park-2.jpg",
@@ -36,9 +39,6 @@ export const facilities: FacilitiesItem[] = [
       "/Images/theme-park-4.jpg",
     ],
     alt: "Theme Park",
-    description:
-      "Take a peaceful stroll along the scenic shoreline and enjoy breathtaking sunsets over the Straits of Malacca. A serene escape right by the resort.",
-    tag: "Relaxation",
     details: [
       { icon: Clock, label: "Best During Sunset Hours" },
       { icon: DoubleCheck, label: "Scenic Coastal Path" },
@@ -48,15 +48,15 @@ export const facilities: FacilitiesItem[] = [
   },
   {
     id: "night-water-theme-park",
+    tag: "Relaxation",
     name: "Night Water Theme Park",
+    description:
+      "Dive into an exciting nighttime water adventure featuring illuminated pools, glowing slides, and a vibrant atmosphere perfect for families and friends.",
     src: [
       "/Images/night-water-theme-park-1.jpg",
       "/Images/night-water-theme-park-2.jpg",
     ],
     alt: "Night Water Theme Park",
-    description:
-      "Dive into an exciting nighttime water adventure featuring illuminated pools, glowing slides, and a vibrant atmosphere perfect for families and friends.",
-    tag: "Relaxation",
     details: [
       { icon: Clock, label: "Best During Night Hours" },
       { icon: DoubleCheck, label: "Night Glow Water Attractions" },
@@ -66,12 +66,12 @@ export const facilities: FacilitiesItem[] = [
   },
   {
     id: "bubble-foam",
+    tag: "Family",
     name: "Bubble Foam",
-    src: ["/Images/bubble-foam-1.jpg"],
-    alt: "Bubble Foam",
     description:
       "Jump, laugh, and dance in a sea of bubbles at the foam play zone. A safe and lively experience that brings out the inner child in everyone.",
-    tag: "Family",
+    src: ["/Images/bubble-foam-1.jpg"],
+    alt: "Bubble Foam",
     details: [
       { icon: Clock, label: "Weekends & Holidays" },
       { icon: DoubleCheck, label: "Supervised Play Area" },
@@ -81,12 +81,12 @@ export const facilities: FacilitiesItem[] = [
   },
   {
     id: "seafood-catch",
+    tag: "Activity",
     name: "Seafood Catch",
-    src: ["/Images/seafood-catch-1.jpg"],
-    alt: "Seafood Catch",
     description:
       "Join this hands-on seaside experience where guests can catch small crabs and fish along the coast. A fun and interactive activity for all ages.",
-    tag: "Activity",
+    src: ["/Images/seafood-catch-1.jpg"],
+    alt: "Seafood Catch",
     details: [
       { icon: Clock, label: "Tides & Weather Dependent" },
       { icon: DoubleCheck, label: "Equipment Provided" },
@@ -96,12 +96,12 @@ export const facilities: FacilitiesItem[] = [
   },
   {
     id: "beach-walk",
+    tag: "Family",
     name: "Beach Walk",
-    src: ["/Images/beach-walk-1.jpg"],
-    alt: "Beach Walk",
     description:
       "Make a splash at the lively water park with slides, pools, and fountains. Perfect for cooling off and creating joyful memories with family and friends.",
-    tag: "Family",
+    src: ["/Images/beach-walk-1.jpg"],
+    alt: "Beach Walk",
     details: [
       { icon: Clock, label: "Open Daily" },
       { icon: DoubleCheck, label: "Family-Friendly Lifeguards On Duty" },
@@ -111,12 +111,12 @@ export const facilities: FacilitiesItem[] = [
   },
   {
     id: "high-rope",
+    tag: "Adventure",
     name: "High Rope",
-    src: ["/Images/high-rope-1.jpg"],
-    alt: "High Rope",
     description:
       "Test your balance and courage on this elevated rope challenge featuring swinging bridges and obstacles. Designed for teens and adults seeking excitement.",
-    tag: "Adventure",
+    src: ["/Images/high-rope-1.jpg"],
+    alt: "High Rope",
     details: [
       { icon: Clock, label: "Open Daily" },
       { icon: DoubleCheck, label: "Safety Harness & Briefing Included" },
@@ -126,12 +126,12 @@ export const facilities: FacilitiesItem[] = [
   },
   {
     id: "flying-fox",
+    tag: "Adventure",
     name: "Flying Fox",
-    src: ["/Images/flying-fox-1.jpg"],
-    alt: "Flying Fox",
     description:
       "Soar high above the resort on the Flying Fox zipline and feel the wind rush past as you glide across the landscape for an unforgettable aerial thrill.",
-    tag: "Adventure",
+    src: ["/Images/flying-fox-1.jpg"],
+    alt: "Flying Fox",
     details: [
       { icon: Clock, label: "Open Daily" },
       { icon: DoubleCheck, label: "Certified Safety Gear Provided" },

@@ -25,23 +25,23 @@ export async function GET(
         const parsed = JSON.parse(price);
         price = {
           currency: parsed.currency || "RM",
-          current: Number(parsed.current ?? 0),
-          original: Number(parsed.original ?? parsed.current ?? 0),
+          weekday: Number(parsed.weekday ?? 0),
+          weekend: Number(parsed.weekend ?? parsed.weekday ?? 0),
         };
       } catch {
         price = {
           currency: "RM",
-          current: Number(price),
-          original: Number(price),
+          weekday: Number(price),
+          weekend: Number(price),
         };
       }
     } else if (typeof price === "number") {
-      price = { currency: "RM", current: price, original: price };
+      price = { currency: "RM", weekday: price, weekend: price };
     } else {
       price = {
         currency: price?.currency || "RM",
-        current: price?.current ?? 0,
-        original: price?.original ?? price?.current ?? 0,
+        weekday: price?.weekday ?? 0,
+        weekend: price?.weekend ?? price?.weekday ?? 0,
       };
     }
 

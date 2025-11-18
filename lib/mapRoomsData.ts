@@ -8,25 +8,25 @@ function normalizePrice(price: unknown): PriceItem {
     } catch {
       return {
         currency: "RM",
-        current: Number(price),
-        original: Number(price),
+        weekday: Number(price),
+        weekend: Number(price),
       };
     }
   }
   if (typeof price === "number") {
-    return { currency: "RM", current: price, original: price };
+    return { currency: "RM", weekday: price, weekend: price };
   }
 
   if (typeof price === "object" && price !== null) {
     const p = price as Partial<PriceItem>;
     return {
       currency: p.currency ?? "RM",
-      current: Number(p.current ?? 0),
-      original: Number(p.original ?? p.current ?? 0),
+      weekday: Number(p.weekday ?? 0),
+      weekend: Number(p.weekend ?? p.weekday ?? 0),
     };
   }
 
-  return { currency: "RM", current: 0, original: 0 };
+  return { currency: "RM", weekday: 0, weekend: 0 };
 }
 
 export function mapRoomsData(raw: Record<string, unknown>): RoomsItem {
