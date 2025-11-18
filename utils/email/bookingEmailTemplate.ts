@@ -89,7 +89,7 @@ export function bookingEmailTemplate({
         <a href="tel:+60331981028" style="color:#fff; text-decoration:none;" 
            onmouseover="this.style.textDecoration='underline';" 
            onmouseout="this.style.textDecoration='none';">
-           +6 03 3198 1028
+           +60331981028
         </a>
       </p>
       <p style="margin:4px 0;">

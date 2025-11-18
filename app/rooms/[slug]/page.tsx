@@ -131,6 +131,25 @@ function Stepper({
   );
 }
 
+function calculateTotalPrice(checkIn: Date, checkOut: Date, price: any) {
+  let weekdayNights = 0;
+  let weekendNights = 0;
+
+  const cur = new Date(checkIn);
+
+  while (cur < checkOut) {
+    const day = cur.getDay(); // 0=Sun, 6=Sat
+    if (day === 0 || day === 6) weekendNights++;
+    else weekdayNights++;
+
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  const total = weekdayNights * price.weekday + weekendNights * price.weekend;
+
+  return { total, weekdayNights, weekendNights };
+}
+
 export default function RoomsDetailsPage() {
   const { slug } = useParams();
   const router = useRouter();
@@ -187,6 +206,12 @@ export default function RoomsDetailsPage() {
     setSuccessMessage(null);
 
     try {
+      const { total, weekdayNights, weekendNights } = calculateTotalPrice(
+        values.checkIn,
+        values.checkOut,
+        room.price
+      );
+
       const payload = {
         roomsId: room.id,
         room: {
@@ -204,7 +229,11 @@ export default function RoomsDetailsPage() {
         children: values.children,
         earlyCheckIn: values.earlyCheckIn || null,
         remarks: values.remarks?.trim() || null,
-        price: room.price.weekday || room.price.weekend,
+        weekdayNights,
+        weekendNights,
+        totalPrice: total,
+        weekdayPrice: room.price.weekday,
+        weekendPrice: room.price.weekend,
       };
 
       const response = await fetch("/api/bookings", {
@@ -856,10 +885,11 @@ export default function RoomsDetailsPage() {
                         ? "Booking..."
                         : `Book Now (RM${
                             room
-                              ? room.price.weekday *
-                                ((form.watch("checkOut")!.getTime() -
-                                  form.watch("checkIn")!.getTime()) /
-                                  (1000 * 60 * 60 * 24))
+                              ? calculateTotalPrice(
+                                  form.watch("checkIn")!,
+                                  form.watch("checkOut")!,
+                                  room.price
+                                ).total
                               : 0
                           })`}
                     </Button>

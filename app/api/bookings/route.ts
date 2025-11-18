@@ -5,6 +5,23 @@ const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
 const CHIP_TOKEN = process.env.CHIP_API_TOKEN!;
 
+// Function to calculate total price based on weekday/weekend rates
+function calculateTotalPrice(checkIn: Date, checkOut: Date, price: any) {
+  let weekdayNights = 0;
+  let weekendNights = 0;
+  const cur = new Date(checkIn);
+
+  while (cur < checkOut) {
+    const day = cur.getDay(); // 0=Sun, 6=Sat
+    if (day === 0 || day === 6) weekendNights++;
+    else weekdayNights++;
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  const total = weekdayNights * price.weekday + weekendNights * price.weekend;
+  return { total, weekdayNights, weekendNights };
+}
+
 // GET all bookings
 export async function GET(req: NextRequest) {
   try {
@@ -74,15 +91,14 @@ export async function POST(req: NextRequest) {
     const price =
       typeof room.price === "string" ? JSON.parse(room.price) : room.price;
 
-    const nights = Math.max(
-      1,
-      Math.round(
-        (checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24)
-      )
-    );
+    const {
+      total: totalPrice,
+      weekdayNights,
+      weekendNights,
+    } = calculateTotalPrice(checkinDate, checkoutDate, price);
 
-    const pricePerNight = Number(price.current);
-    const totalPrice = pricePerNight * nights;
+    const nightlyBreakdown = undefined;
+
     const bookingNumber = `BKG-${Date.now().toString().slice(-6)}-${Math.floor(
       1000 + Math.random() * 9000
     )}`;
@@ -101,13 +117,13 @@ export async function POST(req: NextRequest) {
           phone: phone.trim(),
           checkInDate: checkIn,
           checkOutDate: checkOut,
-          nights,
+          nights: weekdayNights + weekendNights,
           adults: Number(adults),
           children: Number(children),
           earlyCheckIn: earlyCheckIn || null,
           remarks: remarks?.trim() || null,
           currency: price.currency || "RM",
-          pricePerNight,
+          nightlyBreakdown, // optional
           totalPrice,
         },
       ])
