@@ -80,10 +80,10 @@ export function ErrorModal({
       onClick={onClose}
       className="flex fixed inset-0 z-9999 p-4 items-center justify-center"
     >
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm" />
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative flex flex-col gap-4 p-4 w-full sm:w-96 rounded-2xl bg-white"
+        className="relative z-10 flex flex-col gap-4 p-4 w-full sm:w-96 rounded-2xl bg-white"
       >
         <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
           {title}

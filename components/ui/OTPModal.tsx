@@ -45,8 +45,8 @@ export default function OTPModal({ correctPassword, onUnlock }: OTPModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex p-4 items-center justify-center">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      <div className="relative flex flex-col gap-4 p-4 w-full sm:w-96 rounded-2xl bg-white">
+      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm" />
+      <div className="relative z-10 flex flex-col gap-4 p-4 w-full sm:w-96 rounded-2xl bg-white">
         <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
           Enter Password
         </h2>

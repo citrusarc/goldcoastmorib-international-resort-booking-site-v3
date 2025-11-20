@@ -51,11 +51,11 @@ export default function PromoModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex p-4 items-center justify-center">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm" />
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative flex items-center justify-center"
+        className="relative z-10 flex items-center justify-center"
         style={{
           maxWidth: `${sizePercent}vw`,
           maxHeight: `${sizePercent}vh`,

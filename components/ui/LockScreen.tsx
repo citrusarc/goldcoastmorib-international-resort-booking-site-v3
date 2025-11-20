@@ -25,8 +25,8 @@ export default function LockScreen() {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-9999 flex items-center justify-center select-none touch-none">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-0" />
+    <div className="flex fixed inset-0 z-9999 p-4 items-center justify-center select-none touch-none">
+      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm" />
       <div className="relative z-10 flex flex-col gap-4 p-6 w-full sm:w-96 text-center rounded-2xl text-neutral-600 bg-white">
         <h2 className="text-xl sm:text-2xl font-semibold text-amber-500">
           Locked
