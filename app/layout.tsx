@@ -6,6 +6,7 @@ import { PageEdit, PageStar, PrivacyPolicy } from "iconoir-react";
 import "@/app/globals.css";
 import Navbar from "@/components/ui/Navbar";
 import PromoModal from "@/components/ui/PromoModal";
+import LockScreen from "@/components/ui/LockScreen";
 
 export const metadata: Metadata = {
   title:
@@ -94,6 +95,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isLocked = true;
   return (
     <html lang="en">
       <head>
@@ -235,6 +237,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="relative antialiased overflow-x-hidden overflow-y-auto max-w-full"
       >
+        {isLocked && <LockScreen />}
         <PromoModal />
         <Navbar />
         <main>{children}</main>
