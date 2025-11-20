@@ -106,7 +106,7 @@ function Stepper({
         type="button"
         variant="ghost"
         className={cn(
-          "w-12 h-12 p-0 rounded-full border border-neutral-200",
+          "w-12 h-12 p-0 rounded-full cursor-pointer border border-neutral-200",
           isMin && "opacity-50 cursor-not-allowed"
         )}
         onClick={() => onChange(Math.max(min, value - 1))}
@@ -119,7 +119,7 @@ function Stepper({
         type="button"
         variant="ghost"
         className={cn(
-          "w-12 h-12 p-0 rounded-full border border-neutral-200",
+          "w-12 h-12 p-0 rounded-full cursor-pointer border border-neutral-200",
           isMax && "opacity-50 cursor-not-allowed"
         )}
         onClick={() => onChange(value + 1)}
