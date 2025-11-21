@@ -95,7 +95,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isLocked = true;
+  const isLocked = false;
   return (
     <html lang="en">
       <head>
