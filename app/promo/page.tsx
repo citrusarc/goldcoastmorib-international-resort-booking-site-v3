@@ -18,7 +18,7 @@ import {
 
 import { supabase } from "@/utils/supabase/client";
 import { cormorantGaramond } from "@/config/fonts";
-import { SuccessModal, ErrorModal } from "@/components/ui/Modal";
+import { Modal } from "@/components/ui/Modal";
 import OTPModal from "@/components/ui/OTPModal";
 
 const formSchema = z.object({
@@ -204,7 +204,7 @@ export default function PromoPage() {
           </Form>
         </div>
       </div>
-      <SuccessModal
+      <Modal
         title="Success!"
         message={successMessage ?? ""}
         CTA="Done"
@@ -215,7 +215,7 @@ export default function PromoPage() {
           form.reset();
         }}
       />
-      <ErrorModal
+      <Modal
         title="Upload Failed"
         message={errorMessage ?? ""}
         CTA="Try Again"

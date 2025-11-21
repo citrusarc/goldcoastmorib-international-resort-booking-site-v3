@@ -38,7 +38,7 @@ import { cn } from "@/lib/utils";
 import { cormorantGaramond } from "@/config/fonts";
 import { RoomsItem } from "@/types";
 import { mapRoomsData } from "@/lib/mapRoomsData";
-import { SuccessModal, ErrorModal } from "@/components/ui/Modal";
+import { Modal } from "@/components/ui/Modal";
 
 const earlyCheckInSlots = Array.from({ length: 13 }, (_, i) => {
   const hour = 9 + Math.floor(i / 2);
@@ -901,7 +901,7 @@ export default function RoomsDetailsPage() {
         )}
       </div>
 
-      <SuccessModal
+      <Modal
         title="Booking Successful!"
         message="Your booking has been confirmed successfully. Thank you for choosing us."
         CTA="Done"
@@ -911,7 +911,7 @@ export default function RoomsDetailsPage() {
           router.push("/rooms");
         }}
       />
-      <ErrorModal
+      <Modal
         title="Booking Unsuccessful!"
         message="Something went wrong while processing your booking. Please try again later."
         CTA="Try Again"
