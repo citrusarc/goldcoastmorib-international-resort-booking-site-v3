@@ -10,30 +10,6 @@ const defaultStatus: ItemStatus = {
 
 export const nearby: NearbyItem[] = [
   {
-    id: "atv",
-    tag: "Adventure",
-    name: "ATV",
-    description:
-      "Hop on an ATV and explore the coastal sands of Morib for an exciting beach adventure — perfect for families, couples, and thrill seekers.",
-    src: ["/Images/atv-1.jpg", "/Images/atv-2.jpg", "/Images/atv-3.jpg"],
-    alt: "ATV",
-    status: { ...defaultStatus },
-  },
-  {
-    id: "firefly",
-    tag: "Nature",
-    name: "Firefly",
-    description:
-      "Experience a serene evening boat cruise through mangrove forests illuminated by thousands of magical fireflies — a must-see natural wonder.",
-    src: [
-      "/Images/firefly-1.jpg",
-      "/Images/firefly-2.jpg",
-      "/Images/firefly-3.jpg",
-    ],
-    alt: "Firefly",
-    status: { ...defaultStatus },
-  },
-  {
     id: "jugra",
     tag: "Sightseeing",
     name: "Jugra",
