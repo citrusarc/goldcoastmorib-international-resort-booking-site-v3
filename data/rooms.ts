@@ -46,7 +46,6 @@ export const rooms: RoomsItem[] = [
       "/Images/two-rooms-apartment-2.jpg",
       "/Images/two-rooms-apartment-3.jpg",
       "/Images/two-rooms-apartment-4.jpg",
-      "/Images/two-rooms-apartment-5.jpg",
     ],
     alt: "Two Rooms Apartment Images",
     facilities: [
@@ -122,6 +121,7 @@ export const rooms: RoomsItem[] = [
       "/Images/four-rooms-penthouse-3.jpg",
       "/Images/four-rooms-penthouse-4.jpg",
       "/Images/four-rooms-penthouse-5.jpg",
+      "/Images/four-rooms-penthouse-6.jpg",
     ],
     alt: "4 Rooms Penthouse Images",
     facilities: [

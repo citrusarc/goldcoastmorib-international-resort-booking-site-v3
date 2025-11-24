@@ -323,15 +323,34 @@ export default function RoomsDetailsPage() {
     const parts = src.split("/");
     const file = parts.pop()!;
     const [base, ext] = file.split(".");
-
     const baseWithoutIndex = base.replace(/-\d+$/, "");
 
-    const allImages = Array.from({ length: 5 }, (_, i) => {
-      return `${parts.join("/")}/${baseWithoutIndex}-${i + 1}.${ext}`;
-    });
+    const checkImages = async () => {
+      const results: string[] = [];
+      let index = 1;
 
-    setSelectedImage(allImages[0]);
-    setImageCarousel(allImages);
+      while (true) {
+        const url = `${parts.join("/")}/${baseWithoutIndex}-${index}.${ext}`;
+
+        try {
+          const res = await fetch(url, { method: "HEAD" });
+          if (!res.ok) break;
+
+          results.push(url);
+          index++;
+        } catch {
+          break;
+        }
+      }
+
+      // Fallback: if no numbered images found, push original
+      if (results.length === 0) results.push(src);
+
+      setSelectedImage(results[0]);
+      setImageCarousel(results);
+    };
+
+    checkImages();
   }, [room?.src]);
 
   useEffect(() => {
