@@ -77,11 +77,7 @@ export const activitiesAndEvents: ActivitiesAndEventsItem[] = [
     name: "Anniversary",
     description:
       "Celebrate your love with an intimate beachfront dinner or private setup under the stars — perfect for couples marking a special milestone.",
-    src: [
-      "/Images/anniversary-1.jpg",
-      "/Images/anniversary-2.jpg",
-      "/Images/anniversary-3.jpg",
-    ],
+    src: ["/Images/anniversary-1.jpg"],
     alt: "Anniversary",
     status: { ...defaultStatus },
   },

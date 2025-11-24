@@ -95,21 +95,6 @@ export const facilities: FacilitiesItem[] = [
     status: { ...defaultStatus },
   },
   {
-    id: "beach-walk",
-    tag: "Family",
-    name: "Beach Walk",
-    description:
-      "Make a splash at the lively water park with slides, pools, and fountains. Perfect for cooling off and creating joyful memories with family and friends.",
-    src: ["/Images/beach-walk-1.jpg"],
-    alt: "Beach Walk",
-    details: [
-      { icon: Clock, label: "Open Daily" },
-      { icon: DoubleCheck, label: "Family-Friendly Lifeguards On Duty" },
-      { icon: Pin, label: "Within Resort Grounds" },
-    ],
-    status: { ...defaultStatus },
-  },
-  {
     id: "high-rope",
     tag: "Adventure",
     name: "High Rope",

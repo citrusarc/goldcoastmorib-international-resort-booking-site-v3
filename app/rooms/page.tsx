@@ -22,7 +22,22 @@ export default function RoomsPage() {
           .eq("status->>isHidden", "false");
 
         if (error) throw error;
-        setRooms(data.map(mapRoomsData));
+        const SORT_ORDER = [
+          "Studio Suite",
+          "2 Rooms Apartment",
+          "3 Rooms Apartment",
+          "3 Rooms Penthouse",
+          "4 Rooms Penthouse",
+        ];
+
+        const mapped = data.map(mapRoomsData);
+
+        // sort rooms by custom order
+        const sorted = mapped.sort(
+          (a, b) => SORT_ORDER.indexOf(a.name) - SORT_ORDER.indexOf(b.name)
+        );
+
+        setRooms(sorted);
       } catch (err) {
         console.error("Error loading rooms:", err);
       } finally {

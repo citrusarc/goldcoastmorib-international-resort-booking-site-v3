@@ -15,7 +15,7 @@ export const rooms: RoomsItem[] = [
     tag: "Recommended",
     name: "Studio Suite",
     description:
-      "A cozy retreat featuring two single beds, a private balcony, and tranquil garden views — ideal for couples or friends looking for a relaxing getaway.",
+      "A cozy retreat featuring two single beds, a private balcony with seaview and garden views — ideal for couples or friends looking for a relaxing getaway.",
     src: [
       "/Images/studio-suite-1.jpg",
       "/Images/studio-suite-2.jpg",
@@ -40,7 +40,7 @@ export const rooms: RoomsItem[] = [
     tag: "Recommended",
     name: "2 Rooms Apartment",
     description:
-      "Comfortable 51 m² unit with 2 single beds, shower, and a garden view — perfect for small families.",
+      "Comfortable 51 m² unit with 2 single beds, shower with a garden view — perfect for small families.",
     src: [
       "/Images/two-rooms-apartment-1.jpg",
       "/Images/two-rooms-apartment-2.jpg",
@@ -65,7 +65,7 @@ export const rooms: RoomsItem[] = [
     tag: "Recommended",
     name: "3 Rooms Apartment",
     description:
-      "Comfortable 51 m² unit with 2 single beds, shower, and a garden view — perfect for small families.",
+      "Comfortable 79 m² unit with 5 single beds, shower with a garden view — perfect for small families.",
     src: [
       "/Images/three-rooms-apartment-1.jpg",
       "/Images/three-rooms-apartment-2.jpg",
@@ -90,7 +90,7 @@ export const rooms: RoomsItem[] = [
     tag: "Recommended",
     name: "3 Rooms Penthouse",
     description:
-      "Large 68 m² apartment with 5 single beds, a shower, and garden views — great for groups or big families.",
+      "Large 241 m² apartment with 5 single beds, a shower with seaview — great for groups or big families.",
     src: [
       "/Images/three-rooms-penthouse-1.jpg",
       "/Images/three-rooms-penthouse-2.jpg",
@@ -115,7 +115,7 @@ export const rooms: RoomsItem[] = [
     tag: "Recommended",
     name: "4 Rooms Penthouse",
     description:
-      "Large 68 m² apartment with 5 single beds, a shower, and garden views — great for groups or big families.",
+      "Large 241 m² apartment with 8 single beds, a shower with seaview — great for groups or big families.",
     src: [
       "/Images/four-rooms-penthouse-1.jpg",
       "/Images/four-rooms-penthouse-2.jpg",

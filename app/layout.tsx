@@ -142,7 +142,7 @@ export default function RootLayout({
               contactPoint: {
                 "@type": "ContactPoint",
                 email: "reservation@goldcoastresort.com.my",
-                telephone: "+60331981028",
+                telephone: "+601131231028",
                 contactType: "Customer Service",
                 availableLanguage: ["English", "Malay"],
               },
@@ -244,8 +244,8 @@ export default function RootLayout({
         <footer className="space-y-8 sm:space-y-4 py-16 w-full text-neutral-400">
           <div className="flex flex-col sm:flex-row gap-8 sm:gap-0 mx-auto max-w-6xl items-center sm:justify-between text-center">
             <div className="flex flex-col sm:flex-row gap-2 items-center order-2 sm:order-2">
-              <a href="tel:+60331981028" className="hover:text-amber-500">
-                +60331981028
+              <a href="tel:+601131231028" className="hover:text-amber-500">
+                +601131231028
               </a>
               <p className="hidden sm:block">/</p>
               <a

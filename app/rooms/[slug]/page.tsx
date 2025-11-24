@@ -348,7 +348,7 @@ export default function RoomsDetailsPage() {
         <div className="relative w-screen h-96 sm:h-[560px] -mt-36 sm:-mt-48 rounded-b-[32px] sm:rounded-b-[64px] left-1/2 -translate-x-1/2 overflow-hidden">
           <Image
             fill
-            src="/Images/room-details-hero-banner.jpg"
+            src={imageCarousel[0] ?? "/Images/room-details-hero-banner.jpg"}
             alt="Gold Coast Morib International Resort Booking Hero Banner"
             className="object-cover object-center"
           />
