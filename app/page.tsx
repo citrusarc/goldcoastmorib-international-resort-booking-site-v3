@@ -201,7 +201,7 @@ export default function Home() {
             {overview.map((item, index) => (
               <div
                 key={index}
-                className="relative w-full h-[180px] sm:h-[360px] shrink-0"
+                className="relative w-full h-[240px] sm:h-[560px] shrink-0"
               >
                 <Image
                   fill
