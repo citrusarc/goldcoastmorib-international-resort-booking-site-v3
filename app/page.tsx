@@ -201,7 +201,7 @@ export default function Home() {
             {overview.map((item, index) => (
               <div
                 key={index}
-                className="relative w-full h-[280px] sm:h-[560px] shrink-0"
+                className="relative w-full aspect-4/3 sm:h-[480px] shrink-0"
               >
                 <Image
                   fill
@@ -370,7 +370,7 @@ export default function Home() {
                   <Link
                     key={index}
                     href={`/nearby/${item.id}`}
-                    className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[194px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden"
+                    className="flex flex-col sm:flex-row gap-4 h-[440px] sm:h-[200px] shrink-0 rounded-2xl sm:rounded-4xl overflow-hidden"
                     style={{
                       flex: `0 0 calc((100% - ${
                         (itemsToShow - 1) * 16
