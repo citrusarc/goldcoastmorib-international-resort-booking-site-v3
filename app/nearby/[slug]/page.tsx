@@ -57,7 +57,7 @@ export default function NearbyDetailsPage() {
           <div>
             <div className="flex flex-col gap-8 sm:gap-16 shrink-0">
               <div className="space-y-4">
-                <div className="relative w-full h-[240px] sm:h-[560px] rounded-2xl sm:rounded-4xl shrink-0 overflow-hidden">
+                <div className="relative w-full h-[280px] sm:h-[560px] rounded-2xl sm:rounded-4xl shrink-0 overflow-hidden">
                   {selectedImage ? (
                     <Image
                       fill
