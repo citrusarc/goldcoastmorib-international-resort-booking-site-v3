@@ -47,9 +47,12 @@ export default function NearbyPage() {
                     className="object-cover"
                   />
                   <div className="absolute flex p-4 sm:p-6 bottom-0 space-x-2 w-full items-center justify-between">
-                    <h2 className="px-4 py-2 text-xl font-semibold rounded-full truncate text-amber-500 bg-white/80">
-                      {item.name}
-                    </h2>
+                    <div>
+                      <h2 className="px-4 py-2 w-56 text-xl font-semibold rounded-full truncate text-amber-500 bg-white/80">
+                        {item.name}
+                      </h2>
+                      <p>{item.tag} from resort</p>
+                    </div>
                     <div className="flex w-12 h-12 items-center justify-center shrink-0 rounded-full backdrop-blur-sm text-amber-500 group-hover:text-amber-600 bg-amber-100 group-hover:bg-amber-500/50">
                       <ArrowRight className="w-5 h-5" />
                     </div>

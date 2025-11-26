@@ -97,6 +97,7 @@ export default function NearbyDetailsPage() {
                 <h2 className="text-2xl sm:text-3xl font-semibold">
                   {near.name}
                 </h2>
+                <p className="text-amber-500">{near.tag} from resort</p>
                 <p>{near.description}</p>
               </div>
             </div>
