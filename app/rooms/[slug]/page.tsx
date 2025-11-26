@@ -640,7 +640,7 @@ export default function RoomsDetailsPage() {
                     </div>
 
                     {/* Name */}
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+                    <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
                       <FormField
                         control={form.control}
                         name="firstName"
