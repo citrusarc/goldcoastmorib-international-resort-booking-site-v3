@@ -251,7 +251,7 @@ export default function RoomsDetailsPage() {
       }
 
       window.location.href = data.checkout_url;
-      // form.reset();
+      form.reset();
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Error submitting booking";
@@ -308,7 +308,6 @@ export default function RoomsDetailsPage() {
         setUnavailableDates(dates);
       } catch (err) {
         console.error("Error fetching unavailable dates:", err);
-        // Optional: show user-friendly message
       }
     };
 
