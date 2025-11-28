@@ -142,15 +142,21 @@ export default function Home() {
           </div>
         </div>
         <div className="space-y-4">
-          <h2
+          {/* <h2
             className={`${merriweather.className} text-3xl sm:text-4xl text-amber-500`}
           >
             Seaside Gem on Selangor&apos;s Tranquil Coast
-          </h2>
+          </h2> */}
           <p className="flex text-base sm:text-lg text-neutral-600">
-            Wake up to the rhythm of the waves, unwind in your private jacuzzi,
-            and make a splash with the kids at the onsite water theme park, all
-            just steps from your suite.
+            Goldcoast Morib Resort boasts a convenient location, easily
+            accessible from Kuala Lumpur, the Klang Valley, and Kuala Lumpur
+            International Airport (KLIA). This resort offers over 600
+            well-equipped rooms, along with beautiful beaches and a water park.
+            Its advantageous position means it is not affected by seasonal winds
+            or monsoons throughout the year, making it an ideal venue for
+            hosting large events. Additionally, the various facilities and
+            services available at the resort cater to diverse needs, making it a
+            perfect destination for both leisure and conference activities.
           </p>
           <div className="flex flex-row w-full mt-8 sm:mt-0 justify-between sm:justify-start gap-4">
             <div
