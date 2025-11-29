@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 
 import { supabase } from "@/utils/supabase/client";
 import { transporter } from "@/utils/email";
@@ -8,28 +7,7 @@ import { formatDate } from "@/utils/formatDate";
 
 export async function POST(req: NextRequest) {
   try {
-    const payloadString = await req.text();
-    const signature = req.headers.get("x-chip-signature");
-
-    if (!signature) {
-      console.error("Missing CHIP signature");
-      return NextResponse.json({ error: "Missing signature" }, { status: 400 });
-    }
-
-    // Verify signature using CHIP public key
-    const publicKey = process.env.CHIP_PUBLIC_KEY!;
-    const verifier = crypto.createVerify("SHA256");
-    verifier.update(payloadString);
-    verifier.end();
-    const isValid = verifier.verify(publicKey, signature, "base64");
-
-    if (!isValid) {
-      console.error("Invalid CHIP webhook signature");
-      return NextResponse.json({ error: "Invalid signature" }, { status: 403 });
-    }
-
-    const payload = JSON.parse(payloadString);
-
+    const payload = await req.json();
     console.log("CHIP Webhook Received:", payload);
     const { id: chipPurchaseId, reference, status } = payload;
 
