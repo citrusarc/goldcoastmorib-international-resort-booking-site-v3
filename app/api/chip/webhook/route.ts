@@ -36,7 +36,10 @@ export async function POST(req: NextRequest) {
       await supabase
         .from("bookings")
         .update({
-          paymentMethod: payload.payment_method,
+          paymentMethod:
+            payload.transaction_data?.payment_method ||
+            payload.transaction_data?.attempts?.[0]?.payment_method ||
+            null,
           paymentStatus: "paid",
           bookingStatus: "confirmed",
           chipPurchaseId,
