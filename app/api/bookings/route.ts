@@ -157,6 +157,8 @@ export async function POST(req: NextRequest) {
       ...(paymentMethod ? { payment_method_whitelist: [paymentMethod] } : {}),
     };
 
+    console.log(chipPayload);
+
     const chipResponse = await fetch(CHIP_API_URL, {
       method: "POST",
       headers: {
