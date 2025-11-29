@@ -7,6 +7,7 @@ import { formatDate } from "@/utils/formatDate";
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
+    console.log("CHIP Webhook Received:", payload);
     const { id: chipPurchaseId, reference, status } = payload;
 
     if (!reference) {

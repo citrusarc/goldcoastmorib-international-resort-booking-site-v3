@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
           currency: price.currency || "RM",
           nightlyBreakdown,
           totalPrice,
-          paymentMethod: null,
+          paymentMethod,
           paymentStatus: "pending",
           bookingStatus: "pending",
         },
