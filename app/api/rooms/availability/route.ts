@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
       .from("bookings")
       .select("checkInDate, checkOutDate")
       .eq("roomsId", id)
-      .eq("status", "confirmed")
+      .eq("bookingStatus", "confirmed")
       .or(`checkOutDate.gt.${checkin},checkInDate.lt.${checkout}`);
 
     if (error) throw error;

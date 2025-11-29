@@ -10,13 +10,14 @@ export async function POST(req: NextRequest) {
     const { id: chipPurchaseId, reference, status } = payload;
 
     if (!reference) {
+      console.error("Missing CHIP reference");
       return NextResponse.json(
         { error: "Missing booking reference" },
         { status: 400 }
       );
     }
 
-    // Find booking in Supabase
+    // 1. Find order by bookingNumber
     const { data: booking, error } = await supabase
       .from("bookings")
       .select("*, rooms(*)")
@@ -28,13 +29,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     }
 
+    // 2. Handle payment statuses
     if (status === "paid") {
-      // Update booking status
+      console.log("Payment successful, updating order...");
       await supabase
         .from("bookings")
         .update({
-          status: "confirmed",
+          paymentMethod: payload.payment_method,
           paymentStatus: "paid",
+          bookingStatus: "confirmed",
           chipPurchaseId,
         })
         .eq("id", booking.id);
@@ -64,12 +67,28 @@ export async function POST(req: NextRequest) {
       } catch (emailError) {
         console.error("Email sending failed:", emailError);
       }
-    } else if (status === "failed" || status === "cancelled") {
+    }
+
+    // FAILED / CANCELLED
+    else if (status === "failed" || status === "cancelled") {
       await supabase
         .from("bookings")
         .update({
-          status: "cancelled",
+          bookingStatus: "cancelled_due_to_payment",
           paymentStatus: "failed",
+        })
+        .eq("id", booking.id);
+    }
+
+    // STILL PENDING (FPX not finished)
+    else if (status === "pending") {
+      console.log("Payment still pending...");
+
+      await supabase
+        .from("bookings")
+        .update({
+          bookingStatus: "pending",
+          paymentStatus: "awaiting_payment",
         })
         .eq("id", booking.id);
     }

@@ -218,7 +218,6 @@ export default function RoomsDetailsPage() {
           name: room.name,
           id: room.id,
         },
-        status: "confirmed",
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,

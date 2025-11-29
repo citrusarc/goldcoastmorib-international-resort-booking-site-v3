@@ -3,7 +3,7 @@ import { supabase } from "@/utils/supabase/client";
 
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
-const CHIP_TOKEN = process.env.CHIP_API_TOKEN!;
+const CHIP_TOKEN = process.env.CHIP_TEST_API_TOKEN!;
 
 // Function to calculate total price based on weekday/weekend rates
 function calculateTotalPrice(checkIn: Date, checkOut: Date, price: any) {
@@ -27,12 +27,12 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email");
-    const status = searchParams.get("status");
+    const status = searchParams.get("bookingStatus");
 
     let query = supabase.from("bookings").select("*, rooms(*)");
 
     if (email) query = query.eq("email", email);
-    if (status) query = query.eq("status", status);
+    if (status) query = query.eq("bookingStatus", status);
 
     const { data, error } = await query.order("createdAt", {
       ascending: false,
@@ -48,14 +48,12 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST create a booking with CHIP purchase
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
     const {
       roomsId,
-      status,
       firstName,
       lastName,
       email,
@@ -103,14 +101,13 @@ export async function POST(req: NextRequest) {
       1000 + Math.random() * 9000
     )}`;
 
-    // Save booking to Supabase first
+    // 1. Create booking
     const { data: newBooking, error: bookingError } = await supabase
       .from("bookings")
       .insert([
         {
-          roomsId,
           bookingNumber,
-          status: status || "pending",
+          roomsId,
           firstName: firstName.trim(),
           lastName: lastName.trim(),
           email: email.trim(),
@@ -123,8 +120,11 @@ export async function POST(req: NextRequest) {
           earlyCheckIn: earlyCheckIn || null,
           remarks: remarks?.trim() || null,
           currency: price.currency || "RM",
-          nightlyBreakdown, // optional
+          nightlyBreakdown,
           totalPrice,
+          paymentMethod: null,
+          paymentStatus: "pending",
+          bookingStatus: "pending",
         },
       ])
       .select("*, rooms(*)")
@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
     const SUCCESS_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=success`;
     const FAILURE_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=failed`;
 
-    // Create CHIP purchase right after saving booking
+    // 2. Create CHIP payload
     const chipPayload = {
       client: { email, full_name: `${firstName} ${lastName}`, phone },
       purchase: {
@@ -170,22 +170,30 @@ export async function POST(req: NextRequest) {
 
     if (!chipResponse.ok) {
       console.error("Chip API error:", chipData);
+
+      await supabase
+        .from("bookings")
+        .update({
+          paymentStatus: "failed",
+          bookingStatus: "cancelled_due_to_payment",
+        })
+        .eq("id", roomsId);
       return NextResponse.json(
         { error: chipData.message || "Failed to create Chip purchase." },
         { status: chipResponse.status }
       );
     }
 
-    // Update booking with CHIP purchase_id
+    // 3. Update booking with CHIP purchase_id
     await supabase
       .from("bookings")
       .update({
         chipPurchaseId: chipData.id,
-        paymentStatus: "created",
+        paymentStatus: "pending",
+        bookingStatus: "awaiting_payment",
       })
       .eq("id", newBooking.id);
 
-    // Return checkout URL to frontend for redirect
     return NextResponse.json({
       success: true,
       booking: newBooking,

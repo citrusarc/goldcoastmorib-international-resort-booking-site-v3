@@ -77,7 +77,7 @@ export async function GET(request: Request) {
     const { data: booked, error: bookingError } = await supabase
       .from("bookings")
       .select("roomsId")
-      .eq("status", "confirmed")
+      .eq("bookingStatus", "confirmed")
       .lte("checkInDate", today)
       .gte("checkOutDate", today);
 
