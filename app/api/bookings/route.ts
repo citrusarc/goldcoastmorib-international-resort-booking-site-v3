@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { supabase } from "@/utils/supabase/client";
+import { BookingBody, BookingItem, PriceItem } from "@/types";
 
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
 const CHIP_TOKEN = process.env.CHIP_API_TOKEN!;
 
 // Function to calculate total price based on weekday/weekend rates
-function calculateTotalPrice(checkIn: Date, checkOut: Date, price: any) {
+function calculateTotalPrice(checkIn: Date, checkOut: Date, price: PriceItem) {
   let weekdayNights = 0;
   let weekendNights = 0;
   const cur = new Date(checkIn);
@@ -50,7 +52,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body: BookingBody = await req.json();
 
     const {
       roomsId,
@@ -86,6 +88,13 @@ export async function POST(req: NextRequest) {
     const checkinDate = new Date(checkIn);
     const checkoutDate = new Date(checkOut);
 
+    if (isNaN(checkinDate.getTime()) || isNaN(checkoutDate.getTime())) {
+      return NextResponse.json(
+        { error: "Invalid check-in or check-out date" },
+        { status: 400 }
+      );
+    }
+
     const price =
       typeof room.price === "string" ? JSON.parse(room.price) : room.price;
 
@@ -95,14 +104,17 @@ export async function POST(req: NextRequest) {
       weekendNights,
     } = calculateTotalPrice(checkinDate, checkoutDate, price);
 
-    const nightlyBreakdown = undefined;
+    const nightlyBreakdown = [
+      { type: "weekday", nights: weekdayNights, price: price.weekday },
+      { type: "weekend", nights: weekendNights, price: price.weekend },
+    ];
 
     const bookingNumber = `BKG-${Date.now().toString().slice(-6)}-${Math.floor(
       1000 + Math.random() * 9000
     )}`;
 
     // 1. Create booking
-    const { data: newBooking, error: bookingError } = await supabase
+    const { data: bookingData, error: bookingError } = await supabase
       .from("bookings")
       .insert([
         {
@@ -130,8 +142,11 @@ export async function POST(req: NextRequest) {
       .select("*, rooms(*)")
       .single();
 
-    if (bookingError)
-      throw new Error(`Supabase insert error: ${bookingError.message}`);
+    if (bookingError || !bookingData) {
+      throw new Error(`Supabase insert error: ${bookingError?.message}`);
+    }
+
+    const newBooking: BookingItem = bookingData;
 
     const SUCCESS_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=success`;
     const FAILURE_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=failed`;
@@ -177,7 +192,7 @@ export async function POST(req: NextRequest) {
           paymentStatus: "failed",
           bookingStatus: "cancelled_due_to_payment",
         })
-        .eq("id", roomsId);
+        .eq("id", newBooking.id);
       return NextResponse.json(
         { error: chipData.message || "Failed to create Chip purchase." },
         { status: chipResponse.status }

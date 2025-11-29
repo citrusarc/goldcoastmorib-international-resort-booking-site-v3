@@ -120,6 +120,21 @@ export type BookingItem = {
   remarks?: string | null;
 };
 
+export interface BookingBody {
+  roomsId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  checkIn: string;
+  checkOut: string;
+  adults: number | string;
+  children?: number | string;
+  earlyCheckIn?: string | null;
+  remarks?: string | null;
+  paymentMethod?: string;
+}
+
 export type BookingEmailTemplateProps = {
   bookingNumber: string;
   firstName: string;
