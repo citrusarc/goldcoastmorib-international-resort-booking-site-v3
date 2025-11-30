@@ -5,7 +5,7 @@ import { BookingBody, BookingItem, PriceItem } from "@/types";
 
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
-const CHIP_TOKEN = process.env.CHIP_TEST_API_TOKEN!;
+const CHIP_TOKEN = process.env.CHIP_API_TOKEN!;
 
 // Function to calculate total price based on weekday/weekend rates
 function calculateTotalPrice(checkIn: Date, checkOut: Date, price: PriceItem) {
