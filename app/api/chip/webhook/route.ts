@@ -24,7 +24,10 @@ export async function POST(req: NextRequest) {
     verifier.update(payloadString);
     verifier.end();
 
-    const isValid = verifier.verify(publicKey, signature, "base64");
+    const isValid = verifier.verify(
+      publicKey,
+      Buffer.from(signature, "base64")
+    );
 
     if (!isValid) {
       console.error("Invalid CHIP webhook signature");
