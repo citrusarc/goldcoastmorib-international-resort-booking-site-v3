@@ -498,6 +498,7 @@ export default function RoomsDetailsPage() {
                               }`}
                             >
                               Stay Duration
+                              <span className="-ml-1.5 text-red-400">*</span>
                             </FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
@@ -588,6 +589,7 @@ export default function RoomsDetailsPage() {
                               }`}
                             >
                               Adults
+                              <span className="-ml-1.5 text-red-400">*</span>
                             </FormLabel>
                             <FormControl>
                               <Stepper
@@ -652,6 +654,7 @@ export default function RoomsDetailsPage() {
                               }`}
                             >
                               First Name
+                              <span className="-ml-1.5 text-red-400">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -676,6 +679,7 @@ export default function RoomsDetailsPage() {
                               }`}
                             >
                               Last Name
+                              <span className="-ml-1.5 text-red-400">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -700,7 +704,7 @@ export default function RoomsDetailsPage() {
                               errors.email ? "text-red-600" : "text-neutral-400"
                             }`}
                           >
-                            Email
+                            Email<span className="-ml-1.5 text-red-400">*</span>
                           </FormLabel>
                           <FormControl>
                             <Input
@@ -724,6 +728,7 @@ export default function RoomsDetailsPage() {
                         }`}
                       >
                         Phone Number
+                        <span className="ml-0.5 text-red-400">*</span>
                       </h2>
                       <div className="flex w-full gap-2">
                         <FormField
@@ -828,7 +833,7 @@ export default function RoomsDetailsPage() {
                                 : "text-neutral-400"
                             }`}
                           >
-                            Early Check-In (Optional)
+                            Early Check-In
                           </FormLabel>
                           <FormControl>
                             <Select
@@ -872,7 +877,7 @@ export default function RoomsDetailsPage() {
                                 : "text-neutral-400"
                             }`}
                           >
-                            Remarks (Optional)
+                            Remarks
                           </FormLabel>
                           <FormControl>
                             <Textarea
