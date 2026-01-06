@@ -354,7 +354,7 @@ export default function RoomsDetailsPage() {
   useEffect(() => {
     if (status === "success") {
       setSuccessMessage("Payment successful! Your booking is confirmed.");
-    } else if (status === "failed") {
+    } else if (status === "error" || "failed") {
       setErrorMessage("Payment failed. Please try again.");
     }
   }, [status]);
