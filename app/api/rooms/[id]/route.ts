@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/utils/supabase/client";
+import { sql } from "@/utils/db/client";
 
 export async function GET(
   req: NextRequest,
@@ -8,14 +8,16 @@ export async function GET(
   try {
     const { id } = await context.params;
 
-    const { data, error } = await supabase
-      .from("rooms")
-      .select("*")
-      .eq("id", id)
-      .single();
+    const roomResult = await sql`
+      SELECT *
+      FROM rooms
+      WHERE id = ${id}
+      LIMIT 1
+    `;
 
-    if (error || !data) {
-      console.error("Supabase room fetch error:", error);
+    const data = roomResult[0];
+    if (!data) {
+      console.error("Room not found");
       return NextResponse.json({ error: "Rooms not found" }, { status: 404 });
     }
 

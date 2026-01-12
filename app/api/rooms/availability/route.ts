@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/utils/supabase/client";
+import { sql } from "@/utils/db/client";
 import { PriceItem } from "@/types";
 
 function normalizePrice(price: unknown): PriceItem {
@@ -30,7 +30,6 @@ export async function GET(req: NextRequest) {
     if (!id) {
       return NextResponse.json({ error: "Missing room ID" }, { status: 400 });
     }
-
     if (!checkin || !checkout) {
       return NextResponse.json(
         { error: "Missing checkin/checkout dates" },
@@ -38,18 +37,16 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const { data: bookings, error } = await supabase
-      .from("bookings")
-      .select("checkInDate, checkOutDate")
-      .eq("roomsId", id)
-      .eq("bookingStatus", "confirmed")
-      .or(`checkOutDate.gt.${checkin},checkInDate.lt.${checkout}`);
-
-    if (error) throw error;
+    const bookings = await sql`
+      SELECT "checkInDate", "checkOutDate"
+      FROM bookings
+      WHERE "roomsId" = ${id}
+        AND "bookingStatus" = 'confirmed'
+        AND ("checkOutDate" > ${checkin} OR "checkInDate" < ${checkout})
+    `;
 
     const bookedDates: string[] = [];
-
-    bookings?.forEach((booking) => {
+    bookings?.forEach((booking: any) => {
       const start = new Date(booking.checkInDate + "T00:00");
       const end = new Date(booking.checkOutDate + "T00:00");
       for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {

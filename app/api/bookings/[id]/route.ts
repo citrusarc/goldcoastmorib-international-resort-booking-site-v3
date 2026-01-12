@@ -1,73 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/utils/supabase/client";
+import { sql } from "@/utils/db/client";
 
-// GET single booking
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+  context: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
 
-    const { data, error } = await supabase
-      .from("bookings")
-      .select("*, rooms(*)")
-      .eq("id", id)
-      .single();
+    const bookingResult = await sql`
+      SELECT b.*, 
+             json_build_object(
+               'id', r.id,
+               'name', r.name,
+               'price', r.price
+             ) as rooms
+      FROM bookings b
+      LEFT JOIN rooms r ON b."roomsId" = r.id
+      WHERE b.id = ${id}
+      LIMIT 1
+    `;
 
-    if (error) throw error;
-    if (!data) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const booking = bookingResult[0];
+    if (!booking) {
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(booking, { status: 200 });
   } catch (err: unknown) {
     const message =
-      err instanceof Error ? err.message : "Failed to fetch booking";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
-}
-
-// UPDATE booking (e.g. change status or guest info)
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params;
-    const body = await req.json();
-
-    const { data, error } = await supabase
-      .from("bookings")
-      .update(body)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return NextResponse.json(data);
-  } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : "Failed to update booking";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
-}
-
-// DELETE booking
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params;
-
-    const { error } = await supabase.from("bookings").delete().eq("id", id);
-
-    if (error) throw error;
-    return NextResponse.json({ message: "Booking deleted" }, { status: 200 });
-  } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : "Failed to delete booking";
+      err instanceof Error ? err.message : "Unknown error occurred";
+    console.error("Error fetching booking:", message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

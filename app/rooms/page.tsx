@@ -1,12 +1,9 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowRight } from "iconoir-react";
-
 import { cormorantGaramond } from "@/config/fonts";
-import { supabase } from "@/utils/supabase/client";
 import { mapRoomsData } from "@/lib/mapRoomsData";
 
 export default function RoomsPage() {
@@ -16,12 +13,8 @@ export default function RoomsPage() {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const { data, error } = await supabase
-          .from("rooms")
-          .select("*")
-          .eq("status->>isHidden", "false");
+        const data = await fetch("/api/rooms?all=true").then((r) => r.json());
 
-        if (error) throw error;
         const SORT_ORDER = [
           "Studio Suite",
           "2 Rooms Apartment",
@@ -29,14 +22,11 @@ export default function RoomsPage() {
           "3 Rooms Penthouse",
           "4 Rooms Penthouse",
         ];
-
         const mapped = data.map(mapRoomsData);
-
-        // sort rooms by custom order
         const sorted = mapped.sort(
-          (a, b) => SORT_ORDER.indexOf(a.name) - SORT_ORDER.indexOf(b.name)
+          (a: any, b: any) =>
+            SORT_ORDER.indexOf(a.name) - SORT_ORDER.indexOf(b.name)
         );
-
         setRooms(sorted);
       } catch (err) {
         console.error("Error loading rooms:", err);

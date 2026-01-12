@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/utils/supabase/client";
+import { sql } from "@/utils/db/client";
 import { transporter } from "@/utils/email";
 import { bookingEmailTemplate } from "@/utils/email/bookingEmailTemplate";
 import { formatDate } from "@/utils/formatDate";
@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
     console.log("CHIP Webhook Received:", payload);
 
     const { id: chipPurchaseId, reference, status } = payload;
-
     if (!reference) {
       console.error("Missing CHIP reference");
       return NextResponse.json(
@@ -19,35 +18,40 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Find order by bookingNumber
-    const { data: booking, error } = await supabase
-      .from("bookings")
-      .select("*, rooms(*)")
-      .eq("bookingNumber", reference)
-      .single();
+    const bookingResult = await sql`
+      SELECT b.*, 
+             json_build_object(
+               'id', r.id,
+               'name', r.name
+             ) as rooms
+      FROM bookings b
+      LEFT JOIN rooms r ON b."roomsId" = r.id
+      WHERE b."bookingNumber" = ${reference}
+      LIMIT 1
+    `;
 
-    if (error || !booking) {
+    const booking = bookingResult[0];
+    if (!booking) {
       console.error("Booking not found for reference:", reference);
       return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     }
 
-    // 2. Handle payment statuses
     if (status === "paid") {
       console.log("Payment successful, updating order...");
-      await supabase
-        .from("bookings")
-        .update({
-          paymentMethod:
-            payload.transaction_data?.payment_method ||
-            payload.transaction_data?.attempts?.[0]?.payment_method ||
-            null,
-          paymentStatus: "paid",
-          bookingStatus: "confirmed",
-          chipPurchaseId,
-        })
-        .eq("id", booking.id);
 
-      // Send confirmation email
+      await sql`
+        UPDATE bookings
+        SET "paymentMethod" = ${
+          payload.transaction_data?.payment_method ||
+          payload.transaction_data?.attempts?.[0]?.payment_method ||
+          null
+        },
+            "paymentStatus" = 'paid',
+            "bookingStatus" = 'confirmed',
+            "chipPurchaseId" = ${chipPurchaseId}
+        WHERE id = ${booking.id}
+      `;
+
       try {
         await transporter.sendMail({
           from: `"Gold Coast Morib International Resort" <${process.env.EMAIL_USER}>`,
@@ -74,27 +78,22 @@ export async function POST(req: NextRequest) {
       } catch (emailError) {
         console.error("Email sending failed:", emailError);
       }
-    }
-    // FAILED / CANCELLED
-    else if (status === "failed" || status === "cancelled") {
-      await supabase
-        .from("bookings")
-        .update({
-          bookingStatus: "cancelled_due_to_payment",
-          paymentStatus: "failed",
-        })
-        .eq("id", booking.id);
-    }
-    // STILL PENDING (FPX not finished)
-    else if (status === "pending") {
+    } else if (status === "failed" || status === "cancelled") {
+      await sql`
+        UPDATE bookings
+        SET "bookingStatus" = 'cancelled_due_to_payment',
+            "paymentStatus" = 'failed'
+        WHERE id = ${booking.id}
+      `;
+    } else if (status === "pending") {
       console.log("Payment still pending...");
-      await supabase
-        .from("bookings")
-        .update({
-          bookingStatus: "pending",
-          paymentStatus: "awaiting_payment",
-        })
-        .eq("id", booking.id);
+
+      await sql`
+        UPDATE bookings
+        SET "bookingStatus" = 'pending',
+            "paymentStatus" = 'awaiting_payment'
+        WHERE id = ${booking.id}
+      `;
     }
 
     return NextResponse.json({ received: true });

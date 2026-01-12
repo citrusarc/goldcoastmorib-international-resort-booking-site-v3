@@ -11,11 +11,10 @@ import {
   Cutlery,
 } from "iconoir-react";
 
-import { cormorantGaramond, merriweather } from "@/config/fonts";
+import { cormorantGaramond } from "@/config/fonts";
 import { overview } from "@/data/overview";
 import { nearby } from "@/data/nearby";
 import { benefits } from "@/data/benefits";
-import { supabase } from "@/utils/supabase/client";
 import { mapRoomsData } from "@/lib/mapRoomsData";
 
 export default function Home() {
@@ -27,12 +26,15 @@ export default function Home() {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [rooms, setRooms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
   const minSwipeDistance = 50;
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) =>
     setTouchStart(e.targetTouches[0].clientX);
+
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) =>
     setTouchEnd(e.targetTouches[0].clientX);
+
   const handleTouchEnd = () => {
     if (touchStart === null || touchEnd === null) return;
     const distance = touchStart - touchEnd;
@@ -55,12 +57,8 @@ export default function Home() {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const { data, error } = await supabase
-          .from("rooms")
-          .select("*")
-          .eq("status->>isHidden", "false");
+        const data = await fetch("/api/rooms?all=true").then((r) => r.json());
 
-        if (error) throw error;
         const SORT_ORDER = [
           "Studio Suite",
           "2 Rooms Apartment",
@@ -68,14 +66,11 @@ export default function Home() {
           "3 Rooms Penthouse",
           "4 Rooms Penthouse",
         ];
-
         const mapped = data.map(mapRoomsData);
-
-        // sort rooms by defined order
         const sorted = mapped.sort(
-          (a, b) => SORT_ORDER.indexOf(a.name) - SORT_ORDER.indexOf(b.name)
+          (a: any, b: any) =>
+            SORT_ORDER.indexOf(a.name) - SORT_ORDER.indexOf(b.name)
         );
-
         setRooms(sorted);
       } catch (err) {
         console.error("Error loading rooms:", err);
@@ -91,7 +86,6 @@ export default function Home() {
       const width = window.innerWidth;
       const newItems = width < 640 ? 1 : width < 1024 ? 1 : 2;
       setItemsToShow(newItems);
-
       setCurrentRooms((prev) =>
         Math.min(prev, Math.max(0, rooms.length - newItems))
       );
@@ -99,7 +93,6 @@ export default function Home() {
         Math.min(prev, Math.max(0, nearby.length - newItems))
       );
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -142,11 +135,6 @@ export default function Home() {
           </div>
         </div>
         <div className="space-y-4">
-          {/* <h2
-            className={`${merriweather.className} text-3xl sm:text-4xl text-amber-500`}
-          >
-            Seaside Gem on Selangor&apos;s Tranquil Coast
-          </h2> */}
           <p className="flex text-base sm:text-lg text-neutral-600">
             Goldcoast Morib Resort boasts a convenient location, easily
             accessible from Kuala Lumpur, the Klang Valley, and Kuala Lumpur
@@ -247,7 +235,6 @@ export default function Home() {
                 </div>
               </Link>
             </div>
-
             <div className="relative flex items-center">
               <button
                 onClick={() =>
@@ -261,7 +248,6 @@ export default function Home() {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-
               <div className="w-full overflow-hidden">
                 <div
                   className="flex transition-transform duration-500 ease-in-out gap-4"
@@ -318,7 +304,6 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-
               <button
                 onClick={() =>
                   setCurrentRooms((prev) =>
@@ -362,7 +347,6 @@ export default function Home() {
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
-
             <div className="w-full overflow-hidden">
               <div
                 className="flex transition-transform duration-500 ease-in-out gap-4"
@@ -407,7 +391,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-
             <button
               onClick={() =>
                 setCurrentNearbyAttractions((prev) =>
@@ -420,7 +403,6 @@ export default function Home() {
             </button>
           </div>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-16 text-center">
           {benefits.map((item, index) => (
             <div

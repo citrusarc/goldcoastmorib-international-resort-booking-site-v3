@@ -1,46 +1,87 @@
 import { NextRequest, NextResponse } from "next/server";
-
-import { supabase } from "@/utils/supabase/client";
+import { sql } from "@/utils/db/client";
 import { BookingBody, BookingItem, PriceItem } from "@/types";
 
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";
 const CHIP_BRAND_ID = process.env.CHIP_BRAND_ID!;
 const CHIP_TOKEN = process.env.CHIP_API_TOKEN!;
 
-// Function to calculate total price based on weekday/weekend rates
 function calculateTotalPrice(checkIn: Date, checkOut: Date, price: PriceItem) {
   let weekdayNights = 0;
   let weekendNights = 0;
   const cur = new Date(checkIn);
-
   while (cur < checkOut) {
-    const day = cur.getDay(); // 0=Sun, 6=Sat
+    const day = cur.getDay();
     if (day === 0 || day === 6) weekendNights++;
     else weekdayNights++;
     cur.setDate(cur.getDate() + 1);
   }
-
   const total = weekdayNights * price.weekday + weekendNights * price.weekend;
   return { total, weekdayNights, weekendNights };
 }
 
-// GET all bookings
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email");
     const status = searchParams.get("bookingStatus");
 
-    let query = supabase.from("bookings").select("*, rooms(*)");
+    // Build query based on filters
+    let data;
 
-    if (email) query = query.eq("email", email);
-    if (status) query = query.eq("bookingStatus", status);
-
-    const { data, error } = await query.order("createdAt", {
-      ascending: false,
-    });
-
-    if (error) throw new Error(`Supabase error: ${error.message}`);
+    if (email && status) {
+      data = await sql`
+        SELECT b.*, 
+               json_build_object(
+                 'id', r.id,
+                 'name', r.name,
+                 'price', r.price
+               ) as rooms
+        FROM bookings b
+        LEFT JOIN rooms r ON b."roomsId" = r.id
+        WHERE b.email = ${email}
+          AND b."bookingStatus" = ${status}
+        ORDER BY b."createdAt" DESC
+      `;
+    } else if (email) {
+      data = await sql`
+        SELECT b.*, 
+               json_build_object(
+                 'id', r.id,
+                 'name', r.name,
+                 'price', r.price
+               ) as rooms
+        FROM bookings b
+        LEFT JOIN rooms r ON b."roomsId" = r.id
+        WHERE b.email = ${email}
+        ORDER BY b."createdAt" DESC
+      `;
+    } else if (status) {
+      data = await sql`
+        SELECT b.*, 
+               json_build_object(
+                 'id', r.id,
+                 'name', r.name,
+                 'price', r.price
+               ) as rooms
+        FROM bookings b
+        LEFT JOIN rooms r ON b."roomsId" = r.id
+        WHERE b."bookingStatus" = ${status}
+        ORDER BY b."createdAt" DESC
+      `;
+    } else {
+      data = await sql`
+        SELECT b.*, 
+               json_build_object(
+                 'id', r.id,
+                 'name', r.name,
+                 'price', r.price
+               ) as rooms
+        FROM bookings b
+        LEFT JOIN rooms r ON b."roomsId" = r.id
+        ORDER BY b."createdAt" DESC
+      `;
+    }
 
     return NextResponse.json(data || []);
   } catch (err: unknown) {
@@ -53,7 +94,6 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body: BookingBody = await req.json();
-
     const {
       roomsId,
       firstName,
@@ -69,25 +109,20 @@ export async function POST(req: NextRequest) {
       paymentMethod,
     } = body;
 
-    // Fetch room and check availability
-    const { data: room, error: roomError } = await supabase
-      .from("rooms")
-      .select("id, name, price, totalUnits")
-      .eq("id", roomsId)
-      .single();
+    const roomResult = await sql`
+      SELECT id, name, price, "totalUnits"
+      FROM rooms
+      WHERE id = ${roomsId}
+      LIMIT 1
+    `;
 
-    if (roomError || !room) {
-      return NextResponse.json(
-        {
-          error: `Rooms not found: ${roomError?.message || "Unknown error"}`,
-        },
-        { status: 404 }
-      );
+    const room = roomResult[0];
+    if (!room) {
+      return NextResponse.json({ error: `Rooms not found` }, { status: 404 });
     }
 
     const checkinDate = new Date(checkIn);
     const checkoutDate = new Date(checkOut);
-
     if (isNaN(checkinDate.getTime()) || isNaN(checkoutDate.getTime())) {
       return NextResponse.json(
         { error: "Invalid check-in or check-out date" },
@@ -97,7 +132,6 @@ export async function POST(req: NextRequest) {
 
     const price =
       typeof room.price === "string" ? JSON.parse(room.price) : room.price;
-
     const {
       total: totalPrice,
       weekdayNights,
@@ -113,45 +147,37 @@ export async function POST(req: NextRequest) {
       1000 + Math.random() * 9000
     )}`;
 
-    // 1. Create booking
-    const { data: bookingData, error: bookingError } = await supabase
-      .from("bookings")
-      .insert([
-        {
-          bookingNumber,
-          roomsId,
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          email: email.trim(),
-          phone: phone.trim(),
-          checkInDate: checkIn,
-          checkOutDate: checkOut,
-          nights: weekdayNights + weekendNights,
-          adults: Number(adults),
-          children: Number(children),
-          earlyCheckIn: earlyCheckIn || null,
-          remarks: remarks?.trim() || null,
-          currency: price.currency || "RM",
-          nightlyBreakdown,
-          totalPrice,
-          paymentMethod,
-          paymentStatus: "pending",
-          bookingStatus: "pending",
-        },
-      ])
-      .select("*, rooms(*)")
-      .single();
+    const bookingResult = await sql`
+      INSERT INTO bookings (
+        "bookingNumber", "roomsId", "firstName", "lastName", email, phone,
+        "checkInDate", "checkOutDate", nights, adults, children,
+        "earlyCheckIn", remarks, currency, "nightlyBreakdown",
+        "totalPrice", "paymentMethod", "paymentStatus", "bookingStatus"
+      ) VALUES (
+        ${bookingNumber}, ${roomsId}, ${firstName.trim()}, ${lastName.trim()},
+        ${email.trim()}, ${phone.trim()}, ${checkIn}, ${checkOut},
+        ${weekdayNights + weekendNights}, ${Number(adults)}, ${Number(
+      children
+    )},
+        ${earlyCheckIn || null}, ${remarks?.trim() || null}, ${
+      price.currency || "RM"
+    },
+        ${JSON.stringify(nightlyBreakdown)}, ${totalPrice}, ${paymentMethod},
+        'pending', 'pending'
+      )
+      RETURNING *
+    `;
 
-    if (bookingError || !bookingData) {
-      throw new Error(`Supabase insert error: ${bookingError?.message}`);
-    }
+    const newBooking = bookingResult[0];
 
-    const newBooking: BookingItem = bookingData;
+    const bookingData = {
+      ...newBooking,
+      rooms: room,
+    };
 
     const SUCCESS_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=success`;
     const FAILURE_REDIRECT = `${process.env.NEXT_PUBLIC_SITE_URL}/rooms/${room.id}?status=failed`;
 
-    // 2. Create CHIP payload
     const chipPayload = {
       client: { email, full_name: `${firstName} ${lastName}`, phone },
       purchase: {
@@ -186,32 +212,30 @@ export async function POST(req: NextRequest) {
     if (!chipResponse.ok) {
       console.error("Chip API error:", chipData);
 
-      await supabase
-        .from("bookings")
-        .update({
-          paymentStatus: "failed",
-          bookingStatus: "cancelled_due_to_payment",
-        })
-        .eq("id", newBooking.id);
+      await sql`
+        UPDATE bookings
+        SET "paymentStatus" = 'failed',
+            "bookingStatus" = 'cancelled_due_to_payment'
+        WHERE id = ${newBooking.id}
+      `;
+
       return NextResponse.json(
         { error: chipData.message || "Failed to create Chip purchase." },
         { status: chipResponse.status }
       );
     }
 
-    // 3. Update booking with CHIP purchase_id
-    await supabase
-      .from("bookings")
-      .update({
-        chipPurchaseId: chipData.id,
-        paymentStatus: "pending",
-        bookingStatus: "awaiting_payment",
-      })
-      .eq("id", newBooking.id);
+    await sql`
+      UPDATE bookings
+      SET "chipPurchaseId" = ${chipData.id},
+          "paymentStatus" = 'pending',
+          "bookingStatus" = 'awaiting_payment'
+      WHERE id = ${newBooking.id}
+    `;
 
     return NextResponse.json({
       success: true,
-      booking: newBooking,
+      booking: bookingData,
       checkout_url: chipData.checkout_url,
     });
   } catch (err: unknown) {

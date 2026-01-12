@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useState } from "react";
 import { z } from "zod";
@@ -15,8 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { supabase } from "@/utils/supabase/client";
 import { cormorantGaramond } from "@/config/fonts";
 import { Modal } from "@/components/ui/Modal";
 import OTPModal from "@/components/ui/OTPModal";
@@ -47,27 +44,20 @@ export default function PromoPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setUploading(true);
-
       const file = values.image[0];
 
-      const filePath = "promo/promo-image.jpg";
+      const formData = new FormData();
+      formData.append("file", file);
 
-      const { error } = await supabase.storage
-        .from("promo-images")
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: true,
-        });
+      const response = await fetch("/api/upload-promo", {
+        method: "POST",
+        body: formData,
+      });
 
-      if (error) throw error;
+      if (!response.ok) throw new Error("Upload failed");
 
-      // Get public URL and append a cache-busting query param
-      const { data } = supabase.storage
-        .from("promo-images")
-        .getPublicUrl(filePath);
-      const publicUrl = `${data.publicUrl}?v=${Date.now()}`;
-
-      setImagePreview(publicUrl);
+      const { url } = await response.json();
+      setImagePreview(url);
       setSuccessMessage("Promo image uploaded successfully!");
     } catch (error) {
       console.error(error);
@@ -96,7 +86,6 @@ export default function PromoPage() {
           <div className="absolute inset-0 bg-black/15" />
           <div className="absolute inset-0 flex flex-col gap-4 pb-24 items-center justify-end text-white">
             <h1 className="text-lg sm:text-xl">
-              {" "}
               Gold Coast Morib International Resort
             </h1>
             <p
@@ -107,7 +96,6 @@ export default function PromoPage() {
             </p>
           </div>
         </div>
-
         <div className="space-y-4 sm:space-y-8 p-4 sm:p-8 rounded-2xl sm:rounded-4xl backdrop-blur-sm shadow-xl border border-white/30 bg-white/10">
           <h2 className="text-xl sm:text-2xl font-semibold">
             Upload Promo Image
@@ -124,7 +112,6 @@ export default function PromoPage() {
                       <FormLabel className="text-neutral-400">
                         Promo Image (.jpg, .png, .webp)
                       </FormLabel>
-
                       <FormControl>
                         {!file ? (
                           <Input
@@ -133,13 +120,10 @@ export default function PromoPage() {
                             onChange={(e) => {
                               const fileList = e.target.files;
                               field.onChange(fileList);
-
                               if (fileList && fileList[0]) {
                                 const file = fileList[0];
-
                                 const url = URL.createObjectURL(file);
                                 setImagePreview(url);
-
                                 const img = new window.Image();
                                 img.src = url;
                                 img.onload = () => {

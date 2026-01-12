@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/utils/supabase/client";
+import { sql } from "@/utils/db/client";
 import { PriceItem } from "@/types";
 
 function normalizePrice(price: unknown): PriceItem {
@@ -38,32 +38,30 @@ export async function GET(request: Request) {
     const today = new Date().toISOString().split("T")[0];
 
     if (slug) {
-      const { data, error } = await supabase
-        .from("rooms")
-        .select("*, totalUnits")
-        .eq("id", slug)
-        .single();
-      if (error || !data) {
-        console.error("Supabase single room error:", error);
+      const roomResult = await sql`
+        SELECT *, "totalUnits"
+        FROM rooms
+        WHERE id = ${slug}
+        LIMIT 1
+      `;
+
+      const data = roomResult[0];
+      if (!data) {
+        console.error("Room not found");
         return NextResponse.json({ error: "Room not found" }, { status: 404 });
       }
+
       return NextResponse.json({
         ...data,
         price: normalizePrice(data.price),
       });
     }
 
-    const roomsQuery = supabase
-      .from("rooms")
-      .select("*, totalUnits")
-      .order("id", { ascending: true });
-
-    const { data: rooms, error: roomError } = await roomsQuery;
-
-    if (roomError) {
-      console.error("Supabase rooms error:", roomError);
-      throw roomError;
-    }
+    const rooms = await sql`
+      SELECT *, "totalUnits"
+      FROM rooms
+      ORDER BY id ASC
+    `;
 
     if (fetchAll) {
       const allRooms = (rooms || []).map((r) => ({
@@ -73,27 +71,21 @@ export async function GET(request: Request) {
       return NextResponse.json(allRooms);
     }
 
-    // Filter by availability based on today
-    const { data: booked, error: bookingError } = await supabase
-      .from("bookings")
-      .select("roomsId")
-      .eq("bookingStatus", "confirmed")
-      .lte("checkInDate", today)
-      .gte("checkOutDate", today);
-
-    if (bookingError) {
-      console.error("Supabase booking error:", bookingError);
-      throw bookingError;
-    }
+    const booked = await sql`
+      SELECT "roomsId"
+      FROM bookings
+      WHERE "bookingStatus" = 'confirmed'
+        AND "checkInDate" <= ${today}
+        AND "checkOutDate" >= ${today}
+    `;
 
     const bookingCounts: Record<string, number> = {};
-    booked?.forEach((b) => {
+    booked?.forEach((b: any) => {
       bookingCounts[b.roomsId] = (bookingCounts[b.roomsId] || 0) + 1;
     });
 
-    // Map and filter
     const availableRooms = (rooms || [])
-      .map((r) => {
+      .map((r: any) => {
         const bookedCount = bookingCounts[r.id] || 0;
         const availableUnits = r.totalUnits - bookedCount;
         return {
@@ -102,7 +94,7 @@ export async function GET(request: Request) {
           price: normalizePrice(r.price),
         };
       })
-      .filter((r) => r.availableUnits > 0);
+      .filter((r: any) => r.availableUnits > 0);
 
     return NextResponse.json(availableRooms);
   } catch (err: unknown) {
