@@ -1,10 +1,7 @@
 "use client";
-
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Xmark } from "iconoir-react";
-
-import { supabase } from "@/utils/supabase/client";
 
 export default function PromoModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,12 +10,19 @@ export default function PromoModal() {
   const [ratio, setRatio] = useState(1);
 
   useEffect(() => {
-    const { data } = supabase.storage
-      .from("promo-images")
-      .getPublicUrl("promo/promo-image.jpg");
+    const fetchPromoImage = async () => {
+      try {
+        const response = await fetch("/api/get-promo-image");
+        const data = await response.json();
+        if (data.url) {
+          setPromoImage(data.url);
+        }
+      } catch (error) {
+        console.error("Failed to fetch promo image:", error);
+      }
+    };
 
-    const publicUrl = `${data.publicUrl}?v=${Date.now()}`;
-    setPromoImage(publicUrl);
+    fetchPromoImage();
 
     const isViewed = sessionStorage.getItem("promoViewed");
     if (!isViewed) {
@@ -36,7 +40,6 @@ export default function PromoModal() {
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
-
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -44,7 +47,6 @@ export default function PromoModal() {
 
   const isMobile = windowWidth < 640;
   const sizePercent = isMobile ? 80 : 40;
-
   const handleClose = () => setIsOpen(false);
 
   if (!isOpen) return null;
@@ -52,7 +54,6 @@ export default function PromoModal() {
   return (
     <div className="fixed inset-0 z-9999 flex p-4 items-center justify-center">
       <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-sm" />
-
       <div
         onClick={(e) => e.stopPropagation()}
         className="relative z-10 flex items-center justify-center"
@@ -69,7 +70,6 @@ export default function PromoModal() {
         >
           <Xmark className="w-8 h-8" />
         </button>
-
         <div className="relative w-full h-full">
           <Image
             src={promoImage}
