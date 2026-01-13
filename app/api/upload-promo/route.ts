@@ -10,25 +10,36 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
+    // // Upload with timestamp - always succeeds
+    const timestamp = Date.now();
+    const blob = await put(`promo-images/promo-${timestamp}.jpg`, file, {
+      access: "public",
+    });
+
+    // // Cleanup: Keep only last 5 uploads (optional)
     try {
       const { blobs } = await list({
         prefix: "promo-images/",
       });
 
-      for (const blob of blobs) {
-        await del(blob.url);
-      }
-    } catch (deleteError) {
-      console.log(
-        "No existing promo image to delete or delete failed:",
-        deleteError
+      // Sort by upload date, newest first
+      const sortedBlobs = blobs.sort(
+        (a, b) =>
+          new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
       );
-    }
 
-    const blob = await put("promo-images/promo-image.jpg", file, {
-      access: "public",
-      addRandomSuffix: false,
-    });
+      // Delete older ones (keep 5 most recent)
+      if (sortedBlobs.length > 5) {
+        const toDelete = sortedBlobs.slice(5);
+        for (const oldBlob of toDelete) {
+          await del(oldBlob.url);
+          console.log("Cleaned up old image:", oldBlob.url);
+        }
+      }
+    } catch (cleanupError) {
+      console.log("Cleanup warning (non-critical):", cleanupError);
+      // Don't fail the upload if cleanup fails
+    }
 
     return NextResponse.json({ url: blob.url });
   } catch (error) {

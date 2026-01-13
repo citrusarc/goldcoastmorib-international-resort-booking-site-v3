@@ -5,13 +5,19 @@ export async function GET() {
   try {
     const { blobs } = await list({
       prefix: "promo-images/",
-      limit: 1,
     });
 
     if (blobs.length > 0) {
-      return NextResponse.json({ url: blobs[0].url });
+      // Get the most recent upload
+      const sortedBlobs = blobs.sort(
+        (a, b) =>
+          new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
+      );
+
+      return NextResponse.json({ url: sortedBlobs[0].url });
     }
 
+    // Fallback to default
     return NextResponse.json({ url: "/Images/promo-image.jpg" });
   } catch (error) {
     console.error("Failed to fetch promo image:", error);
