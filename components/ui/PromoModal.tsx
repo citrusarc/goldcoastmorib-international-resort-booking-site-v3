@@ -5,13 +5,15 @@ import { Xmark } from "iconoir-react";
 
 export default function PromoModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [promoImage, setPromoImage] = useState("/Images/promo-image.jpg");
+  const [promoImage, setPromoImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [windowWidth, setWindowWidth] = useState(0);
   const [ratio, setRatio] = useState(1);
 
   useEffect(() => {
     const fetchPromoImage = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch("/api/get-promo-image");
         const data = await response.json();
         if (data.url) {
@@ -19,6 +21,8 @@ export default function PromoModal() {
         }
       } catch (error) {
         console.error("Failed to fetch promo image:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -49,7 +53,7 @@ export default function PromoModal() {
   const sizePercent = isMobile ? 80 : 40;
   const handleClose = () => setIsOpen(false);
 
-  if (!isOpen) return null;
+  if (!isOpen || isLoading || !promoImage) return null;
 
   return (
     <div className="fixed inset-0 z-9999 flex p-4 items-center justify-center">
@@ -72,9 +76,10 @@ export default function PromoModal() {
         </button>
         <div className="relative w-full h-full">
           <Image
+            fill
+            priority
             src={promoImage}
             alt="Promo Banner"
-            fill
             onLoadingComplete={(img) => {
               setRatio(img.naturalWidth / img.naturalHeight);
             }}

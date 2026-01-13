@@ -8,7 +8,6 @@ export async function GET() {
     });
 
     if (blobs.length > 0) {
-      // Get the most recent upload
       const sortedBlobs = blobs.sort(
         (a, b) =>
           new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
@@ -17,10 +16,9 @@ export async function GET() {
       return NextResponse.json({ url: sortedBlobs[0].url });
     }
 
-    // Fallback to default
-    return NextResponse.json({ url: "/Images/promo-image.jpg" });
+    return NextResponse.json({ url: null }, { status: 404 });
   } catch (error) {
     console.error("Failed to fetch promo image:", error);
-    return NextResponse.json({ url: "/Images/promo-image.jpg" });
+    return NextResponse.json({ url: null }, { status: 500 });
   }
 }
