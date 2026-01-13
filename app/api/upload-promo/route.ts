@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { put } from "@vercel/blob";
+import { put, del, list } from "@vercel/blob";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,6 +8,21 @@ export async function POST(req: NextRequest) {
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    try {
+      const { blobs } = await list({
+        prefix: "promo-images/",
+      });
+
+      for (const blob of blobs) {
+        await del(blob.url);
+      }
+    } catch (deleteError) {
+      console.log(
+        "No existing promo image to delete or delete failed:",
+        deleteError
+      );
     }
 
     const blob = await put("promo-images/promo-image.jpg", file, {

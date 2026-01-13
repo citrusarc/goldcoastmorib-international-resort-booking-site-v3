@@ -11,6 +11,7 @@ export async function GET() {
     if (blobs.length > 0) {
       return NextResponse.json({ url: blobs[0].url });
     }
+
     return NextResponse.json({ url: "/Images/promo-image.jpg" });
   } catch (error) {
     console.error("Failed to fetch promo image:", error);
