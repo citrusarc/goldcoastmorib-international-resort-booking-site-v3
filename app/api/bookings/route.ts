@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@/utils/db/client";
+import { sql } from "@/utils/neon/client";
 import { BookingBody, BookingItem, PriceItem } from "@/types";
 
 const CHIP_API_URL = "https://gate.chip-in.asia/api/v1/purchases/";

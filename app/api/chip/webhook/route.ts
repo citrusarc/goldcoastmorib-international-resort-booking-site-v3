@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@/utils/db/client";
+import { sql } from "@/utils/neon/client";
 import { transporter } from "@/utils/email";
 import { bookingEmailTemplate } from "@/utils/email/bookingEmailTemplate";
 import { formatDate } from "@/utils/formatDate";

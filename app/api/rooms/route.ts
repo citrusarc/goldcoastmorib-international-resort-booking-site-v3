@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sql } from "@/utils/db/client";
+import { sql } from "@/utils/neon/client";
 import { PriceItem } from "@/types";
 
 function normalizePrice(price: unknown): PriceItem {
